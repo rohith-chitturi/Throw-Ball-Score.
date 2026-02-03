@@ -12,9 +12,12 @@ app.set('trust proxy', 1); // Required for Render and rate limiting
 const server = http.createServer(app);
 const io = socketIo(server, {
     cors: {
-        origin: "*",
-        methods: ["GET", "POST"]
-    }
+        origin: process.env.FRONTEND_URL || "*",
+        methods: ["GET", "POST"],
+        credentials: true
+    },
+    pingTimeout: 600000,
+    pingInterval: 25000
 });
 
 app.set('io', io);

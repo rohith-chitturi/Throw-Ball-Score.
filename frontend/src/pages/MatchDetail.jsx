@@ -25,7 +25,10 @@ const MatchDetail = () => {
         fetchMatch();
 
         const socketUrl = import.meta.env.VITE_SOCKET_URL || 'http://localhost:5000';
-        const socket = io(socketUrl);
+        const socket = io(socketUrl, {
+            transports: ['websocket'],
+            upgrade: false
+        });
         socket.emit('joinMatch', id);
 
         socket.on('scoreUpdate', (updatedMatch) => {
