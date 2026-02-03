@@ -8,6 +8,7 @@ const rateLimit = require('express-rate-limit');
 const socketIo = require('socket.io');
 
 const app = express();
+app.set('trust proxy', 1); // Required for Render and rate limiting
 const server = http.createServer(app);
 const io = socketIo(server, {
     cors: {
