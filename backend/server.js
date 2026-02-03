@@ -20,10 +20,26 @@ app.set('io', io);
 
 // Middleware
 app.use(express.json());
+
+// Enhanced CORS for production
+const allowedOrigins = [
+    process.env.FRONTEND_URL,
+    'https://cbit-throwball-2026.onrender.com',
+    'https://throwball-frontend.onrender.com', // Added this to fix the current error
+    'http://localhost:5173'
+].filter(Boolean);
+
 app.use(cors({
-    origin: process.env.FRONTEND_URL || "*",
-    methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
-    credentials: true
+    origin: (origin, callback) => {
+        if (!origin || allowedOrigins.includes(origin) || allowedOrigins.includes(origin + '/')) {
+            callback(null, true);
+        } else {
+            console.log('Blocked by CORS:', origin);
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE"]
 }));
 app.use(helmet({
     contentSecurityPolicy: false // Required for cross-domain socket connections
@@ -36,16 +52,16 @@ const limiter = rateLimit({
 });
 app.use('/api/', limiter);
 
-// Connect to MongoDB
-mongoose.connect(process.env.MONGODB_URI)
-    .then(() => console.log('MongoDB connected'))
-    .catch(err => console.error('MongoDB connection error:', err));
+// Health Check Route
+app.get('/', (req, res) => {
+    res.status(200).json({ status: 'active', message: 'Throwball Backend API is running' });
+});
 
 // Socket.IO
 const socketMain = require('./sockets/socketMain');
 socketMain(io);
 
-// Auto-create Admin if none exists (Production Safety)
+// Connect to MongoDB
 const User = require('./models/User');
 const autoCreateAdmin = async () => {
     try {
@@ -56,22 +72,21 @@ const autoCreateAdmin = async () => {
             const email = process.env.ADMIN_EMAIL || 'admin@cbit.com';
 
             if (username && password) {
-                await User.create({
-                    username,
-                    password,
-                    email,
-                    role: 'admin'
-                });
+                await User.create({ username, password, email, role: 'admin' });
                 console.log('--- PRODUCTION INFO: Initial admin account auto-created ---');
-            } else {
-                console.warn('--- PRODUCTION INFO: Not creating admin because credentials are missing in env ---');
             }
         }
     } catch (err) {
         console.error('Auto-admin creation failed:', err.message);
     }
 };
-autoCreateAdmin();
+
+mongoose.connect(process.env.MONGODB_URI)
+    .then(() => {
+        console.log('MongoDB connected');
+        autoCreateAdmin();
+    })
+    .catch(err => console.error('MongoDB connection error:', err));
 
 // Routes
 app.use('/api/auth', require('./routes/authRoutes'));
