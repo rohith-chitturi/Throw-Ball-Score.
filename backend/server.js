@@ -45,6 +45,34 @@ mongoose.connect(process.env.MONGODB_URI)
 const socketMain = require('./sockets/socketMain');
 socketMain(io);
 
+// Auto-create Admin if none exists (Production Safety)
+const User = require('./models/User');
+const autoCreateAdmin = async () => {
+    try {
+        const adminExists = await User.findOne({ role: 'admin' });
+        if (!adminExists) {
+            const username = process.env.ADMIN_USERNAME;
+            const password = process.env.ADMIN_PASSWORD;
+            const email = process.env.ADMIN_EMAIL || 'admin@cbit.com';
+
+            if (username && password) {
+                await User.create({
+                    username,
+                    password,
+                    email,
+                    role: 'admin'
+                });
+                console.log('--- PRODUCTION INFO: Initial admin account auto-created ---');
+            } else {
+                console.warn('--- PRODUCTION INFO: Not creating admin because credentials are missing in env ---');
+            }
+        }
+    } catch (err) {
+        console.error('Auto-admin creation failed:', err.message);
+    }
+};
+autoCreateAdmin();
+
 // Routes
 app.use('/api/auth', require('./routes/authRoutes'));
 app.use('/api/matches', require('./routes/matchRoutes'));
