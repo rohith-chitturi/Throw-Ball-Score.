@@ -13,8 +13,18 @@ router.get('/', async (req, res) => {
     }
 });
 
-// Admin: Update Tournament
-router.put('/:id', protect, authorize('admin'), async (req, res) => {
+// Admin/Scorer: Create Tournament
+router.post('/', protect, authorize('admin', 'scorer'), async (req, res) => {
+    try {
+        const tournament = await Tournament.create(req.body);
+        res.status(201).json({ success: true, data: tournament });
+    } catch (err) {
+        res.status(400).json({ success: false, error: err.message });
+    }
+});
+
+// Admin/Scorer: Update Tournament
+router.put('/:id', protect, authorize('admin', 'scorer'), async (req, res) => {
     try {
         const tournament = await Tournament.findByIdAndUpdate(req.params.id, req.body, { new: true });
         res.status(200).json({ success: true, data: tournament });
@@ -23,8 +33,8 @@ router.put('/:id', protect, authorize('admin'), async (req, res) => {
     }
 });
 
-// Admin: Delete Tournament
-router.delete('/:id', protect, authorize('admin'), async (req, res) => {
+// Admin/Scorer: Delete Tournament
+router.delete('/:id', protect, authorize('admin', 'scorer'), async (req, res) => {
     try {
         await Tournament.findByIdAndDelete(req.params.id);
         res.status(200).json({ success: true, data: {} });

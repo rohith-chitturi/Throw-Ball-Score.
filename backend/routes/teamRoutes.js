@@ -15,7 +15,7 @@ router.get('/', async (req, res) => {
 });
 
 // Admin: Create Team
-router.post('/', protect, authorize('admin'), async (req, res) => {
+router.post('/', protect, authorize('admin', 'scorer'), async (req, res) => {
     try {
         const team = await Team.create(req.body);
         res.status(201).json({ success: true, data: team });
@@ -25,7 +25,7 @@ router.post('/', protect, authorize('admin'), async (req, res) => {
 });
 
 // Admin: Update Team
-router.put('/:id', protect, authorize('admin'), async (req, res) => {
+router.put('/:id', protect, authorize('admin', 'scorer'), async (req, res) => {
     try {
         const team = await Team.findByIdAndUpdate(req.params.id, req.body, { new: true });
         res.status(200).json({ success: true, data: team });
@@ -34,8 +34,8 @@ router.put('/:id', protect, authorize('admin'), async (req, res) => {
     }
 });
 
-// Admin: Delete Team
-router.delete('/:id', protect, authorize('admin'), async (req, res) => {
+// Admin/Scorer: Delete Team
+router.delete('/:id', protect, authorize('admin', 'scorer'), async (req, res) => {
     try {
         await Team.findByIdAndDelete(req.params.id);
         // Also delete associated players
@@ -47,7 +47,7 @@ router.delete('/:id', protect, authorize('admin'), async (req, res) => {
 });
 
 // Admin: Add Player to Team
-router.post('/:id/players', protect, authorize('admin'), async (req, res) => {
+router.post('/:id/players', protect, authorize('admin', 'scorer'), async (req, res) => {
     try {
         const player = await Player.create({ ...req.body, team: req.params.id });
         await Team.findByIdAndUpdate(req.params.id, { $push: { players: player._id } });
@@ -58,7 +58,7 @@ router.post('/:id/players', protect, authorize('admin'), async (req, res) => {
 });
 
 // Admin: Remove Player from Team
-router.delete('/players/:playerId', protect, authorize('admin'), async (req, res) => {
+router.delete('/players/:playerId', protect, authorize('admin', 'scorer'), async (req, res) => {
     try {
         const player = await Player.findById(req.params.playerId);
         if (!player) return res.status(404).json({ success: false, message: 'Player not found' });

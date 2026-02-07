@@ -4,7 +4,7 @@ import { Plus, Trash2, Edit2, Users, UserPlus, X, Shield } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { toast } from 'react-hot-toast';
 
-const TeamManagement = () => {
+const TeamManagement = ({ onUpdate }) => {
     const [teams, setTeams] = useState([]);
     const [showCreate, setShowCreate] = useState(false);
     const [selectedTeam, setSelectedTeam] = useState(null);
@@ -34,6 +34,7 @@ const TeamManagement = () => {
             setNewTeam({ name: '', shortName: '' });
             setShowCreate(false);
             fetchTeams();
+            if (onUpdate) onUpdate();
             toast.success('Team created successfully!');
         } catch (err) {
             toast.error('Error creating team');
@@ -79,6 +80,7 @@ const TeamManagement = () => {
         try {
             await axios.delete(`/teams/${id}`);
             fetchTeams();
+            if (onUpdate) onUpdate();
             toast.success('Team deleted');
         } catch (err) {
             toast.error('Error deleting team');

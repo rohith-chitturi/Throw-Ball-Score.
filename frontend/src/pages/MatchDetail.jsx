@@ -104,7 +104,7 @@ const MatchDetail = () => {
                                     animate={{ scale: 1, opacity: 1 }}
                                     className="w-32 h-32 md:w-40 md:h-40 bg-slate-800 rounded-[2.5rem] mx-auto flex items-center justify-center font-black text-6xl shadow-inner border border-white/5 relative group"
                                 >
-                                    {match.teamA.shortName[0]}
+                                    {match.teamA?.shortName?.[0] || 'A'}
                                     <div className="absolute -bottom-2 -right-2 bg-primary text-white w-10 h-10 rounded-2xl flex items-center justify-center text-xl font-black shadow-lg">
                                         {teamASets}
                                     </div>
@@ -157,7 +157,7 @@ const MatchDetail = () => {
                                         {match.sets.map((s, i) => (
                                             <div key={`summary-set-${i}`} className="flex flex-col items-center">
                                                 <div className={`w-8 h-8 rounded-xl flex items-center justify-center text-[10px] font-black border transition-all ${s.isCompleted ? (s.winner === match.teamA._id || s.winner?._id === match.teamA._id ? 'bg-primary/20 border-primary text-primary' : 'bg-purple-500/20 border-purple-500 text-purple-400') : (i + 1 === match.currentSet ? 'bg-orange-500/20 border-orange-500 text-orange-400' : 'bg-slate-800 border-white/5 text-slate-600')}`}>
-                                                    {s.isCompleted ? ((s.winner === match.teamA._id || s.winner?._id === match.teamA._id) ? match.teamA.shortName[0] : match.teamB.shortName[0]) : i + 1}
+                                                    {s.isCompleted ? ((s.winner === match.teamA._id || s.winner?._id === match.teamA._id) ? (match.teamA?.shortName?.[0] || 'A') : (match.teamB?.shortName?.[0] || 'B')) : i + 1}
                                                 </div>
                                                 <span className="text-[8px] font-black text-slate-600 mt-1 uppercase">SET {i + 1}</span>
                                             </div>
@@ -173,7 +173,7 @@ const MatchDetail = () => {
                                     animate={{ scale: 1, opacity: 1 }}
                                     className="w-32 h-32 md:w-40 md:h-40 bg-slate-800 rounded-[2.5rem] mx-auto flex items-center justify-center font-black text-6xl shadow-inner border border-white/5 relative"
                                 >
-                                    {match.teamB.shortName[0]}
+                                    {match.teamB?.shortName?.[0] || 'B'}
                                     <div className="absolute -bottom-2 -left-2 bg-purple-600 text-white w-10 h-10 rounded-2xl flex items-center justify-center text-xl font-black shadow-lg">
                                         {teamBSets}
                                     </div>

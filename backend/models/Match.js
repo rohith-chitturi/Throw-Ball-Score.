@@ -18,6 +18,7 @@ const matchSchema = new mongoose.Schema({
     tossWinner: { type: mongoose.Schema.Types.ObjectId, ref: 'Team' },
     tossDecision: { type: String, enum: ['serve', 'receive'] },
     currentSet: { type: Number, default: 1 },
+    pointsPerSet: { type: Number, default: 27 },
     sets: [setSchema],
     matchWinner: { type: mongoose.Schema.Types.ObjectId, ref: 'Team' },
     scorer: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }

@@ -8,11 +8,11 @@ const UserManagement = () => {
     const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(true);
     const [showCreate, setShowCreate] = useState(false);
-    const [newAdmin, setNewAdmin] = useState({
+    const [newOfficial, setNewOfficial] = useState({
         username: '',
         email: '',
         password: '',
-        role: 'admin'
+        role: 'scorer'
     });
 
     useEffect(() => {
@@ -30,21 +30,20 @@ const UserManagement = () => {
         }
     };
 
-    const handleCreateAdmin = async (e) => {
+    const handleCreateOfficial = async (e) => {
         e.preventDefault();
         try {
-            await axios.post('/users', newAdmin);
-            setNewAdmin({ username: '', email: '', password: '', role: 'admin' });
+            await axios.post('/users', newOfficial);
+            setNewOfficial({ username: '', email: '', password: '', role: 'scorer' });
             setShowCreate(false);
             fetchUsers();
-            toast.success('Admin account created successfully!');
+            toast.success(`${newOfficial.role === 'admin' ? 'Admin' : 'Scorer'} account created successfully!`);
         } catch (err) {
-            toast.error(err.response?.data?.error || 'Error creating admin');
+            toast.error(err.response?.data?.error || 'Error creating official');
         }
     };
 
-    const handleToggleRole = async (userId, currentRole) => {
-        const newRole = currentRole === 'admin' ? 'user' : 'admin';
+    const handleUpdateRole = async (userId, newRole) => {
         try {
             await axios.patch(`/users/${userId}/role`, { role: newRole });
             fetchUsers();
@@ -86,15 +85,15 @@ const UserManagement = () => {
                     animate={{ opacity: 1, scale: 1 }}
                     className="glass-morphism p-8 rounded-3xl border border-primary/20"
                 >
-                    <form onSubmit={handleCreateAdmin} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <form onSubmit={handleCreateOfficial} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
                         <div className="space-y-2">
                             <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">Username</label>
                             <input
                                 type="text"
                                 className="w-full bg-slate-800 border border-white/5 rounded-2xl p-4 focus:outline-none focus:border-primary transition-all font-medium"
                                 placeholder="johndoe"
-                                value={newAdmin.username}
-                                onChange={(e) => setNewAdmin({ ...newAdmin, username: e.target.value })}
+                                value={newOfficial.username}
+                                onChange={(e) => setNewOfficial({ ...newOfficial, username: e.target.value })}
                                 required
                             />
                         </div>
@@ -103,9 +102,9 @@ const UserManagement = () => {
                             <input
                                 type="email"
                                 className="w-full bg-slate-800 border border-white/5 rounded-2xl p-4 focus:outline-none focus:border-primary transition-all font-medium"
-                                placeholder="admin@example.com"
-                                value={newAdmin.email}
-                                onChange={(e) => setNewAdmin({ ...newAdmin, email: e.target.value })}
+                                placeholder="official@example.com"
+                                value={newOfficial.email}
+                                onChange={(e) => setNewOfficial({ ...newOfficial, email: e.target.value })}
                                 required
                             />
                         </div>
@@ -115,14 +114,25 @@ const UserManagement = () => {
                                 type="password"
                                 className="w-full bg-slate-800 border border-white/5 rounded-2xl p-4 focus:outline-none focus:border-primary transition-all font-medium"
                                 placeholder="••••••••"
-                                value={newAdmin.password}
-                                onChange={(e) => setNewAdmin({ ...newAdmin, password: e.target.value })}
+                                value={newOfficial.password}
+                                onChange={(e) => setNewOfficial({ ...newOfficial, password: e.target.value })}
                                 minLength={8}
                                 required
                             />
                         </div>
+                        <div className="space-y-2">
+                            <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">Role</label>
+                            <select
+                                className="w-full bg-slate-800 border border-white/5 rounded-2xl p-4 focus:outline-none focus:border-primary transition-all font-medium appearance-none"
+                                value={newOfficial.role}
+                                onChange={(e) => setNewOfficial({ ...newOfficial, role: e.target.value })}
+                            >
+                                <option value="scorer">Scorer</option>
+                                <option value="admin">Administrator</option>
+                            </select>
+                        </div>
                         <div className="flex items-end">
-                            <button type="submit" className="w-full bg-primary py-4 rounded-2xl font-black uppercase tracking-[0.2em] shadow-lg shadow-primary/20 transition-all hover:bg-secondary active:scale-95">Save Admin</button>
+                            <button type="submit" className="w-full bg-primary py-4 rounded-2xl font-black uppercase tracking-[0.2em] shadow-lg shadow-primary/20 transition-all hover:bg-secondary active:scale-95">Save Official</button>
                         </div>
                     </form>
                 </motion.div>
@@ -143,7 +153,8 @@ const UserManagement = () => {
                             <div>
                                 <div className="flex items-center space-x-2">
                                     <h3 className="text-xl font-bold">{user.username}</h3>
-                                    {user.role === 'admin' && <span className="text-[10px] bg-primary/20 text-primary px-2 py-1 rounded-md font-black uppercase tracking-widest">Official Admin</span>}
+                                    {user.role === 'admin' && <span className="text-[10px] bg-primary/20 text-primary px-2 py-1 rounded-md font-black uppercase tracking-widest">Admin</span>}
+                                    {user.role === 'scorer' && <span className="text-[10px] bg-green-500/20 text-green-500 px-2 py-1 rounded-md font-black uppercase tracking-widest">Scorer</span>}
                                 </div>
                                 <div className="text-sm text-slate-500 flex items-center mt-1">
                                     <Mail size={14} className="mr-2" />
@@ -153,14 +164,15 @@ const UserManagement = () => {
                         </div>
 
                         <div className="flex items-center space-x-3">
-                            <button
-                                onClick={() => handleToggleRole(user._id, user.role)}
-                                className={`px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-widest transition-all ${user.role === 'admin'
-                                    ? 'bg-slate-800 text-slate-400 hover:bg-orange-500/10 hover:text-orange-500'
-                                    : 'bg-primary/10 text-primary hover:bg-primary hover:text-white'}`}
+                            <select
+                                value={user.role}
+                                onChange={(e) => handleUpdateRole(user._id, e.target.value)}
+                                className="bg-slate-800 border border-white/5 rounded-xl px-3 py-2 text-xs font-bold uppercase tracking-widest focus:outline-none focus:border-primary transition-all"
                             >
-                                {user.role === 'admin' ? 'Demote to User' : 'Make Admin'}
-                            </button>
+                                <option value="user">User</option>
+                                <option value="scorer">Scorer</option>
+                                <option value="admin">Admin</option>
+                            </select>
                             <button
                                 onClick={() => handleDeleteUser(user._id)}
                                 className="p-3 text-slate-600 hover:text-red-500 hover:bg-red-500/10 rounded-xl transition-all"

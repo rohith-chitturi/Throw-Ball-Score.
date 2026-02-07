@@ -28,8 +28,6 @@ app.use(express.json());
 // Enhanced CORS for production
 const allowedOrigins = [
     process.env.FRONTEND_URL,
-    'https://cbit-throwball-2026.onrender.com',
-    'https://throwball-frontend.onrender.com', // Added this to fix the current error
     'http://localhost:5173'
 ].filter(Boolean);
 

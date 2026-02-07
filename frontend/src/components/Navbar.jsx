@@ -29,13 +29,24 @@ const Navbar = () => {
                             {user.role === 'admin' && (
                                 <Link to="/admin" className="flex items-center space-x-1 hover:text-primary transition-colors">
                                     <LayoutDashboard size={18} />
-                                    <span>Dashboard</span>
+                                    <span>Admin Panel</span>
+                                </Link>
+                            )}
+                            {user.role === 'scorer' && (
+                                <Link to="/scorer" className="flex items-center space-x-1 hover:text-primary transition-colors">
+                                    <LayoutDashboard size={18} />
+                                    <span>Scorer Panel</span>
                                 </Link>
                             )}
                             <div className="flex items-center space-x-4">
-                                <Link to="/profile" className="flex items-center space-x-1 text-slate-400 hover:text-primary transition-colors">
-                                    <UserIcon size={18} />
-                                    <span>{user.username}</span>
+                                <Link to="/profile" className="flex items-center space-x-2 text-slate-400 hover:text-primary transition-colors">
+                                    <div className="flex flex-col items-end mr-1">
+                                        <span className="text-white font-bold leading-none">{user.username}</span>
+                                        <span className={`text-[9px] font-black uppercase tracking-tighter px-1.5 py-0.5 rounded mt-1 ${user.role === 'admin' ? 'bg-primary/20 text-primary' : (user.role === 'scorer' ? 'bg-green-500/20 text-green-500' : 'bg-slate-700 text-slate-400')}`}>
+                                            {user.role}
+                                        </span>
+                                    </div>
+                                    <UserIcon size={20} className="text-slate-500" />
                                 </Link>
                                 <button
                                     onClick={handleLogout}

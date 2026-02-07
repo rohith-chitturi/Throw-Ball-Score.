@@ -3,7 +3,7 @@ import axios from '../api/axios';
 import { Plus, Trash2, Calendar, MapPin } from 'lucide-react';
 import { toast } from 'react-hot-toast';
 
-const TournamentManagement = () => {
+const TournamentManagement = ({ onUpdate }) => {
     const [tournaments, setTournaments] = useState([]);
     const [showCreate, setShowCreate] = useState(false);
     const [newTourney, setNewTourney] = useState({ name: '', startDate: '', endDate: '', venue: '' });
@@ -31,6 +31,7 @@ const TournamentManagement = () => {
             setNewTourney({ name: '', startDate: '', endDate: '', venue: '' });
             setShowCreate(false);
             fetchTournaments();
+            if (onUpdate) onUpdate();
             toast.success('Tournament created!');
         } catch (err) {
             toast.error('Error creating tournament');
@@ -42,6 +43,7 @@ const TournamentManagement = () => {
         try {
             await axios.delete(`/tournaments/${id}`);
             fetchTournaments();
+            if (onUpdate) onUpdate();
             toast.success('Tournament removed');
         } catch (err) {
             toast.error('Error deleting tournament');

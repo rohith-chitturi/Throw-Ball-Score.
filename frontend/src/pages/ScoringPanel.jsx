@@ -4,8 +4,10 @@ import axios from '../api/axios';
 import { ChevronLeft, Info, Trophy, Wifi, AlertTriangle } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { toast } from 'react-hot-toast';
+import { useAuth } from '../context/AuthContext';
 
 const ScoringPanel = () => {
+    const { user } = useAuth();
     const { id } = useParams();
     const navigate = useNavigate();
     const [match, setMatch] = useState(null);
@@ -19,12 +21,22 @@ const ScoringPanel = () => {
                 setMatch(res.data.data);
             } catch (err) {
                 console.error(err);
+                if (err.response?.status === 403) {
+                    toast.error('You are not authorized to score this match.');
+                    navigate('/login');
+                }
             } finally {
                 setLoading(false);
             }
         };
         fetchMatch();
-    }, [id]);
+    }, [id, navigate]);
+
+    // Authorization check
+    // ONLY THE ASSIGNED SCORER has access to this panel. Admins use the public view.
+    const isAuthorized = (match?.scorer?._id === user?._id || match?.scorer === user?._id);
+    const canEdit = isAuthorized;
+
 
     const handleUpdateScore = async (team, points) => {
         if (updating || match.status === 'completed') return;
@@ -55,11 +67,27 @@ const ScoringPanel = () => {
 
     const currentSet = match.sets[match.currentSet - 1];
 
+    if (!isAuthorized) {
+        return (
+            <div className="max-w-4xl mx-auto mt-20 p-8 glass-morphism rounded-3xl text-center space-y-4">
+                <AlertTriangle size={64} className="mx-auto text-red-500" />
+                <h2 className="text-2xl font-bold">Unauthorized Access</h2>
+                <p className="text-slate-400">You are not the assigned official for this match.</p>
+                <button
+                    onClick={() => navigate(user?.role === 'admin' ? '/admin' : '/scorer')}
+                    className="bg-primary px-8 py-3 rounded-2xl font-bold"
+                >
+                    Return to Dashboard
+                </button>
+            </div>
+        );
+    }
+
     return (
         <div className="max-w-4xl mx-auto space-y-6">
             <header className="flex justify-between items-center">
                 <button
-                    onClick={() => navigate('/admin')}
+                    onClick={() => navigate(user?.role === 'admin' ? '/admin' : '/scorer')}
                     className="flex items-center text-slate-400 hover:text-white transition-colors"
                 >
                     <ChevronLeft size={20} />
@@ -71,18 +99,22 @@ const ScoringPanel = () => {
                 </div>
             </header>
 
-            {/* Match Status Controls */}
             {match.status === 'upcoming' && (
-                <div className="bg-blue-500/10 border border-blue-500/20 p-6 rounded-3xl flex justify-between items-center">
+                <div className={`${!match.scorer ? 'bg-amber-500/10 border-amber-500/20' : 'bg-blue-500/10 border-blue-500/20'} border p-6 rounded-3xl flex justify-between items-center`}>
                     <div>
-                        <h2 className="font-bold text-lg">Match hasn't started yet</h2>
-                        <p className="text-slate-400 text-sm">Initialize scoring once teams are ready</p>
+                        <h2 className="font-bold text-lg">{!match.scorer ? 'Assignment Required' : 'Match ready to start'}</h2>
+                        <p className="text-slate-400 text-sm">
+                            {!match.scorer
+                                ? 'An Admin must assign a scorer before this match can go live.'
+                                : 'Initialize scoring once teams are ready'}
+                        </p>
                     </div>
                     <button
+                        disabled={!match.scorer || !canEdit}
                         onClick={() => handleUpdateStatus('live')}
-                        className="bg-blue-500 hover:bg-blue-600 px-8 py-3 rounded-2xl font-bold uppercase tracking-widest transition-all"
+                        className={`${(!match.scorer || !canEdit) ? 'bg-slate-700 cursor-not-allowed' : 'bg-blue-500 hover:bg-blue-600'} px-8 py-3 rounded-2xl font-bold uppercase tracking-widest transition-all`}
                     >
-                        Go Live
+                        {!match.scorer ? 'Wait for Admin' : (!canEdit ? 'View Only' : 'Go Live')}
                     </button>
                 </div>
             )}
@@ -100,14 +132,14 @@ const ScoringPanel = () => {
                         <div className="text-9xl font-black mb-8 italic text-white drop-shadow-2xl">{currentSet?.teamAScore || 0}</div>
                         <div className="flex space-x-4">
                             <button
-                                disabled={updating || match.status !== 'live'}
+                                disabled={updating || match.status !== 'live' || currentSet?.isCompleted || !canEdit}
                                 onClick={() => handleUpdateScore('teamA', -1)}
                                 className="flex-1 bg-slate-800/80 hover:bg-slate-700 py-6 rounded-2xl font-black text-2xl transition-all disabled:opacity-50 border border-white/5"
                             >
                                 -
                             </button>
                             <button
-                                disabled={updating || match.status !== 'live'}
+                                disabled={updating || match.status !== 'live' || currentSet?.isCompleted || !canEdit}
                                 onClick={() => handleUpdateScore('teamA', 1)}
                                 className="flex-[2] bg-primary hover:bg-secondary py-6 rounded-2xl font-black text-4xl shadow-lg shadow-primary/30 transition-all disabled:opacity-50 active:scale-95 text-white"
                             >
@@ -129,14 +161,14 @@ const ScoringPanel = () => {
                         <div className="text-9xl font-black mb-8 italic text-white drop-shadow-2xl">{currentSet?.teamBScore || 0}</div>
                         <div className="flex space-x-4">
                             <button
-                                disabled={updating || match.status !== 'live'}
+                                disabled={updating || match.status !== 'live' || currentSet?.isCompleted || !canEdit}
                                 onClick={() => handleUpdateScore('teamB', -1)}
                                 className="flex-1 bg-slate-800/80 hover:bg-slate-700 py-6 rounded-2xl font-black text-2xl transition-all disabled:opacity-50 border border-white/5"
                             >
                                 -
                             </button>
                             <button
-                                disabled={updating || match.status !== 'live'}
+                                disabled={updating || match.status !== 'live' || currentSet?.isCompleted || !canEdit}
                                 onClick={() => handleUpdateScore('teamB', 1)}
                                 className="flex-[2] bg-purple-600 hover:bg-purple-700 py-6 rounded-2xl font-black text-4xl shadow-lg shadow-purple-500/30 transition-all disabled:opacity-50 active:scale-95 text-white"
                             >
@@ -160,7 +192,7 @@ const ScoringPanel = () => {
                     <div className="bg-orange-500/20 p-2 rounded-lg"><Info className="text-orange-500" size={20} /></div>
                     <div>
                         <div className="text-xs text-slate-500 font-bold uppercase">Rule</div>
-                        <div className="font-bold">First to 27 Wins Set</div>
+                        <div className="font-bold">First to {match.pointsPerSet || 27} Wins Set</div>
                     </div>
                 </div>
 

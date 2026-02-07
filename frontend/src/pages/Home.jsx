@@ -172,7 +172,7 @@ const MatchCard = ({ match }) => {
                 <div className="flex justify-between items-center text-center gap-4">
                     <div className="flex-1 space-y-3">
                         <div className="w-20 h-20 bg-slate-800 rounded-2xl mx-auto flex items-center justify-center font-black text-3xl border border-white/5 group-hover:border-primary/50 transition-colors shadow-lg">
-                            {match.teamA.shortName[0]}
+                            {match.teamA?.shortName?.[0] || 'A'}
                         </div>
                         <p className="font-extrabold text-sm uppercase tracking-tight">{match.teamA.name}</p>
                         <div className="text-4xl font-black italic text-white">{currentSet?.teamAScore || 0}</div>
@@ -194,7 +194,7 @@ const MatchCard = ({ match }) => {
 
                     <div className="flex-1 space-y-3">
                         <div className="w-20 h-20 bg-slate-800 rounded-2xl mx-auto flex items-center justify-center font-black text-3xl border border-white/5 group-hover:border-primary/50 transition-colors shadow-lg">
-                            {match.teamB.shortName[0]}
+                            {match.teamB?.shortName?.[0] || 'B'}
                         </div>
                         <p className="font-extrabold text-sm uppercase tracking-tight">{match.teamB.name}</p>
                         <div className="text-4xl font-black italic text-white">{currentSet?.teamBScore || 0}</div>
@@ -218,8 +218,8 @@ const SmallMatchCard = ({ match }) => (
             <div className="flex justify-between items-center">
                 <div className="flex items-center space-x-6">
                     <div className="flex -space-x-3">
-                        <div className="w-10 h-10 bg-slate-800 border border-slate-700 rounded-lg flex items-center justify-center font-black text-xs">{match.teamA.shortName[0]}</div>
-                        <div className="w-10 h-10 bg-slate-700 border border-slate-600 rounded-lg flex items-center justify-center font-black text-xs">{match.teamB.shortName[0]}</div>
+                        <div className="w-10 h-10 bg-slate-800 border border-slate-700 rounded-lg flex items-center justify-center font-black text-xs">{match.teamA?.shortName?.[0] || 'A'}</div>
+                        <div className="w-10 h-10 bg-slate-700 border border-slate-600 rounded-lg flex items-center justify-center font-black text-xs">{match.teamB?.shortName?.[0] || 'B'}</div>
                     </div>
                     <div>
                         <div className="font-bold text-lg uppercase tracking-tight leading-none group-hover:text-primary transition-colors">

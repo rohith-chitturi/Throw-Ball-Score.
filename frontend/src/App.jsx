@@ -5,14 +5,15 @@ import Home from './pages/Home';
 import MatchDetail from './pages/MatchDetail';
 import Login from './pages/Login';
 import AdminDashboard from './pages/AdminDashboard';
+import ScorerDashboard from './pages/ScorerDashboard';
 import ScoringPanel from './pages/ScoringPanel';
 import Signup from './pages/Signup';
 import Profile from './pages/Profile';
 import Navbar from './components/Navbar';
 
-const ProtectedRoute = ({ children }) => {
+const ProtectedRoute = ({ children, roles = ['admin'] }) => {
   const { user } = useAuth();
-  if (!user || user.role !== 'admin') {
+  if (!user || !roles.includes(user.role)) {
     return <Navigate to="/login" />;
   }
   return children;
@@ -48,15 +49,23 @@ function App() {
               <Route
                 path="/admin"
                 element={
-                  <ProtectedRoute>
+                  <ProtectedRoute roles={['admin']}>
                     <AdminDashboard />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/scorer"
+                element={
+                  <ProtectedRoute roles={['scorer']}>
+                    <ScorerDashboard />
                   </ProtectedRoute>
                 }
               />
               <Route
                 path="/admin/match/:id"
                 element={
-                  <ProtectedRoute>
+                  <ProtectedRoute roles={['scorer']}>
                     <ScoringPanel />
                   </ProtectedRoute>
                 }
@@ -64,11 +73,12 @@ function App() {
               <Route
                 path="/profile"
                 element={
-                  <ProtectedRoute>
+                  <ProtectedRoute roles={['admin', 'scorer', 'user']}>
                     <Profile />
                   </ProtectedRoute>
                 }
               />
+              <Route path="/dashboard" element={<Navigate to="/login" replace />} />
             </Routes>
           </div>
         </div>

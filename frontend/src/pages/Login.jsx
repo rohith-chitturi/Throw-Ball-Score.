@@ -17,6 +17,7 @@ const Login = () => {
     useEffect(() => {
         if (user) {
             if (user.role === 'admin') navigate('/admin');
+            else if (user.role === 'scorer') navigate('/scorer');
             else navigate('/');
         }
     }, [user, navigate]);
@@ -30,6 +31,8 @@ const Login = () => {
             toast.success(`Welcome back, ${res.data.user.username}!`);
             if (res.data.user.role === 'admin') {
                 navigate('/admin');
+            } else if (res.data.user.role === 'scorer') {
+                navigate('/scorer');
             } else {
                 navigate('/');
             }
