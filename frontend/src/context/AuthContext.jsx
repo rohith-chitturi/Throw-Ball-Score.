@@ -14,7 +14,12 @@ export const AuthProvider = ({ children }) => {
             if (storedUser && token) {
                 const parsedUser = JSON.parse(storedUser);
                 if (parsedUser && parsedUser.role) {
-                    setUser(parsedUser);
+                    const normalizedUser = {
+                        ...parsedUser,
+                        _id: parsedUser._id || parsedUser.id,
+                        id: parsedUser.id || parsedUser._id
+                    };
+                    setUser(normalizedUser);
                 } else {
                     // Invalid user data, clear it
                     sessionStorage.removeItem('user');
@@ -30,9 +35,15 @@ export const AuthProvider = ({ children }) => {
     }, []);
 
     const login = (userData, token) => {
-        sessionStorage.setItem('user', JSON.stringify(userData));
+        // Normalize ID so we always have both id and _id (fixes frontend comparison issues)
+        const normalizedUser = {
+            ...userData,
+            _id: userData._id || userData.id,
+            id: userData.id || userData._id
+        };
+        sessionStorage.setItem('user', JSON.stringify(normalizedUser));
         sessionStorage.setItem('token', token);
-        setUser(userData);
+        setUser(normalizedUser);
     };
 
     const logout = () => {

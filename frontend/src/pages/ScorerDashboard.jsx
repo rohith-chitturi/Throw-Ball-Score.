@@ -361,13 +361,13 @@ const ScorerDashboard = ({ isAdminView = false }) => {
                                                 ) : (
                                                     <Link
                                                         to={`/admin/match/${match._id}`}
-                                                        className={`px-6 py-2 rounded-xl font-bold text-sm flex items-center space-x-2 transition-all ${(match.scorer?._id === user._id || match.scorer === user._id)
+                                                        className={`px-6 py-2 rounded-xl font-bold text-sm flex items-center space-x-2 transition-all ${(match.scorer?._id === (user.id || user._id) || match.scorer === (user.id || user._id))
                                                             ? 'bg-primary/20 text-primary hover:bg-primary hover:text-white shadow-lg shadow-primary/20'
                                                             : 'bg-slate-800 text-slate-600 cursor-not-allowed pointer-events-none'
                                                             }`}
                                                     >
                                                         <Play size={16} />
-                                                        <span>{(match.scorer?._id === user._id || match.scorer === user._id) ? 'SCORE MATCH' : 'NOT ASSIGNED'}</span>
+                                                        <span>{(match.scorer?._id === (user.id || user._id) || match.scorer === (user.id || user._id)) ? 'SCORE MATCH' : 'NOT ASSIGNED'}</span>
                                                     </Link>
                                                 )
                                             )}

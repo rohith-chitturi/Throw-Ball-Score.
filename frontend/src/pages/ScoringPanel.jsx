@@ -34,7 +34,7 @@ const ScoringPanel = () => {
 
     // Authorization check
     // ONLY THE ASSIGNED SCORER has access to this panel. Admins use the public view.
-    const isAuthorized = (match?.scorer?._id === user?._id || match?.scorer === user?._id);
+    const isAuthorized = (match?.scorer?._id === (user?.id || user?._id) || match?.scorer === (user?.id || user?._id));
     const canEdit = isAuthorized;
 
 

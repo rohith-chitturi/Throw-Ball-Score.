@@ -226,7 +226,7 @@ router.put('/:id', protect, authorize('admin', 'scorer'), async (req, res) => {
             return res.status(403).json({ success: false, message: 'You are not authorized to edit this match' });
         }
 
-        const updatedMatch = await Match.findByIdAndUpdate(req.params.id, req.body, { new: true }).populate('teamA teamB tournament matchWinner');
+        const updatedMatch = await Match.findByIdAndUpdate(req.params.id, req.body, { new: true }).populate('teamA teamB tournament matchWinner scorer');
         res.status(200).json({ success: true, data: updatedMatch });
     } catch (err) {
         res.status(400).json({ success: false, error: err.message });
