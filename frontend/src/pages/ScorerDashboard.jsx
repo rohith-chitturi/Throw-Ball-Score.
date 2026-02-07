@@ -131,33 +131,33 @@ const ScorerDashboard = ({ isAdminView = false }) => {
             {!isAdminView && (
                 <header className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                     <div>
-                        <h1 className="text-4xl font-black italic uppercase tracking-tighter flex items-center gap-3">
-                            <Trophy className="text-green-500" size={36} />
+                        <h1 className="text-3xl md:text-4xl font-black italic uppercase tracking-tighter flex items-center gap-3">
+                            <Trophy className="text-green-500" size={32} />
                             Official Scorer Panel
                         </h1>
-                        <p className="text-slate-500 font-medium tracking-wide">Secure scoring interface • Logged in as <span className="text-green-500 font-bold uppercase">{user.username}</span></p>
+                        <p className="text-xs md:text-sm text-slate-500 font-medium tracking-wide">Secure scoring interface • Logged in as <span className="text-green-500 font-bold uppercase">{user.username}</span></p>
                     </div>
                 </header>
             )}
 
             {/* Navigation Tabs - Visible to everyone since Scorers handle Teams/Events too */}
-            <div className="flex p-1 bg-slate-800/50 rounded-2xl w-fit border border-white/5 shadow-2xl">
+            <div className="flex flex-wrap p-1 bg-slate-800/50 rounded-2xl w-full md:w-fit border border-white/5 shadow-2xl">
                 {[
                     { id: 'matches', label: 'Match Schedule', icon: Trophy },
                     ...(!isAdminView ? [
-                        { id: 'teams', label: 'Teams & Players', icon: Users },
+                        { id: 'teams', label: 'Teams', icon: Users },
                         { id: 'tournaments', label: 'Events', icon: Flag }
                     ] : [])
                 ].map(tab => (
                     <button
                         key={tab.id}
                         onClick={() => setActiveTab(tab.id)}
-                        className={`flex items-center space-x-2 px-6 py-3 rounded-xl font-bold transition-all ${activeTab === tab.id
+                        className={`flex-1 md:flex-none flex items-center justify-center space-x-2 px-4 md:px-6 py-3 rounded-xl font-bold transition-all text-sm ${activeTab === tab.id
                             ? 'bg-primary text-white shadow-lg shadow-primary/20'
                             : 'text-slate-400 hover:text-white hover:bg-white/5'
                             }`}
                     >
-                        <tab.icon size={18} />
+                        <tab.icon size={16} />
                         <span>{tab.label}</span>
                     </button>
                 ))}
@@ -367,8 +367,8 @@ const ScorerDashboard = ({ isAdminView = false }) => {
                                                     <Link
                                                         to={`/admin/match/${match._id}`}
                                                         className={`px-6 py-2 rounded-xl font-bold text-sm flex items-center space-x-2 transition-all ${((match.scorer?._id || match.scorer)?.toString() === (user.id || user._id)?.toString())
-                                                                ? 'bg-primary/20 text-primary hover:bg-primary hover:text-white shadow-lg shadow-primary/20'
-                                                                : 'bg-slate-800 text-slate-600 cursor-not-allowed pointer-events-none'
+                                                            ? 'bg-primary/20 text-primary hover:bg-primary hover:text-white shadow-lg shadow-primary/20'
+                                                            : 'bg-slate-800 text-slate-600 cursor-not-allowed pointer-events-none'
                                                             }`}
                                                     >
                                                         <Play size={16} />

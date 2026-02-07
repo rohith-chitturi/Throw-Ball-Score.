@@ -55,13 +55,13 @@ const Home = () => {
     return (
         <div className="space-y-16 pb-20">
             {/* Hero Section */}
-            <section className="relative h-[400px] rounded-[3rem] overflow-hidden flex items-center px-8 md:px-16 shadow-2xl">
+            <section className="relative min-h-[300px] md:h-[400px] rounded-[2rem] md:rounded-[3rem] overflow-hidden flex items-center px-6 md:px-16 shadow-2xl">
                 <img
                     src="https://images.unsplash.com/photo-1612872087720-bb876e2e67d1?q=80&w=2000&auto=format&fit=crop"
                     className="absolute inset-0 w-full h-full object-cover object-center scale-105"
                     alt="Throwball Match"
                 />
-                <div className="absolute inset-0 bg-gradient-to-r from-slate-950 via-slate-900/60 to-transparent z-10" />
+                <div className="absolute inset-0 bg-gradient-to-r from-slate-950 via-slate-950/80 md:via-slate-900/60 to-transparent z-10" />
 
                 <div className="relative z-20 max-w-2xl space-y-6">
                     <motion.div
@@ -76,7 +76,7 @@ const Home = () => {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.1 }}
-                        className="text-5xl md:text-7xl font-black italic uppercase leading-tight tracking-tighter"
+                        className="text-4xl md:text-7xl font-black italic uppercase leading-tight tracking-tighter"
                     >
                         Ultimate <span className="text-primary">Throwball</span> Experience
                     </motion.h1>
@@ -169,18 +169,18 @@ const MatchCard = ({ match }) => {
                     </div>
                 </div>
 
-                <div className="flex justify-between items-center text-center gap-4">
+                <div className="flex justify-between items-center text-center gap-2 md:gap-4">
                     <div className="flex-1 space-y-3">
-                        <div className="w-20 h-20 bg-slate-800 rounded-2xl mx-auto flex items-center justify-center font-black text-3xl border border-white/5 group-hover:border-primary/50 transition-colors shadow-lg">
+                        <div className="w-16 h-16 md:w-20 md:h-20 bg-slate-800 rounded-2xl mx-auto flex items-center justify-center font-black text-2xl md:text-3xl border border-white/5 group-hover:border-primary/50 transition-colors shadow-lg">
                             {match.teamA?.shortName?.[0] || 'A'}
                         </div>
-                        <p className="font-extrabold text-sm uppercase tracking-tight">{match.teamA?.name || 'Deleted Team'}</p>
-                        <div className="text-4xl font-black italic text-white">{currentSet?.teamAScore || 0}</div>
+                        <p className="font-extrabold text-[10px] md:text-sm uppercase tracking-tight">{match.teamA?.name || 'Deleted Team'}</p>
+                        <div className="text-2xl md:text-4xl font-black italic text-white">{currentSet?.teamAScore || 0}</div>
                     </div>
 
                     <div className="flex flex-col items-center">
-                        <div className="text-[10px] font-black text-slate-600 mb-1 uppercase tracking-widest">Set {match.currentSet}</div>
-                        <div className="text-2xl font-black text-primary italic">VS</div>
+                        <div className="text-[8px] md:text-[10px] font-black text-slate-600 mb-1 uppercase tracking-widest">Set {match.currentSet}</div>
+                        <div className="text-xl md:text-2xl font-black text-primary italic">VS</div>
                         <div className="mt-4 flex space-x-2">
                             {match.sets.map((s, i) => (
                                 <div
@@ -193,11 +193,11 @@ const MatchCard = ({ match }) => {
                     </div>
 
                     <div className="flex-1 space-y-3">
-                        <div className="w-20 h-20 bg-slate-800 rounded-2xl mx-auto flex items-center justify-center font-black text-3xl border border-white/5 group-hover:border-primary/50 transition-colors shadow-lg">
+                        <div className="w-16 h-16 md:w-20 md:h-20 bg-slate-800 rounded-2xl mx-auto flex items-center justify-center font-black text-2xl md:text-3xl border border-white/5 group-hover:border-primary/50 transition-colors shadow-lg">
                             {match.teamB?.shortName?.[0] || 'B'}
                         </div>
-                        <p className="font-extrabold text-sm uppercase tracking-tight">{match.teamB?.name || 'Deleted Team'}</p>
-                        <div className="text-4xl font-black italic text-white">{currentSet?.teamBScore || 0}</div>
+                        <p className="font-extrabold text-[10px] md:text-sm uppercase tracking-tight">{match.teamB?.name || 'Deleted Team'}</p>
+                        <div className="text-2xl md:text-4xl font-black italic text-white">{currentSet?.teamBScore || 0}</div>
                     </div>
                 </div>
 

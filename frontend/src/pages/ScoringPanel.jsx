@@ -127,9 +127,9 @@ const ScoringPanel = () => {
                 >
                     <div className="absolute top-0 left-0 p-4 opacity-5 text-6xl font-black italic">{match.teamA?.shortName || 'A'}</div>
                     <div className="relative z-10">
-                        <h3 className="text-2xl font-black uppercase mb-1 text-primary">{match.teamA?.name || 'Team A'}</h3>
+                        <h3 className="text-xl md:text-2xl font-black uppercase mb-1 text-primary">{match.teamA?.name || 'Team A'}</h3>
                         <div className="text-xs font-bold text-slate-500 tracking-[0.3em] mb-6">POINT PROVIDER A</div>
-                        <div className="text-9xl font-black mb-8 italic text-white drop-shadow-2xl">{currentSet?.teamAScore || 0}</div>
+                        <div className="text-7xl md:text-9xl font-black mb-8 italic text-white drop-shadow-2xl">{currentSet?.teamAScore || 0}</div>
                         <div className="flex space-x-4">
                             <button
                                 disabled={updating || match.status !== 'live' || currentSet?.isCompleted || !canEdit}
@@ -156,9 +156,9 @@ const ScoringPanel = () => {
                 >
                     <div className="absolute top-0 right-0 p-4 opacity-5 text-6xl font-black italic">{match.teamB?.shortName || 'B'}</div>
                     <div className="relative z-10">
-                        <h3 className="text-2xl font-black uppercase mb-1 text-purple-400">{match.teamB?.name || 'Team B'}</h3>
+                        <h3 className="text-xl md:text-2xl font-black uppercase mb-1 text-purple-400">{match.teamB?.name || 'Team B'}</h3>
                         <div className="text-xs font-bold text-slate-500 tracking-[0.3em] mb-6">POINT PROVIDER B</div>
-                        <div className="text-9xl font-black mb-8 italic text-white drop-shadow-2xl">{currentSet?.teamBScore || 0}</div>
+                        <div className="text-7xl md:text-9xl font-black mb-8 italic text-white drop-shadow-2xl">{currentSet?.teamBScore || 0}</div>
                         <div className="flex space-x-4">
                             <button
                                 disabled={updating || match.status !== 'live' || currentSet?.isCompleted || !canEdit}
