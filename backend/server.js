@@ -25,31 +25,19 @@ app.set('io', io);
 // Middleware
 app.use(express.json());
 
-// Enhanced CORS for production
-const allowedOrigins = [
-    process.env.FRONTEND_URL,
-    'http://localhost:5173'
-].filter(Boolean).map(url => url.replace(/\/$/, ""));
-
+// Ultimate Permissive CORS for Render Deployment
 app.use(cors({
     origin: (origin, callback) => {
-        // Allow all onrender.com subdomains and localhost for ease of deployment
-        if (!origin || origin.endsWith('.onrender.com') || origin.includes('localhost:5173')) {
-            return callback(null, true);
-        }
-
-        const normalizedOrigin = origin.replace(/\/$/, "");
-        if (allowedOrigins.includes(normalizedOrigin)) {
+        // ALLOW EVERYTHING from onrender.com and localhost
+        if (!origin || origin.includes('onrender.com') || origin.includes('localhost')) {
             callback(null, true);
         } else {
             console.error(`🚨 CORS Blocked: ${origin}`);
-            console.log(`📡 Allowed Origins Config:`, allowedOrigins);
             callback(new Error('CORS Policy: Origin not allowed'));
         }
     },
     credentials: true,
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
-    optionsSuccessStatus: 200
 }));
 app.use(helmet({
     contentSecurityPolicy: false // Required for cross-domain socket connections

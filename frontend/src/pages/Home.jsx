@@ -174,7 +174,7 @@ const MatchCard = ({ match }) => {
                         <div className="w-20 h-20 bg-slate-800 rounded-2xl mx-auto flex items-center justify-center font-black text-3xl border border-white/5 group-hover:border-primary/50 transition-colors shadow-lg">
                             {match.teamA?.shortName?.[0] || 'A'}
                         </div>
-                        <p className="font-extrabold text-sm uppercase tracking-tight">{match.teamA.name}</p>
+                        <p className="font-extrabold text-sm uppercase tracking-tight">{match.teamA?.name || 'Deleted Team'}</p>
                         <div className="text-4xl font-black italic text-white">{currentSet?.teamAScore || 0}</div>
                     </div>
 
@@ -196,7 +196,7 @@ const MatchCard = ({ match }) => {
                         <div className="w-20 h-20 bg-slate-800 rounded-2xl mx-auto flex items-center justify-center font-black text-3xl border border-white/5 group-hover:border-primary/50 transition-colors shadow-lg">
                             {match.teamB?.shortName?.[0] || 'B'}
                         </div>
-                        <p className="font-extrabold text-sm uppercase tracking-tight">{match.teamB.name}</p>
+                        <p className="font-extrabold text-sm uppercase tracking-tight">{match.teamB?.name || 'Deleted Team'}</p>
                         <div className="text-4xl font-black italic text-white">{currentSet?.teamBScore || 0}</div>
                     </div>
                 </div>
@@ -223,7 +223,7 @@ const SmallMatchCard = ({ match }) => (
                     </div>
                     <div>
                         <div className="font-bold text-lg uppercase tracking-tight leading-none group-hover:text-primary transition-colors">
-                            {match.teamA.name} <span className="text-primary italic mx-2 underline decoration-2">VS</span> {match.teamB.name}
+                            {match.teamA?.name || 'Deleted'} <span className="text-primary italic mx-2 underline decoration-2">VS</span> {match.teamB?.name || 'Deleted'}
                         </div>
                         <div className="text-slate-500 text-xs flex items-center mt-2 font-bold uppercase tracking-wider">
                             <Calendar size={12} className="mr-1" />

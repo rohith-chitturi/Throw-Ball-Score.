@@ -125,9 +125,9 @@ const ScoringPanel = () => {
                     whileTap={{ scale: 0.98 }}
                     className="glass-morphism p-8 rounded-[2.5rem] border-b-8 border-primary text-center relative overflow-hidden"
                 >
-                    <div className="absolute top-0 left-0 p-4 opacity-5 text-6xl font-black italic">{match.teamA.shortName}</div>
+                    <div className="absolute top-0 left-0 p-4 opacity-5 text-6xl font-black italic">{match.teamA?.shortName || 'A'}</div>
                     <div className="relative z-10">
-                        <h3 className="text-2xl font-black uppercase mb-1 text-primary">{match.teamA.name}</h3>
+                        <h3 className="text-2xl font-black uppercase mb-1 text-primary">{match.teamA?.name || 'Team A'}</h3>
                         <div className="text-xs font-bold text-slate-500 tracking-[0.3em] mb-6">POINT PROVIDER A</div>
                         <div className="text-9xl font-black mb-8 italic text-white drop-shadow-2xl">{currentSet?.teamAScore || 0}</div>
                         <div className="flex space-x-4">
@@ -154,9 +154,9 @@ const ScoringPanel = () => {
                     whileTap={{ scale: 0.98 }}
                     className="glass-morphism p-8 rounded-[2rem] border-b-8 border-purple-500 text-center relative overflow-hidden"
                 >
-                    <div className="absolute top-0 right-0 p-4 opacity-5 text-6xl font-black italic">{match.teamB.shortName}</div>
+                    <div className="absolute top-0 right-0 p-4 opacity-5 text-6xl font-black italic">{match.teamB?.shortName || 'B'}</div>
                     <div className="relative z-10">
-                        <h3 className="text-2xl font-black uppercase mb-1 text-purple-400">{match.teamB.name}</h3>
+                        <h3 className="text-2xl font-black uppercase mb-1 text-purple-400">{match.teamB?.name || 'Team B'}</h3>
                         <div className="text-xs font-bold text-slate-500 tracking-[0.3em] mb-6">POINT PROVIDER B</div>
                         <div className="text-9xl font-black mb-8 italic text-white drop-shadow-2xl">{currentSet?.teamBScore || 0}</div>
                         <div className="flex space-x-4">
@@ -200,9 +200,9 @@ const ScoringPanel = () => {
                     <div className="text-[10px] text-slate-500 font-black uppercase tracking-widest mb-1">Championship Status</div>
                     <div className="font-black text-primary italic text-lg uppercase tracking-tight">
                         {match.matchWinner ? (
-                            (match.matchWinner === match.teamA._id || match.matchWinner?._id === match.teamA._id)
-                                ? match.teamA.name
-                                : match.teamB.name
+                            (match.matchWinner === match.teamA?._id || match.matchWinner?._id === match.teamA?._id)
+                                ? (match.teamA?.name || 'Team A')
+                                : (match.teamB?.name || 'Team B')
                         ) : 'BATTLE IN PROGRESS'}
                     </div>
                 </div>
