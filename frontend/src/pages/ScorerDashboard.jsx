@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import axios from '../api/axios';
 import { Plus, Trophy, Users, Play, Trash2, Calendar, LayoutDashboard, Flag, Shield } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { io } from 'socket.io-client';
 import { toast } from 'react-hot-toast';
 import TeamManagement from '../components/TeamManagement';
 import TournamentManagement from '../components/TournamentManagement';
@@ -30,6 +31,25 @@ const ScorerDashboard = ({ isAdminView = false }) => {
         if (user?._id) {
             fetchInitialData();
         }
+
+        // Add Socket listener for real-time updates
+        const socketUrl = import.meta.env.VITE_SOCKET_URL || 'http://localhost:5000';
+        const socket = io(socketUrl, {
+            transports: ['websocket'],
+            upgrade: false
+        });
+        socket.emit('joinMatch', 'matches');
+
+        const updateMatchList = (updatedMatch) => {
+            setMatches(prev => prev.map(m => m._id === updatedMatch._id ? updatedMatch : m));
+        };
+
+        socket.on('scoreUpdate', updateMatchList);
+        socket.on('statusUpdate', updateMatchList);
+
+        return () => {
+            socket.disconnect();
+        };
     }, [user?._id, activeTab]);
 
     const fetchInitialData = async () => {
@@ -49,11 +69,7 @@ const ScorerDashboard = ({ isAdminView = false }) => {
 
             // Process results
             if (results[0].status === 'fulfilled') {
-                let matchesData = results[0].value.data.data;
-                if (!isAdminView && user.role === 'scorer') {
-                    matchesData = matchesData.filter(m => (!m.scorer || m.scorer?._id === user._id || m.scorer === user._id));
-                }
-                setMatches(matchesData);
+                setMatches(results[0].value.data.data);
             }
 
             if (results[1].status === 'fulfilled') setTeams(results[1].value.data.data);
@@ -75,7 +91,7 @@ const ScorerDashboard = ({ isAdminView = false }) => {
         try {
             const matchData = {
                 ...newMatch,
-                scorer: newMatch.scorer || user._id
+                scorer: newMatch.scorer || null // Default to null for admin to assign
             };
             const res = await axios.post('/matches', matchData);
             setMatches([...matches, res.data.data]);
