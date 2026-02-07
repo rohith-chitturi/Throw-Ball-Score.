@@ -69,7 +69,9 @@ const ScorerDashboard = ({ isAdminView = false }) => {
 
             // Process results
             if (results[0].status === 'fulfilled') {
-                setMatches(results[0].value.data.data);
+                const fetchedMatches = results[0].value.data.data;
+                console.log(`[Dashboard] Matches Fetched: ${fetchedMatches.length}`);
+                setMatches(fetchedMatches);
             }
 
             if (results[1].status === 'fulfilled') setTeams(results[1].value.data.data);
@@ -278,8 +280,11 @@ const ScorerDashboard = ({ isAdminView = false }) => {
                                                     type="number"
                                                     className="w-full bg-slate-800 border border-white/5 rounded-xl p-3 focus:outline-none focus:border-primary"
                                                     placeholder="e.g. 27"
-                                                    value={newMatch.pointsPerSet}
-                                                    onChange={(e) => setNewMatch({ ...newMatch, pointsPerSet: parseInt(e.target.value) })}
+                                                    value={newMatch.pointsPerSet || ''}
+                                                    onChange={(e) => {
+                                                        const val = e.target.value === '' ? 0 : parseInt(e.target.value);
+                                                        setNewMatch({ ...newMatch, pointsPerSet: isNaN(val) ? 0 : val });
+                                                    }}
                                                     required
                                                     min="1"
                                                 />
@@ -361,13 +366,13 @@ const ScorerDashboard = ({ isAdminView = false }) => {
                                                 ) : (
                                                     <Link
                                                         to={`/admin/match/${match._id}`}
-                                                        className={`px-6 py-2 rounded-xl font-bold text-sm flex items-center space-x-2 transition-all ${(match.scorer?._id === (user.id || user._id) || match.scorer === (user.id || user._id))
-                                                            ? 'bg-primary/20 text-primary hover:bg-primary hover:text-white shadow-lg shadow-primary/20'
-                                                            : 'bg-slate-800 text-slate-600 cursor-not-allowed pointer-events-none'
+                                                        className={`px-6 py-2 rounded-xl font-bold text-sm flex items-center space-x-2 transition-all ${((match.scorer?._id || match.scorer)?.toString() === (user.id || user._id)?.toString())
+                                                                ? 'bg-primary/20 text-primary hover:bg-primary hover:text-white shadow-lg shadow-primary/20'
+                                                                : 'bg-slate-800 text-slate-600 cursor-not-allowed pointer-events-none'
                                                             }`}
                                                     >
                                                         <Play size={16} />
-                                                        <span>{(match.scorer?._id === (user.id || user._id) || match.scorer === (user.id || user._id)) ? 'SCORE MATCH' : 'NOT ASSIGNED'}</span>
+                                                        <span>{((match.scorer?._id || match.scorer)?.toString() === (user.id || user._id)?.toString()) ? 'SCORE MATCH' : 'NOT ASSIGNED'}</span>
                                                     </Link>
                                                 )
                                             )}

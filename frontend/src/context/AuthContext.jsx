@@ -67,8 +67,15 @@ export const AuthProvider = ({ children }) => {
         return () => api.interceptors.response.eject(interceptor);
     }, []);
 
+    const authValue = React.useMemo(() => ({
+        user,
+        login,
+        logout,
+        loading
+    }), [user, loading]);
+
     return (
-        <AuthContext.Provider value={{ user, login, logout, loading }}>
+        <AuthContext.Provider value={authValue}>
             {!loading && children}
         </AuthContext.Provider>
     );
