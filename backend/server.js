@@ -29,14 +29,17 @@ app.use(express.json());
 const allowedOrigins = [
     process.env.FRONTEND_URL,
     'http://localhost:5173'
-].filter(Boolean);
+].filter(Boolean).map(url => url.replace(/\/$/, "")); // Strip trailing slashes from config
 
 app.use(cors({
     origin: (origin, callback) => {
-        if (!origin || allowedOrigins.includes(origin) || allowedOrigins.includes(origin + '/')) {
+        // Strip trailing slash from incoming origin for comparison
+        const normalizedOrigin = origin ? origin.replace(/\/$/, "") : null;
+        if (!origin || allowedOrigins.includes(normalizedOrigin)) {
             callback(null, true);
         } else {
             console.log('Blocked by CORS:', origin);
+            console.log('Allowed Origins:', allowedOrigins);
             callback(new Error('Not allowed by CORS'));
         }
     },
