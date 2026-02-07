@@ -54,6 +54,23 @@ router.post('/', protect, authorize('admin', 'scorer'), async (req, res) => {
             teamB = await Team.create({ name: teamBName, shortName: teamBName.substring(0, 3).toUpperCase() });
         }
 
+        // Check for duplicate active match between these teams
+        const existingMatch = await Match.findOne({
+            tournament,
+            status: { $in: ['upcoming', 'live'] },
+            $or: [
+                { teamA: teamA._id, teamB: teamB._id },
+                { teamA: teamB._id, teamB: teamA._id }
+            ]
+        });
+
+        if (existingMatch) {
+            return res.status(400).json({
+                success: false,
+                error: `A match between these teams already exists in this tournament (${existingMatch.status})`
+            });
+        }
+
         const match = await Match.create({
             teamA: teamA._id,
             teamB: teamB._id,
