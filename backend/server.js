@@ -33,28 +33,23 @@ const allowedOrigins = [
 
 app.use(cors({
     origin: (origin, callback) => {
-        // 1. Allow if no origin (like mobile apps or curl)
-        if (!origin) return callback(null, true);
+        // Allow all onrender.com subdomains and localhost for ease of deployment
+        if (!origin || origin.endsWith('.onrender.com') || origin.includes('localhost:5173')) {
+            return callback(null, true);
+        }
 
         const normalizedOrigin = origin.replace(/\/$/, "");
-
-        // 2. Exact match check
-        const isAllowed = allowedOrigins.includes(normalizedOrigin);
-
-        // 3. Fallback: Allow any onrender subdomains for this project
-        const isRenderSwap = origin.endsWith('.onrender.com');
-
-        if (isAllowed || isRenderSwap) {
+        if (allowedOrigins.includes(normalizedOrigin)) {
             callback(null, true);
         } else {
             console.error(`🚨 CORS Blocked: ${origin}`);
-            console.log(`📡 Expected one of:`, allowedOrigins);
+            console.log(`📡 Allowed Origins Config:`, allowedOrigins);
             callback(new Error('CORS Policy: Origin not allowed'));
         }
     },
     credentials: true,
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
-    optionsSuccessStatus: 200 // Some legacy browsers choke on 204
+    optionsSuccessStatus: 200
 }));
 app.use(helmet({
     contentSecurityPolicy: false // Required for cross-domain socket connections
