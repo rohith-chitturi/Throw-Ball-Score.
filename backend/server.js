@@ -29,22 +29,32 @@ app.use(express.json());
 const allowedOrigins = [
     process.env.FRONTEND_URL,
     'http://localhost:5173'
-].filter(Boolean).map(url => url.replace(/\/$/, "")); // Strip trailing slashes from config
+].filter(Boolean).map(url => url.replace(/\/$/, ""));
 
 app.use(cors({
     origin: (origin, callback) => {
-        // Strip trailing slash from incoming origin for comparison
-        const normalizedOrigin = origin ? origin.replace(/\/$/, "") : null;
-        if (!origin || allowedOrigins.includes(normalizedOrigin)) {
+        // 1. Allow if no origin (like mobile apps or curl)
+        if (!origin) return callback(null, true);
+
+        const normalizedOrigin = origin.replace(/\/$/, "");
+
+        // 2. Exact match check
+        const isAllowed = allowedOrigins.includes(normalizedOrigin);
+
+        // 3. Fallback: Allow any onrender subdomains for this project
+        const isRenderSwap = origin.endsWith('.onrender.com');
+
+        if (isAllowed || isRenderSwap) {
             callback(null, true);
         } else {
-            console.log('Blocked by CORS:', origin);
-            console.log('Allowed Origins:', allowedOrigins);
-            callback(new Error('Not allowed by CORS'));
+            console.error(`🚨 CORS Blocked: ${origin}`);
+            console.log(`📡 Expected one of:`, allowedOrigins);
+            callback(new Error('CORS Policy: Origin not allowed'));
         }
     },
     credentials: true,
-    methods: ["GET", "POST", "PUT", "PATCH", "DELETE"]
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
+    optionsSuccessStatus: 200 // Some legacy browsers choke on 204
 }));
 app.use(helmet({
     contentSecurityPolicy: false // Required for cross-domain socket connections
