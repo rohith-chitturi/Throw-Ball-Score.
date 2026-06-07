@@ -13,11 +13,12 @@ router.get('/', async (req, res) => {
             query.scorer = req.query.scorer;
         }
 
+        // Optimization: Use .lean() for faster, read-only results
         const matches = await Match.find(query)
-            .sort({ createdAt: -1 }) // Show newest matches first
-            .populate({ path: 'teamA', populate: { path: 'players' } })
-            .populate({ path: 'teamB', populate: { path: 'players' } })
-            .populate('tournament matchWinner scorer');
+            .sort({ createdAt: -1 })
+            .populate('teamA teamB tournament') // Selective populate for list view
+            .lean(); 
+            
         res.status(200).json({ success: true, data: matches });
     } catch (err) {
         res.status(400).json({ success: false, error: err.message });
@@ -30,7 +31,8 @@ router.get('/:id', async (req, res) => {
         const match = await Match.findById(req.params.id)
             .populate({ path: 'teamA', populate: { path: 'players' } })
             .populate({ path: 'teamB', populate: { path: 'players' } })
-            .populate('tournament matchWinner');
+            .populate('tournament matchWinner')
+            .lean();
         res.status(200).json({ success: true, data: match });
     } catch (err) {
         res.status(400).json({ success: false, error: err.message });

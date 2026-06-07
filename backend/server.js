@@ -7,12 +7,27 @@ const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
 const socketIo = require('socket.io');
 
+const compression = require('compression');
+
 const app = express();
 app.set('trust proxy', 1); // Required for Render and rate limiting
 const server = http.createServer(app);
 const io = socketIo(server, {
     cors: {
-        origin: process.env.FRONTEND_URL || "*",
+        origin: (origin, callback) => {
+            // Allow all origins in dev, or specific Capacitor/Render origins in prod
+            const allowedPatterns = [
+                'onrender.com', 
+                'localhost', 
+                'capacitor://localhost', 
+                'http://localhost'
+            ];
+            if (!origin || allowedPatterns.some(pattern => origin.includes(pattern))) {
+                callback(null, true);
+            } else {
+                callback(new Error('CORS Not Allowed'));
+            }
+        },
         methods: ["GET", "POST"],
         credentials: true
     },
@@ -23,13 +38,19 @@ const io = socketIo(server, {
 app.set('io', io);
 
 // Middleware
+app.use(compression()); // Compress all responses
 app.use(express.json());
 
-// Ultimate Permissive CORS for Render Deployment
+// Optimized CORS for Render & Capacitor
 app.use(cors({
     origin: (origin, callback) => {
-        // ALLOW EVERYTHING from onrender.com and localhost
-        if (!origin || origin.includes('onrender.com') || origin.includes('localhost')) {
+        const allowedPatterns = [
+            'onrender.com', 
+            'localhost', 
+                'capacitor://localhost', 
+                'http://localhost'
+        ];
+        if (!origin || allowedPatterns.some(pattern => origin.includes(pattern))) {
             callback(null, true);
         } else {
             console.error(`🚨 CORS Blocked: ${origin}`);
@@ -39,9 +60,11 @@ app.use(cors({
     credentials: true,
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
 }));
+
 app.use(helmet({
     contentSecurityPolicy: false // Required for cross-domain socket connections
 }));
+
 
 // Rate Limiting (Relaxed for dev/testing)
 const limiter = rateLimit({

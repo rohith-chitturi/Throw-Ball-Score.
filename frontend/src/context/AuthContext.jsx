@@ -9,8 +9,8 @@ export const AuthProvider = ({ children }) => {
 
     useEffect(() => {
         try {
-            const storedUser = sessionStorage.getItem('user');
-            const token = sessionStorage.getItem('token');
+            const storedUser = localStorage.getItem('user');
+            const token = localStorage.getItem('token');
             if (storedUser && token) {
                 const parsedUser = JSON.parse(storedUser);
                 if (parsedUser && parsedUser.role) {
@@ -22,14 +22,14 @@ export const AuthProvider = ({ children }) => {
                     setUser(normalizedUser);
                 } else {
                     // Invalid user data, clear it
-                    sessionStorage.removeItem('user');
-                    sessionStorage.removeItem('token');
+                    localStorage.removeItem('user');
+                    localStorage.removeItem('token');
                 }
             }
         } catch (err) {
             console.error('Auth check failed:', err);
-            sessionStorage.removeItem('user');
-            sessionStorage.removeItem('token');
+            localStorage.removeItem('user');
+            localStorage.removeItem('token');
         }
         setLoading(false);
     }, []);
@@ -41,14 +41,14 @@ export const AuthProvider = ({ children }) => {
             _id: userData._id || userData.id,
             id: userData.id || userData._id
         };
-        sessionStorage.setItem('user', JSON.stringify(normalizedUser));
-        sessionStorage.setItem('token', token);
+        localStorage.setItem('user', JSON.stringify(normalizedUser));
+        localStorage.setItem('token', token);
         setUser(normalizedUser);
     };
 
     const logout = () => {
-        sessionStorage.removeItem('user');
-        sessionStorage.removeItem('token');
+        localStorage.removeItem('user');
+        localStorage.removeItem('token');
         setUser(null);
     };
 
