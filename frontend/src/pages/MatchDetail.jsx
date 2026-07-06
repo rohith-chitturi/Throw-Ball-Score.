@@ -84,7 +84,7 @@ const MatchDetail = () => {
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] h-[200px] bg-primary/20 blur-[120px] rounded-full -z-10" />
 
                 <div className="glass-morphism rounded-[3rem] overflow-hidden border border-white/5 shadow-2xl">
-                    <div className="bg-white/5 p-6 text-center border-b border-white/5 flex flex-col md:flex-row justify-between items-center px-12 gap-4">
+                    <div className="bg-white/5 p-4 md:p-6 text-center border-b border-white/5 flex flex-col md:flex-row justify-between items-center px-4 md:px-12 gap-4">
                         <div className="flex items-center space-x-2 text-primary font-black italic uppercase tracking-tighter text-xl">
                             <Trophy size={20} />
                             <span>{match.tournament?.name}</span>
@@ -98,10 +98,10 @@ const MatchDetail = () => {
                         </div>
                     </div>
 
-                    <div className="p-8 md:p-16">
+                    <div className="p-2 py-8 md:p-16">
                         <div className="flex flex-col md:flex-row justify-between items-center gap-12 md:gap-4 text-center">
                             {/* Team A */}
-                            <div className="flex-1 space-y-6 order-2 md:order-1">
+                            <div className="flex-1 space-y-4 md:space-y-6 order-2 md:order-1">
                                 <motion.div
                                     initial={{ scale: 0.9, opacity: 0 }}
                                     animate={{ scale: 1, opacity: 1 }}
@@ -118,7 +118,7 @@ const MatchDetail = () => {
 
                             {/* Score Display */}
                             <div className="flex-shrink-0 order-1 md:order-2">
-                                <div className="flex items-end justify-center gap-6 md:gap-12 min-h-[160px]">
+                                <div className="flex items-end justify-center gap-2 md:gap-12 min-h-[120px] md:min-h-[160px]">
                                     <div className="relative flex items-center justify-center">
                                         <AnimatePresence mode="popLayout">
                                             <motion.div
@@ -170,7 +170,7 @@ const MatchDetail = () => {
                             </div>
 
                             {/* Team B */}
-                            <div className="flex-1 space-y-6 order-3 md:order-3">
+                            <div className="flex-1 space-y-4 md:space-y-6 order-3 md:order-3">
                                 <motion.div
                                     initial={{ scale: 0.9, opacity: 0 }}
                                     animate={{ scale: 1, opacity: 1 }}
