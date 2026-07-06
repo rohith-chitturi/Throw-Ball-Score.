@@ -7,9 +7,9 @@ export default {
     theme: {
         extend: {
             colors: {
-                primary: '#6366f1',
-                secondary: '#4f46e5',
-                dark: '#1e1b4b',
+                primary: '#10b981', // Neon Emerald Green
+                secondary: '#059669', // Darker Green
+                dark: '#000000', // OLED Black
             }
         },
     },
