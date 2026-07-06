@@ -119,31 +119,35 @@ const ScoringPanel = () => {
                 </div>
             )}
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="flex flex-row gap-4 h-[60vh] md:h-auto pb-6">
                 {/* Team A Control */}
                 <motion.div
                     whileTap={{ scale: 0.98 }}
-                    className="glass-morphism p-8 rounded-[2.5rem] border-b-8 border-primary text-center relative overflow-hidden"
+                    className="flex-1 glass-morphism p-3 md:p-8 rounded-[2rem] border-b-8 border-primary text-center relative overflow-hidden flex flex-col justify-between"
                 >
-                    <div className="absolute top-0 left-0 p-4 opacity-5 text-6xl font-black italic">{match.teamA?.shortName || 'A'}</div>
-                    <div className="relative z-10">
-                        <h3 className="text-xl md:text-2xl font-black uppercase mb-1 text-primary">{match.teamA?.name || 'Team A'}</h3>
-                        <div className="text-xs font-bold text-slate-500 tracking-[0.3em] mb-6">POINT PROVIDER A</div>
-                        <div className="text-7xl md:text-9xl font-black mb-8 italic text-white drop-shadow-2xl">{currentSet?.teamAScore || 0}</div>
-                        <div className="flex space-x-4">
-                            <button
-                                disabled={updating || match.status !== 'live' || currentSet?.isCompleted || !canEdit}
-                                onClick={() => handleUpdateScore('teamA', -1)}
-                                className="flex-1 bg-slate-800/80 hover:bg-slate-700 py-6 rounded-2xl font-black text-2xl transition-all disabled:opacity-50 border border-white/5"
-                            >
-                                -
-                            </button>
+                    <div className="absolute top-0 left-0 p-2 opacity-5 text-6xl font-black italic">{match.teamA?.shortName || 'A'}</div>
+                    <div className="relative z-10 flex-1 flex flex-col h-full">
+                        <h3 className="text-base md:text-2xl font-black uppercase mb-1 text-primary truncate">{match.teamA?.name || 'Team A'}</h3>
+                        <div className="text-[9px] md:text-xs font-bold text-slate-500 tracking-[0.2em]">HOME</div>
+                        
+                        <div className="flex-1 flex items-center justify-center">
+                            <div className="text-6xl md:text-9xl font-black italic text-white drop-shadow-2xl">{currentSet?.teamAScore || 0}</div>
+                        </div>
+                        
+                        <div className="flex flex-col space-y-3 mt-auto">
                             <button
                                 disabled={updating || match.status !== 'live' || currentSet?.isCompleted || !canEdit}
                                 onClick={() => handleUpdateScore('teamA', 1)}
-                                className="flex-[2] bg-primary hover:bg-secondary py-6 rounded-2xl font-black text-4xl shadow-lg shadow-primary/30 transition-all disabled:opacity-50 active:scale-95 text-white"
+                                className="w-full bg-primary hover:bg-secondary py-8 md:py-10 rounded-[1.5rem] font-black text-4xl shadow-[0_0_40px_rgba(16,185,129,0.3)] transition-all disabled:opacity-50 active:scale-95 text-white"
                             >
-                                +1 PT
+                                +1
+                            </button>
+                            <button
+                                disabled={updating || match.status !== 'live' || currentSet?.isCompleted || !canEdit}
+                                onClick={() => handleUpdateScore('teamA', -1)}
+                                className="w-full bg-white/5 hover:bg-white/10 py-4 rounded-xl font-black text-xl transition-all disabled:opacity-50 border border-white/5"
+                            >
+                                -1
                             </button>
                         </div>
                     </div>
@@ -152,27 +156,31 @@ const ScoringPanel = () => {
                 {/* Team B Control */}
                 <motion.div
                     whileTap={{ scale: 0.98 }}
-                    className="glass-morphism p-8 rounded-[2rem] border-b-8 border-purple-500 text-center relative overflow-hidden"
+                    className="flex-1 glass-morphism p-3 md:p-8 rounded-[2rem] border-b-8 border-purple-500 text-center relative overflow-hidden flex flex-col justify-between"
                 >
-                    <div className="absolute top-0 right-0 p-4 opacity-5 text-6xl font-black italic">{match.teamB?.shortName || 'B'}</div>
-                    <div className="relative z-10">
-                        <h3 className="text-xl md:text-2xl font-black uppercase mb-1 text-purple-400">{match.teamB?.name || 'Team B'}</h3>
-                        <div className="text-xs font-bold text-slate-500 tracking-[0.3em] mb-6">POINT PROVIDER B</div>
-                        <div className="text-7xl md:text-9xl font-black mb-8 italic text-white drop-shadow-2xl">{currentSet?.teamBScore || 0}</div>
-                        <div className="flex space-x-4">
-                            <button
-                                disabled={updating || match.status !== 'live' || currentSet?.isCompleted || !canEdit}
-                                onClick={() => handleUpdateScore('teamB', -1)}
-                                className="flex-1 bg-slate-800/80 hover:bg-slate-700 py-6 rounded-2xl font-black text-2xl transition-all disabled:opacity-50 border border-white/5"
-                            >
-                                -
-                            </button>
+                    <div className="absolute top-0 right-0 p-2 opacity-5 text-6xl font-black italic">{match.teamB?.shortName || 'B'}</div>
+                    <div className="relative z-10 flex-1 flex flex-col h-full">
+                        <h3 className="text-base md:text-2xl font-black uppercase mb-1 text-purple-400 truncate">{match.teamB?.name || 'Team B'}</h3>
+                        <div className="text-[9px] md:text-xs font-bold text-slate-500 tracking-[0.2em]">AWAY</div>
+                        
+                        <div className="flex-1 flex items-center justify-center">
+                            <div className="text-6xl md:text-9xl font-black italic text-white drop-shadow-2xl">{currentSet?.teamBScore || 0}</div>
+                        </div>
+                        
+                        <div className="flex flex-col space-y-3 mt-auto">
                             <button
                                 disabled={updating || match.status !== 'live' || currentSet?.isCompleted || !canEdit}
                                 onClick={() => handleUpdateScore('teamB', 1)}
-                                className="flex-[2] bg-purple-600 hover:bg-purple-700 py-6 rounded-2xl font-black text-4xl shadow-lg shadow-purple-500/30 transition-all disabled:opacity-50 active:scale-95 text-white"
+                                className="w-full bg-purple-600 hover:bg-purple-700 py-8 md:py-10 rounded-[1.5rem] font-black text-4xl shadow-[0_0_40px_rgba(147,51,234,0.3)] transition-all disabled:opacity-50 active:scale-95 text-white"
                             >
-                                +1 PT
+                                +1
+                            </button>
+                            <button
+                                disabled={updating || match.status !== 'live' || currentSet?.isCompleted || !canEdit}
+                                onClick={() => handleUpdateScore('teamB', -1)}
+                                className="w-full bg-white/5 hover:bg-white/10 py-4 rounded-xl font-black text-xl transition-all disabled:opacity-50 border border-white/5"
+                            >
+                                -1
                             </button>
                         </div>
                     </div>
