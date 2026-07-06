@@ -1,5 +1,5 @@
 {
-  "appId": "com.throwball.livescore",
-  "appName": "Throwball Live Scoring",
+  "appId": "com.sports.livescore",
+  "appName": "Live Sports Scoring",
   "webDir": "dist"
 }

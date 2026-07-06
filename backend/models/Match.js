@@ -9,6 +9,7 @@ const setSchema = new mongoose.Schema({
 });
 
 const matchSchema = new mongoose.Schema({
+    sport: { type: String, enum: ['throwball', 'badminton'], default: 'throwball' },
     tournament: { type: mongoose.Schema.Types.ObjectId, ref: 'Tournament' },
     teamA: { type: mongoose.Schema.Types.ObjectId, ref: 'Team', required: true },
     teamB: { type: mongoose.Schema.Types.ObjectId, ref: 'Team', required: true },

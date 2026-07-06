@@ -42,7 +42,7 @@ router.get('/:id', async (req, res) => {
 // Admin/Scorer: Create Match
 router.post('/', protect, authorize('admin', 'scorer'), async (req, res) => {
     try {
-        const { teamAName, teamBName, tournament, venue, date, scorer, pointsPerSet } = req.body;
+        const { teamAName, teamBName, tournament, venue, date, scorer, pointsPerSet, sport } = req.body;
 
         // Find or create Team A
         let teamA = await Team.findOne({ name: new RegExp('^' + teamAName + '$', 'i') });
@@ -79,7 +79,8 @@ router.post('/', protect, authorize('admin', 'scorer'), async (req, res) => {
             tournament,
             venue,
             date,
-            pointsPerSet: pointsPerSet || 27,
+            sport: sport || 'throwball',
+            pointsPerSet: pointsPerSet || (sport === 'badminton' ? 21 : 27),
             scorer: scorer || null, // Leave null for Admin assignment as per user request
             sets: [
                 { setNumber: 1, teamAScore: 0, teamBScore: 0 },
@@ -109,7 +110,7 @@ router.post('/:id/score', protect, authorize('scorer'), async (req, res) => {
 
         if (match.status !== 'live') return res.status(400).json({ success: false, message: 'Match is not live' });
 
-        const winPoints = match.pointsPerSet || 27;
+        const winPoints = match.pointsPerSet || (match.sport === 'badminton' ? 21 : 27);
         const currentSetIndex = match.currentSet - 1;
         const currentSet = match.sets[currentSetIndex];
 
@@ -127,10 +128,26 @@ router.post('/:id/score', protect, authorize('scorer'), async (req, res) => {
             if (currentSet.teamBScore < 0) currentSet.teamBScore = 0;
         }
 
-        // 3. Check for Set Victory
-        if (currentSet.teamAScore >= winPoints || currentSet.teamBScore >= winPoints) {
+        // 3. Check for Set Victory (Golden Point Rule)
+        const scoreA = currentSet.teamAScore;
+        const scoreB = currentSet.teamBScore;
+        
+        let isSetWon = false;
+        let setWinner = null;
+
+        const maxPoints = match.sport === 'badminton' ? 30 : (winPoints + 2); // Cap for golden point
+
+        if (scoreA >= winPoints || scoreB >= winPoints) {
+            const diff = Math.abs(scoreA - scoreB);
+            if (diff >= 2 || scoreA === maxPoints || scoreB === maxPoints) {
+                isSetWon = true;
+                setWinner = scoreA > scoreB ? match.teamA : match.teamB;
+            }
+        }
+
+        if (isSetWon) {
             currentSet.isCompleted = true;
-            currentSet.winner = currentSet.teamAScore >= winPoints ? match.teamA : match.teamB;
+            currentSet.winner = setWinner;
 
             // 4. Check for Match Victory (Best of 3)
             const teamAWins = match.sets.filter(s => s.winner && s.winner.toString() === match.teamA.toString()).length;

@@ -21,7 +21,7 @@ const Navbar = () => {
                 <Link to="/" className="flex items-center space-x-2" onClick={() => setIsMenuOpen(false)}>
                     <Trophy className="text-primary w-6 h-6 md:w-8 md:h-8" />
                     <span className="text-xl md:text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-purple-400">
-                        Throwball Live
+                        Live Sports
                     </span>
                 </Link>
 

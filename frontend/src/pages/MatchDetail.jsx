@@ -88,6 +88,9 @@ const MatchDetail = () => {
                         <div className="flex items-center space-x-2 text-primary font-black italic uppercase tracking-tighter text-xl">
                             <Trophy size={20} />
                             <span>{match.tournament?.name}</span>
+                            <span className="ml-4 px-3 py-1 bg-primary/20 text-primary text-xs rounded-full border border-primary/30">
+                                {match.sport === 'badminton' ? 'Badminton' : 'Throwball'}
+                            </span>
                         </div>
                         <div className="flex items-center space-x-6 text-slate-400 text-xs font-bold uppercase tracking-widest">
                             <span className="flex items-center gap-2"><MapPin size={14} className="text-primary" /> {match.venue}</span>

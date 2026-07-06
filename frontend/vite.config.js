@@ -10,9 +10,9 @@ export default defineConfig({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'mask-icon.svg'],
       manifest: {
-        name: 'Throwball Live Scoring',
-        short_name: 'ThrowballScore',
-        description: 'Elite real-time scoring system for Throwball matches.',
+        name: 'Live Sports Scoring',
+        short_name: 'LiveScore',
+        description: 'Elite real-time scoring system for sports matches.',
         theme_color: '#0f172a',
         icons: [
           {

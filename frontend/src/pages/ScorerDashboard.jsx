@@ -24,7 +24,8 @@ const ScorerDashboard = ({ isAdminView = false }) => {
         venue: '',
         date: new Date().toISOString().split('T')[0],
         pointsPerSet: 27,
-        scorer: ''
+        scorer: '',
+        sport: 'throwball'
     });
 
     useEffect(() => {
@@ -98,7 +99,7 @@ const ScorerDashboard = ({ isAdminView = false }) => {
             const res = await axios.post('/matches', matchData);
             setMatches([...matches, res.data.data]);
             setShowCreateMatch(false);
-            setNewMatch({ teamAName: '', teamBName: '', tournament: '', venue: '', date: new Date().toISOString().split('T')[0], pointsPerSet: 27, scorer: '' });
+            setNewMatch({ teamAName: '', teamBName: '', tournament: '', venue: '', date: new Date().toISOString().split('T')[0], pointsPerSet: 27, scorer: '', sport: 'throwball' });
             toast.success('Match scheduled successfully!');
         } catch (err) {
             toast.error('Error creating match');
@@ -254,6 +255,27 @@ const ScorerDashboard = ({ isAdminView = false }) => {
                                                 </div>
                                             </div>
                                             <div className="space-y-2">
+                                                <label className="text-xs font-bold text-slate-500 uppercase tracking-widest ml-1">Sport</label>
+                                                <div className="relative">
+                                                    <select
+                                                        className="w-full bg-slate-800 border border-white/5 rounded-2xl p-4 focus:outline-none focus:border-primary transition-all font-medium appearance-none cursor-pointer"
+                                                        value={newMatch.sport || 'throwball'}
+                                                        onChange={(e) => {
+                                                            const sport = e.target.value;
+                                                            setNewMatch({ 
+                                                                ...newMatch, 
+                                                                sport, 
+                                                                pointsPerSet: sport === 'badminton' ? 21 : 27 
+                                                            });
+                                                        }}
+                                                        required
+                                                    >
+                                                        <option value="throwball">Throwball</option>
+                                                        <option value="badminton">Badminton</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div className="space-y-2">
                                                 <label className="text-xs font-bold text-slate-500 uppercase">Venue</label>
                                                 <input
                                                     type="text"
@@ -324,6 +346,7 @@ const ScorerDashboard = ({ isAdminView = false }) => {
                                             <div className={`w-3 h-3 rounded-full ${match.status === 'live' ? 'bg-red-500 animate-pulse' : (match.status === 'upcoming' ? 'bg-blue-500' : 'bg-slate-700')}`} />
                                             <div>
                                                 <div className="font-bold text-lg">{match.teamA?.name} vs {match.teamB?.name}</div>
+                                                <div className="text-[10px] font-black text-primary uppercase tracking-widest mb-1">{match.sport === 'badminton' ? 'Badminton' : 'Throwball'}</div>
                                                 <div className="text-sm text-slate-500 flex items-center space-x-3 mb-1">
                                                     <span className="flex items-center"><Flag size={14} className="mr-1" /> {match.tournament?.name}</span>
                                                     <span>•</span>

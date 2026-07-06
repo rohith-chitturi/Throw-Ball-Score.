@@ -191,7 +191,7 @@ const ScoringPanel = () => {
                 <div className="glass-morphism p-6 rounded-3xl flex items-center space-x-3">
                     <div className="bg-orange-500/20 p-2 rounded-lg"><Info className="text-orange-500" size={20} /></div>
                     <div>
-                        <div className="text-xs text-slate-500 font-bold uppercase">Rule</div>
+                        <div className="text-xs text-slate-500 font-bold uppercase">{match.sport === 'badminton' ? 'Badminton' : 'Throwball'} Rules</div>
                         <div className="font-bold">First to {match.pointsPerSet || 27} Wins Set</div>
                     </div>
                 </div>
