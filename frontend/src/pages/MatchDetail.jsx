@@ -4,6 +4,8 @@ import axios from '../api/axios';
 import { io } from 'socket.io-client';
 import { Trophy, Shield, Clock, MapPin, ChevronLeft, Wifi, Share2, Activity, Medal, Target } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import Confetti from 'react-confetti';
+import { useWindowSize } from 'react-use';
 
 const MatchDetail = () => {
     const { id } = useParams();
@@ -59,9 +61,23 @@ const MatchDetail = () => {
     const teamBSets = match.sets.filter(s => s.winner === match.teamB._id || (s.winner && s.winner._id === match.teamB._id)).length;
     
     const isBadminton = match.sport === 'badminton';
+    const { width, height } = useWindowSize();
 
     return (
         <div className="max-w-7xl mx-auto space-y-8 pb-32">
+            {match.matchWinner && (
+                <div className="fixed inset-0 pointer-events-none z-50">
+                    <Confetti
+                        width={width}
+                        height={height}
+                        recycle={false}
+                        numberOfPieces={500}
+                        gravity={0.15}
+                        colors={isBadminton ? ['#8b5cf6', '#d946ef', '#fbbf24', '#ffffff'] : ['#10b981', '#3b82f6', '#fbbf24', '#ffffff']}
+                    />
+                </div>
+            )}
+            
             <header className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 sticky top-[100px] z-40 bg-charcoal/80 backdrop-blur-lg py-4 px-4 rounded-3xl border border-white/5">
                 <Link to="/" className="flex items-center text-slate-400 hover:text-white transition-colors group">
                     <div className="bg-white/5 p-2 rounded-xl mr-3 group-hover:bg-white/10 transition-colors border border-white/5">
