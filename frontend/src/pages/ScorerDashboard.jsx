@@ -174,7 +174,7 @@ const ScorerDashboard = ({ isAdminView = false }) => {
                             exit={{ opacity: 0, y: -10 }}
                             className="space-y-6"
                         >
-                            <div className="flex justify-between items-center">
+                            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                                 <h2 className="text-2xl font-bold">Match Schedule</h2>
                                 {(user.role === 'scorer' || isAdminView) && (
                                     <div className="flex items-center space-x-4">
@@ -205,7 +205,7 @@ const ScorerDashboard = ({ isAdminView = false }) => {
                                     animate={{ opacity: 1, height: 'auto' }}
                                     className="overflow-hidden"
                                 >
-                                    <div className="premium-glass-panel p-8 md:p-12 rounded-[3rem] border border-primary/20">
+                                    <div className="premium-glass-panel p-6 sm:p-8 md:p-12 rounded-3xl md:rounded-[3rem] border border-primary/20">
                                         <h2 className="text-xl md:text-2xl font-display font-black uppercase tracking-tighter mb-8 flex items-center space-x-3 text-white">
                                             <div className="p-2 bg-primary/20 text-primary rounded-xl border border-primary/30">
                                                 <Trophy size={20} />
@@ -343,7 +343,7 @@ const ScorerDashboard = ({ isAdminView = false }) => {
 
                             <div className="grid grid-cols-1 gap-4">
                                 {matches.length > 0 ? matches.map(match => (
-                                    <div key={`match-scorer-${match._id}`} className="premium-glass p-6 md:p-8 rounded-[2.5rem] flex flex-col md:flex-row justify-between items-center group transition-all hover-lift">
+                                    <div key={`match-scorer-${match._id}`} className="premium-glass p-6 md:p-8 rounded-3xl md:rounded-[2.5rem] flex flex-col md:flex-row justify-between items-start md:items-center gap-6 group transition-all hover-lift">
                                         <div className="flex items-center space-x-6 mb-4 md:mb-0">
                                             <div className={`w-3 h-3 rounded-full ${match.status === 'live' ? 'bg-red-500 animate-pulse' : (match.status === 'upcoming' ? 'bg-blue-500' : 'bg-slate-700')}`} />
                                             <div>

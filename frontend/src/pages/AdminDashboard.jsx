@@ -29,8 +29,8 @@ const AdminDashboard = () => {
             </header>
 
             {/* Admin Tabs */}
-            <div className="flex items-center space-x-4">
-                <div className="flex p-1 premium-glass rounded-2xl w-fit">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 w-full">
+                <div className="flex flex-wrap p-1 premium-glass rounded-2xl w-full sm:w-fit">
                     {[
                         { id: 'users', label: 'Official Accounts', icon: Shield },
                         { id: 'matches', label: 'Match Assignments', icon: Trophy }
@@ -38,13 +38,13 @@ const AdminDashboard = () => {
                         <button
                             key={tab.id}
                             onClick={() => setActiveTab(tab.id)}
-                            className={`flex items-center space-x-2 px-6 py-3 rounded-xl font-bold uppercase tracking-widest text-xs transition-all ${activeTab === tab.id
+                            className={`flex-1 sm:flex-none flex items-center justify-center space-x-2 px-4 sm:px-6 py-3 rounded-xl font-bold uppercase tracking-widest text-xs transition-all ${activeTab === tab.id
                                 ? 'bg-primary text-black shadow-[0_0_20px_theme(colors.primary/0.4)]'
                                 : 'text-slate-400 hover:text-white hover:bg-white/5'
                                 }`}
                         >
                             <tab.icon size={16} />
-                            <span>{tab.label}</span>
+                            <span className="truncate">{tab.label}</span>
                         </button>
                     ))}
                 </div>

@@ -131,34 +131,34 @@ const MatchDetail = () => {
                         </div>
 
                         {/* SCORE ARENA */}
-                        <div className="p-8 md:p-16 relative">
-                            <div className="flex flex-col lg:flex-row justify-between items-center gap-12 lg:gap-4 relative z-10">
+                        <div className="p-4 sm:p-8 md:p-12 relative">
+                            <div className="flex flex-col xl:flex-row justify-between items-center gap-12 xl:gap-4 relative z-10">
                                 
                                 {/* TEAM A */}
-                                <div className="flex-1 flex flex-col lg:flex-row items-center gap-8 text-center lg:text-left w-full">
+                                <div className="flex-1 flex flex-col xl:flex-row items-center gap-6 text-center xl:text-left w-full">
                                     <motion.div
                                         initial={{ scale: 0.9, opacity: 0 }}
                                         animate={{ scale: 1, opacity: 1 }}
-                                        className={`w-32 h-32 md:w-48 md:h-48 bg-gradient-to-br from-charcoal to-black rounded-full flex items-center justify-center font-display font-black text-6xl md:text-7xl shadow-[0_0_40px_rgba(0,0,0,0.5)] border-2 relative flex-shrink-0 group ${isBadminton ? 'border-badminton' : 'border-primary'}`}
+                                        className={`w-20 h-20 sm:w-32 sm:h-32 xl:w-40 xl:h-40 bg-gradient-to-br from-charcoal to-black rounded-full flex items-center justify-center font-display font-black text-4xl sm:text-6xl xl:text-7xl shadow-[0_0_40px_rgba(0,0,0,0.5)] border-2 relative flex-shrink-0 group ${isBadminton ? 'border-badminton' : 'border-primary'}`}
                                     >
                                         <span className="text-white drop-shadow-lg">{match.teamA?.shortName?.[0] || 'A'}</span>
                                         <div className={`absolute -bottom-2 right-4 text-black w-12 h-12 rounded-full flex items-center justify-center text-xl font-black transition-transform group-hover:scale-110 ${isBadminton ? 'bg-badminton shadow-[0_0_20px_#8b5cf6]' : 'bg-primary shadow-[0_0_20px_#10b981]'}`}>
                                             {teamASets}
                                         </div>
                                     </motion.div>
-                                    <div className="space-y-2 flex-1">
+                                    <div className="space-y-2 flex-1 w-full max-w-xs mx-auto xl:mx-0">
                                         <div className="text-[10px] text-slate-500 font-bold tracking-[0.4em] uppercase">Home Team</div>
-                                        <h2 className="text-3xl md:text-5xl font-display font-black uppercase tracking-tighter leading-none">{match.teamA.name}</h2>
+                                        <h2 className="text-xl sm:text-3xl lg:text-4xl xl:text-5xl font-display font-black uppercase tracking-tighter leading-none break-words">{match.teamA.name}</h2>
                                     </div>
                                     
                                     {/* Team A Score */}
-                                    <div className="lg:w-1/3 flex justify-center lg:justify-end pr-4">
+                                    <div className="xl:w-1/3 flex justify-center xl:justify-end pr-0 xl:pr-4">
                                         <AnimatePresence mode="popLayout">
                                             <motion.div
                                                 key={`teamA-score-${currentSet?.teamAScore}`}
                                                 initial={{ y: -50, opacity: 0, scale: 0.5 }}
                                                 animate={{ y: 0, opacity: 1, scale: 1 }}
-                                                className={`text-[8rem] md:text-[12rem] font-display font-black leading-none tracking-tighter tabular-nums ${isBadminton ? 'text-badminton drop-shadow-[0_0_30px_rgba(139,92,246,0.3)]' : 'text-primary drop-shadow-[0_0_30px_rgba(16,185,129,0.3)]'}`}
+                                                className={`text-7xl sm:text-8xl md:text-9xl xl:text-[10rem] font-display font-black leading-none tracking-tighter tabular-nums ${isBadminton ? 'text-badminton drop-shadow-[0_0_30px_rgba(139,92,246,0.3)]' : 'text-primary drop-shadow-[0_0_30px_rgba(16,185,129,0.3)]'}`}
                                             >
                                                 {currentSet?.teamAScore || 0}
                                             </motion.div>
@@ -167,37 +167,37 @@ const MatchDetail = () => {
                                 </div>
 
                                 {/* VS Divider */}
-                                <div className="hidden lg:flex flex-col items-center justify-center px-8 relative">
+                                <div className="hidden xl:flex flex-col items-center justify-center px-8 relative">
                                     <div className="w-px h-32 bg-gradient-to-b from-transparent via-white/20 to-transparent" />
                                     <div className="my-6 text-slate-600 font-display font-black italic text-4xl">VS</div>
                                     <div className="w-px h-32 bg-gradient-to-b from-transparent via-white/20 to-transparent" />
                                 </div>
 
                                 {/* TEAM B */}
-                                <div className="flex-1 flex flex-col lg:flex-row-reverse items-center gap-8 text-center lg:text-right w-full">
+                                <div className="flex-1 flex flex-col xl:flex-row-reverse items-center gap-6 text-center xl:text-right w-full">
                                     <motion.div
                                         initial={{ scale: 0.9, opacity: 0 }}
                                         animate={{ scale: 1, opacity: 1 }}
-                                        className="w-32 h-32 md:w-48 md:h-48 bg-gradient-to-br from-charcoal to-black rounded-full flex items-center justify-center font-display font-black text-6xl md:text-7xl shadow-[0_0_40px_rgba(0,0,0,0.5)] border-2 border-slate-700 relative flex-shrink-0 group"
+                                        className="w-20 h-20 sm:w-32 sm:h-32 xl:w-40 xl:h-40 bg-gradient-to-br from-charcoal to-black rounded-full flex items-center justify-center font-display font-black text-4xl sm:text-6xl xl:text-7xl shadow-[0_0_40px_rgba(0,0,0,0.5)] border-2 border-slate-700 relative flex-shrink-0 group"
                                     >
                                         <span className="text-white drop-shadow-lg">{match.teamB?.shortName?.[0] || 'B'}</span>
                                         <div className="absolute -bottom-2 left-4 bg-slate-700 text-white w-12 h-12 rounded-full flex items-center justify-center text-xl font-black shadow-lg transition-transform group-hover:scale-110">
                                             {teamBSets}
                                         </div>
                                     </motion.div>
-                                    <div className="space-y-2 flex-1">
+                                    <div className="space-y-2 flex-1 w-full max-w-xs mx-auto xl:mx-0">
                                         <div className="text-[10px] text-slate-500 font-bold tracking-[0.4em] uppercase">Away Team</div>
-                                        <h2 className="text-3xl md:text-5xl font-display font-black uppercase tracking-tighter leading-none">{match.teamB.name}</h2>
+                                        <h2 className="text-xl sm:text-3xl lg:text-4xl xl:text-5xl font-display font-black uppercase tracking-tighter leading-none break-words">{match.teamB.name}</h2>
                                     </div>
 
                                     {/* Team B Score */}
-                                    <div className="lg:w-1/3 flex justify-center lg:justify-start pl-4">
+                                    <div className="xl:w-1/3 flex justify-center xl:justify-start pl-0 xl:pl-4">
                                         <AnimatePresence mode="popLayout">
                                             <motion.div
                                                 key={`teamB-score-${currentSet?.teamBScore}`}
                                                 initial={{ y: 50, opacity: 0, scale: 0.5 }}
                                                 animate={{ y: 0, opacity: 1, scale: 1 }}
-                                                className="text-[8rem] md:text-[12rem] font-display font-black text-white leading-none tracking-tighter tabular-nums drop-shadow-[0_0_20px_rgba(255,255,255,0.2)]"
+                                                className="text-7xl sm:text-8xl md:text-9xl xl:text-[10rem] font-display font-black text-white leading-none tracking-tighter tabular-nums drop-shadow-[0_0_20px_rgba(255,255,255,0.2)]"
                                             >
                                                 {currentSet?.teamBScore || 0}
                                             </motion.div>

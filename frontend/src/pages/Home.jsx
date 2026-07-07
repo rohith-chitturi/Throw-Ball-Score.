@@ -98,7 +98,7 @@ const Home = () => {
                             initial={{ opacity: 0, y: 30 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.8, ease: 'easeOut' }}
-                            className="text-7xl md:text-9xl font-display font-black uppercase leading-[0.9] tracking-tighter text-white drop-shadow-2xl"
+                            className="text-5xl sm:text-7xl xl:text-9xl font-display font-black uppercase leading-[0.9] tracking-tighter text-white drop-shadow-2xl"
                         >
                             {selectedSport === 'badminton' ? 'Elite ' : 'Ultimate '}<br/>
                             <span className={`text-transparent bg-clip-text bg-gradient-to-r ${selectedSport === 'badminton' ? 'from-badminton to-fuchsia-400' : 'from-primary to-green-300'}`}>
@@ -107,7 +107,7 @@ const Home = () => {
                         </motion.h1>
                         <motion.p 
                             initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4 }}
-                            className="text-slate-300 text-lg md:text-2xl font-light tracking-[0.2em] uppercase max-w-2xl mx-auto"
+                            className="text-slate-300 text-sm sm:text-lg md:text-2xl font-light tracking-[0.2em] uppercase max-w-2xl mx-auto px-4"
                         >
                             Professional Tournament Management & Real-Time Scoring Platform
                         </motion.p>
@@ -120,7 +120,7 @@ const Home = () => {
                     >
                         <button
                             onClick={() => setSelectedSport('throwball')}
-                            className={`relative px-10 py-4 rounded-full font-bold uppercase tracking-widest text-sm transition-all duration-500 z-10 ${selectedSport === 'throwball' ? 'text-black' : 'text-slate-400 hover:text-white'}`}
+                            className={`relative px-6 py-3 sm:px-10 sm:py-4 rounded-full font-bold uppercase tracking-widest text-xs sm:text-sm transition-all duration-500 z-10 ${selectedSport === 'throwball' ? 'text-black' : 'text-slate-400 hover:text-white'}`}
                         >
                             {selectedSport === 'throwball' && (
                                 <motion.div layoutId="activeSport" className="absolute inset-0 bg-primary rounded-full shadow-[0_0_30px_rgba(16,185,129,0.5)] -z-10" />
@@ -129,7 +129,7 @@ const Home = () => {
                         </button>
                         <button
                             onClick={() => setSelectedSport('badminton')}
-                            className={`relative px-10 py-4 rounded-full font-bold uppercase tracking-widest text-sm transition-all duration-500 z-10 ${selectedSport === 'badminton' ? 'text-white' : 'text-slate-400 hover:text-white'}`}
+                            className={`relative px-6 py-3 sm:px-10 sm:py-4 rounded-full font-bold uppercase tracking-widest text-xs sm:text-sm transition-all duration-500 z-10 ${selectedSport === 'badminton' ? 'text-white' : 'text-slate-400 hover:text-white'}`}
                         >
                             {selectedSport === 'badminton' && (
                                 <motion.div layoutId="activeSport" className="absolute inset-0 bg-badminton rounded-full shadow-[0_0_30px_rgba(139,92,246,0.5)] -z-10" />
@@ -141,7 +141,7 @@ const Home = () => {
 
                 {/* Bottom Stats Banner */}
                 <div className="absolute bottom-0 left-0 right-0 p-6 md:p-12 z-30 flex flex-col md:flex-row justify-between items-center gap-6 border-t border-white/5 bg-gradient-to-t from-charcoal to-transparent">
-                    <div className="flex space-x-12">
+                    <div className="flex space-x-8 sm:space-x-12">
                         <div className="space-y-1">
                             <div className="text-4xl font-black font-display">{matches.length}</div>
                             <div className="text-[10px] text-slate-400 uppercase tracking-widest font-bold">Total Matches</div>
@@ -258,11 +258,11 @@ const LiveMatchCard = ({ match, idx }) => {
                     {/* Main Score Area */}
                     <div className="flex justify-between items-center px-4">
                         {/* Team A */}
-                        <div className="flex-1 flex flex-col items-center text-center space-y-4">
-                            <div className="text-6xl md:text-7xl font-display font-black text-white drop-shadow-xl tabular-nums tracking-tighter">
+                        <div className="flex-1 flex flex-col items-center text-center space-y-4 min-w-0">
+                            <div className="text-5xl sm:text-6xl md:text-7xl font-display font-black text-white drop-shadow-xl tabular-nums tracking-tighter">
                                 {currentSet?.teamAScore || 0}
                             </div>
-                            <h3 className="text-sm md:text-base font-bold uppercase tracking-wider text-slate-200 line-clamp-1">{match.teamA?.name}</h3>
+                            <h3 className="text-xs sm:text-sm md:text-base font-bold uppercase tracking-wider text-slate-200 truncate w-full px-2">{match.teamA?.name}</h3>
                         </div>
 
                         {/* Center Info */}
@@ -279,11 +279,11 @@ const LiveMatchCard = ({ match, idx }) => {
                         </div>
 
                         {/* Team B */}
-                        <div className="flex-1 flex flex-col items-center text-center space-y-4">
-                            <div className="text-6xl md:text-7xl font-display font-black text-white drop-shadow-xl tabular-nums tracking-tighter">
+                        <div className="flex-1 flex flex-col items-center text-center space-y-4 min-w-0">
+                            <div className="text-5xl sm:text-6xl md:text-7xl font-display font-black text-white drop-shadow-xl tabular-nums tracking-tighter">
                                 {currentSet?.teamBScore || 0}
                             </div>
-                            <h3 className="text-sm md:text-base font-bold uppercase tracking-wider text-slate-200 line-clamp-1">{match.teamB?.name}</h3>
+                            <h3 className="text-xs sm:text-sm md:text-base font-bold uppercase tracking-wider text-slate-200 truncate w-full px-2">{match.teamB?.name}</h3>
                         </div>
                     </div>
                 </div>
@@ -327,9 +327,9 @@ const TimelineCard = ({ match, type }) => {
                                 {match.status}
                             </span>
                         </div>
-                        <div className="flex items-center justify-between">
-                            <div className="text-lg font-bold text-white tracking-tight">
-                                {match.teamA?.name} <span className="text-slate-600 font-light mx-2">vs</span> {match.teamB?.name}
+                        <div className="flex items-center justify-between mt-1">
+                            <div className="text-sm sm:text-base font-bold text-white tracking-tight break-words">
+                                {match.teamA?.name} <span className="text-slate-600 font-light mx-1 sm:mx-2">vs</span> {match.teamB?.name}
                             </div>
                         </div>
                     </div>
