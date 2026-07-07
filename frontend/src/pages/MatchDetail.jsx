@@ -11,6 +11,7 @@ const MatchDetail = () => {
     const { id } = useParams();
     const [match, setMatch] = useState(null);
     const [loading, setLoading] = useState(true);
+    const { width, height } = useWindowSize();
 
     useEffect(() => {
         const fetchMatch = async () => {
@@ -61,7 +62,6 @@ const MatchDetail = () => {
     const teamBSets = match.sets.filter(s => s.winner === match.teamB._id || (s.winner && s.winner._id === match.teamB._id)).length;
     
     const isBadminton = match.sport === 'badminton';
-    const { width, height } = useWindowSize();
 
     return (
         <div className="max-w-7xl mx-auto space-y-8 pb-32">
