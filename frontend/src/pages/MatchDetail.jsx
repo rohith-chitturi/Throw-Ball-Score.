@@ -145,12 +145,12 @@ const MatchDetail = () => {
             <h4 className="text-sm font-label uppercase text-on-surface-variant font-bold mb-4">Set {set.setNumber} {set.isCompleted ? '(Final)' : '(Live)'}</h4>
             <div className="flex w-full justify-between items-center px-4">
                 <div className="flex flex-col items-center gap-2">
-                    <span className="font-bold text-lg text-on-surface">{match.teamA.shortName || match.teamA.name.substring(0,3).toUpperCase()}</span>
+                    <span className="font-bold text-lg text-on-surface">{match.teamA?.shortName || String(match.teamA?.name || '').substring(0,3).toUpperCase()}</span>
                     <span className={`text-4xl font-black ${set.winner === match.teamA._id || set.winner?._id === match.teamA._id ? 'text-primary' : 'text-on-surface-variant'}`}>{set.teamAScore}</span>
                 </div>
                 <div className="text-on-surface-variant/40 font-black text-2xl">-</div>
                 <div className="flex flex-col items-center gap-2">
-                    <span className="font-bold text-lg text-on-surface">{match.teamB.shortName || match.teamB.name.substring(0,3).toUpperCase()}</span>
+                    <span className="font-bold text-lg text-on-surface">{match.teamB?.shortName || String(match.teamB?.name || '').substring(0,3).toUpperCase()}</span>
                     <span className={`text-4xl font-black ${set.winner === match.teamB._id || set.winner?._id === match.teamB._id ? 'text-primary' : 'text-on-surface-variant'}`}>{set.teamBScore}</span>
                 </div>
             </div>
