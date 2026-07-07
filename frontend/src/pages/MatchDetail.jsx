@@ -142,8 +142,7 @@ const MatchDetail = () => {
 </div>
 </div>
 </section>
-
-
+</div>
 </div>
 </main>
 {/* BottomNavBar (Mobile Only) */}
