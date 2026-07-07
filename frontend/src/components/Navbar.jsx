@@ -1,6 +1,6 @@
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { Trophy, LogOut, User as UserIcon, LayoutDashboard, Home } from 'lucide-react';
+import { Activity, LogOut, User as UserIcon, LayoutDashboard, Home } from 'lucide-react';
 import { toast } from 'react-hot-toast';
 
 const Navbar = () => {
@@ -20,7 +20,7 @@ const Navbar = () => {
             <nav className="glass-morphism sticky top-0 z-50 px-6 py-4 mb-4 md:mb-8 border-b border-white/5 shadow-md bg-black/40">
                 <div className="container mx-auto flex justify-between items-center">
                     <Link to="/" className="flex items-center space-x-2">
-                        <Trophy className="text-primary w-6 h-6 md:w-8 md:h-8" />
+                        <Activity className="text-primary w-6 h-6 md:w-8 md:h-8" />
                         <span className="text-xl md:text-2xl font-black italic bg-clip-text text-transparent bg-gradient-to-r from-primary to-green-300">
                             Live Sports
                         </span>
