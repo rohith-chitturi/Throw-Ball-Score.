@@ -1,79 +1,11 @@
-import { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
-import axios from '../api/axios';
-import { io } from 'socket.io-client';
-import { Trophy, Shield, Clock, MapPin, ChevronLeft, Wifi, Share2, Activity, Medal, Target } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
-import Confetti from 'react-confetti';
-import { useWindowSize } from 'react-use';
 
-const MatchDetail = () => {
-    const { id } = useParams();
-    const [match, setMatch] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const { width, height } = useWindowSize();
-
-    useEffect(() => {
-        const fetchMatch = async () => {
-            try {
-                const res = await axios.get(`/matches/${id}`);
-                setMatch(res.data.data);
-            } catch (err) {
-                console.error(err);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchMatch();
-
-        const socketUrl = import.meta.env.VITE_SOCKET_URL || 'http://localhost:5000';
-        const socket = io(socketUrl, {
-            transports: ['websocket'],
-            upgrade: false
-        });
-        socket.emit('joinMatch', id);
-
-        socket.on('scoreUpdate', (updatedMatch) => {
-            setMatch(updatedMatch);
-        });
-
-        socket.on('statusUpdate', (updatedMatch) => {
-            setMatch(updatedMatch);
-        });
-
-        return () => {
-            socket.emit('leaveMatch', id);
-            socket.disconnect();
-        };
-    }, [id]);
-
-    if (loading) return (
-        <div className="flex flex-col items-center justify-center min-h-[80vh] space-y-6">
-            <div className="w-16 h-16 border-4 border-white/10 border-t-primary rounded-full animate-spin shadow-[0_0_20px_theme(colors.primary)]"></div>
-            <p className="text-slate-400 font-display font-bold uppercase tracking-[0.3em] animate-pulse">Establishing Link</p>
-        </div>
-    );
-
-    if (!match) return <div className="flex items-center justify-center min-h-[80vh] text-red-500 font-bold uppercase tracking-widest">Feed Not Available</div>;
-
-    const currentSet = match.sets[match.currentSet - 1] || match.sets[0];
-    const teamASets = match.sets.filter(s => s.winner === match.teamA._id || (s.winner && s.winner._id === match.teamA._id)).length;
-    const teamBSets = match.sets.filter(s => s.winner === match.teamB._id || (s.winner && s.winner._id === match.teamB._id)).length;
-    
-    const isBadminton = match.sport === 'badminton';
-
-    
-    return (
-        <div className="bg-background text-on-background font-body-md overflow-x-hidden min-h-screen">
-            
 {/* TopNavBar */}
 <header className="fixed top-0 w-full z-50 flex justify-between items-center px-6 py-3 bg-surface/95 backdrop-blur-md border-b border-outline-variant shadow-md">
 <div className="flex items-center gap-8">
 <span className="text-xl font-black text-primary italic uppercase tracking-tighter">Throwball Live</span>
 <nav className="hidden md:flex gap-6 items-center">
-<Link to="/" className="font-label text-label-lg text-primary border-b-2 border-primary pb-1 hover:text-primary transition-colors active:scale-95 duration-150">Live</Link>
-<Link to="/" className="font-label text-label-lg text-on-surface-variant hover:text-primary transition-colors active:scale-95 duration-150">Matches</Link>
+<a className="font-label text-label-lg text-primary border-b-2 border-primary pb-1 hover:text-primary transition-colors active:scale-95 duration-150" href="#">Live</a>
+<a className="font-label text-label-lg text-on-surface-variant hover:text-primary transition-colors active:scale-95 duration-150" href="#">Matches</a>
 <a className="font-label text-label-lg text-on-surface-variant hover:text-primary transition-colors active:scale-95 duration-150" href="#">Standings</a>
 <a className="font-label text-label-lg text-on-surface-variant hover:text-primary transition-colors active:scale-95 duration-150" href="#">News</a>
 </nav>
@@ -94,7 +26,7 @@ const MatchDetail = () => {
 <main className="flex-grow pt-24 pb-20 px-4 md:px-8 max-w-[1600px] mx-auto w-full">
 {/* Main Grid Layout */}
 <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-{/* Left Sidebar: {match.teamA.name} Lineup */}
+{/* Left Sidebar: Team Hawks Lineup */}
 <aside className="hidden lg:flex lg:col-span-3 flex-col gap-6">
 <div className="bg-surface-container-high rounded-xl p-5 border border-outline-variant/30">
 <div className="flex items-center gap-3 mb-6">
@@ -102,7 +34,7 @@ const MatchDetail = () => {
 <span className="material-symbols-outlined text-on-primary-container" style={{}}>cable</span>
 </div>
 <div>
-<h3 className="font-headline font-bold text-on-surface">{match.teamA.name}</h3>
+<h3 className="font-headline font-bold text-on-surface">Team Hawks</h3>
 <p className="text-xs text-on-surface-variant font-label">Starters: 7/7</p>
 </div>
 </div>
@@ -178,14 +110,14 @@ const MatchDetail = () => {
 <div className="w-20 h-20 md:w-28 md:h-28 rounded-2xl bg-primary-container/20 flex items-center justify-center border border-primary/30">
 <span className="material-symbols-outlined text-5xl md:text-7xl text-primary" style={{}}>cable</span>
 </div>
-<h2 className="font-headline font-black text-xl md:text-2xl tracking-tight uppercase">{match.teamA.name}</h2>
+<h2 className="font-headline font-black text-xl md:text-2xl tracking-tight uppercase">Team Hawks</h2>
 </div>
 {/* Score Display */}
 <div className="flex flex-col items-center">
 <div className="flex items-center gap-6 md:gap-10">
-<span className="text-7xl md:text-9xl font-black glow-primary text-primary tracking-tighter">{currentSet?.teamAScore || 0}</span>
+<span className="text-7xl md:text-9xl font-black glow-primary text-primary tracking-tighter">15</span>
 <span className="text-4xl md:text-6xl font-black text-on-surface-variant/40">—</span>
-<span className="text-7xl md:text-9xl font-black text-on-surface tracking-tighter">{currentSet?.teamBScore || 0}</span>
+<span className="text-7xl md:text-9xl font-black text-on-surface tracking-tighter">12</span>
 </div>
 </div>
 {/* Team B */}
@@ -193,12 +125,12 @@ const MatchDetail = () => {
 <div className="w-20 h-20 md:w-28 md:h-28 rounded-2xl bg-surface-variant/40 flex items-center justify-center border border-outline-variant">
 <span className="material-symbols-outlined text-5xl md:text-7xl text-on-surface-variant" style={{}}>rocket_launch</span>
 </div>
-<h2 className="font-headline font-black text-xl md:text-2xl tracking-tight uppercase">{match.teamB.name}</h2>
+<h2 className="font-headline font-black text-xl md:text-2xl tracking-tight uppercase">Team Falcons</h2>
 </div>
 </div>
 <div className="mt-10 inline-flex flex-col items-center gap-2">
 <span className="px-6 py-2 rounded-xl bg-surface-container-highest border border-outline-variant text-primary font-bold tracking-wide">
-                                Set {match.currentSet} - {match.status === 'live' ? 'Ongoing' : 'Finished'}
+                                Set 2 - Ongoing
                             </span>
 <p className="text-on-surface-variant text-sm mt-2">Sets: Hawks 1 - 0 Falcons</p>
 </div>
@@ -262,7 +194,7 @@ const MatchDetail = () => {
 </div>
 </section>
 </div>
-{/* Right Sidebar: {match.teamB.name} Lineup */}
+{/* Right Sidebar: Team Falcons Lineup */}
 <aside className="lg:col-span-3 flex flex-col gap-6">
 <div className="bg-surface-container-high rounded-xl p-5 border border-outline-variant/30">
 <div className="flex items-center gap-3 mb-6">
@@ -270,7 +202,7 @@ const MatchDetail = () => {
 <span className="material-symbols-outlined text-on-surface-variant" style={{}}>rocket_launch</span>
 </div>
 <div>
-<h3 className="font-headline font-bold text-on-surface">{match.teamB.name}</h3>
+<h3 className="font-headline font-bold text-on-surface">Team Falcons</h3>
 <p className="text-xs text-on-surface-variant font-label">Starters: 7/7</p>
 </div>
 </div>
@@ -357,8 +289,3 @@ const MatchDetail = () => {
 </div>
 </footer>
 
-
-        </div>
-    );
-};
-export default MatchDetail;

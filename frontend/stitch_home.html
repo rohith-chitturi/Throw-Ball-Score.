@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ARENA LIVE | Pro Sports Broadcasting</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Narrow:wght@400;700;800&amp;family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary-container": "#798098",
+                        "primary-container": "#0f172a",
+                        "on-error-container": "#ffdad6",
+                        "on-error": "#690005",
+                        "surface-container-lowest": "#010f1f",
+                        "surface-container-highest": "#273647",
+                        "secondary": "#adc6ff",
+                        "on-background": "#d4e4fa",
+                        "on-tertiary": "#1f3700",
+                        "on-surface-variant": "#c6c6cd",
+                        "surface-container": "#122131",
+                        "secondary-fixed": "#d8e2ff",
+                        "tertiary-container": "#0d1b00",
+                        "on-secondary-fixed": "#001a42",
+                        "inverse-on-surface": "#233143",
+                        "surface-container-high": "#1c2b3c",
+                        "surface-bright": "#2c3a4c",
+                        "on-primary": "#283044",
+                        "on-primary-fixed-variant": "#3f465c",
+                        "primary-fixed": "#dae2fd",
+                        "on-secondary-fixed-variant": "#004395",
+                        "error-container": "#93000a",
+                        "surface-variant": "#273647",
+                        "surface-dim": "#051424",
+                        "secondary-fixed-dim": "#adc6ff",
+                        "inverse-surface": "#d4e4fa",
+                        "on-primary-fixed": "#131b2e",
+                        "surface-container-low": "#0d1c2d",
+                        "error": "#ffb4ab",
+                        "tertiary-fixed": "#acf847",
+                        "on-tertiary-container": "#598f00",
+                        "surface": "#051424",
+                        "surface-tint": "#bec6e0",
+                        "outline": "#909097",
+                        "on-secondary": "#002e6a",
+                        "tertiary-fixed-dim": "#91db2a",
+                        "inverse-primary": "#565e74",
+                        "primary": "#bec6e0",
+                        "outline-variant": "#45464d",
+                        "on-tertiary-fixed": "#102000",
+                        "on-tertiary-fixed-variant": "#304f00",
+                        "on-secondary-container": "#e6ecff",
+                        "tertiary": "#91db2a",
+                        "background": "#051424",
+                        "secondary-container": "#0566d9",
+                        "on-surface": "#d4e4fa",
+                        "primary-fixed-dim": "#bec6e0"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "lg": "24px",
+                        "grid-gutter": "16px",
+                        "xs": "4px",
+                        "base": "4px",
+                        "xl": "48px",
+                        "grid-margin": "24px",
+                        "md": "16px",
+                        "sm": "8px"
+                    },
+                    "fontFamily": {
+                        "display-lg": ["Archivo Narrow"],
+                        "body-lg": ["Inter"],
+                        "headline-lg-mobile": ["Archivo Narrow"],
+                        "headline-md": ["Archivo Narrow"],
+                        "score-display": ["Archivo Narrow"],
+                        "body-md": ["Inter"],
+                        "label-mono": ["JetBrains Mono"],
+                        "headline-lg": ["Archivo Narrow"]
+                    },
+                    "fontSize": {
+                        "display-lg": ["72px", {"lineHeight": "1.0", "letterSpacing": "-0.04em", "fontWeight": "800"}],
+                        "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "headline-lg-mobile": ["32px", {"lineHeight": "1.1", "fontWeight": "700"}],
+                        "headline-md": ["32px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                        "score-display": ["24px", {"lineHeight": "1.0", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                        "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "label-mono": ["12px", {"lineHeight": "1.0", "letterSpacing": "0.1em", "fontWeight": "500"}],
+                        "headline-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .pulse-live {
+            box-shadow: 0 0 0 0 rgba(145, 219, 42, 0.7);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(145, 219, 42, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(145, 219, 42, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(145, 219, 42, 0); }
+        }
+
+        .broadcast-mesh {
+            background-image: radial-gradient(at 0% 0%, rgba(5, 102, 217, 0.15) 0px, transparent 50%),
+                              radial-gradient(at 100% 100%, rgba(145, 219, 42, 0.15) 0px, transparent 50%);
+        }
+
+        .kinetic-scanline {
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(173, 198, 255, 0.2), transparent);
+            position: absolute;
+            animation: scanline 4s linear infinite;
+        }
+
+        @keyframes scanline {
+            0% { top: 0%; }
+            100% { top: 100%; }
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md overflow-x-hidden">
+<!-- Top Navigation Bar -->
+<header class="fixed top-0 w-full bg-surface/80 backdrop-blur-xl z-50 border-b border-white/10 shadow-xl flex justify-between items-center px-grid-margin h-20">
+<div class="flex items-center gap-md">
+<img alt="ARENA LIVE Logo" class="h-10 w-auto" src="https://lh3.googleusercontent.com/aida/AP1WRLst0x-SB4csEk5JAf5eD432xAQfY7iMQ7LUwaz8QL5qvsK-gEN-S1LAIDINbxayHdgtLCGxxrDCuTePYMEWns9PQLaBid0oCv9k836pLKdI09x96V3nMPOfewcTdjL7H4vJTdjxCMmdgsOniAD2Gpp29CMB2wlrYDBjFWO98Xu9weVo6zfQ6v-WO_AKNKP0FcHMF6CVIHAYwtzDq2cov3079mXOhse1VJ3WbV9eKv-xbAu68mssYvpSXLQ"/>
+<span class="font-display-lg text-headline-md tracking-tighter text-secondary">ARENA LIVE</span>
+</div>
+<nav class="hidden md:flex items-center gap-lg">
+<a class="font-headline-md text-headline-md text-secondary border-b-2 border-secondary pb-1 transition-all duration-300" href="#">Home</a>
+<a class="font-headline-md text-headline-md text-on-surface-variant hover:text-on-surface transition-all duration-300" href="#">Dashboard</a>
+</nav>
+<div class="flex items-center gap-md">
+<button class="material-symbols-outlined text-on-surface-variant hover:text-secondary cursor-pointer">search</button>
+<button class="bg-secondary text-on-secondary px-lg py-sm font-headline-md rounded-lg active:scale-95 transition-all duration-300">Login</button>
+</div>
+</header>
+<main class="pt-20">
+<!-- Hero Section -->
+<section class="relative min-h-[70vh] flex items-center justify-center overflow-hidden px-grid-margin py-xl">
+<!-- Atmospheric Background -->
+<div class="absolute inset-0 bg-surface-container-lowest z-0">
+<div class="w-full h-full object-cover opacity-40 mix-blend-overlay" data-alt="A cinematic low-angle stadium shot at night with intense blue and lime green floodlights cutting through a misty atmosphere. High-contrast athletic textures and deep shadows create a dramatic sports broadcasting environment with a futuristic tech-aesthetic." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBaFGo9O9K99gs4YB71htbRFp9xs0I4CjMzvwNd4g8T2Z9voETtrmVgZ81J1G9InmB8yQYzujANgOkjF7i2H0EnHpPenFbePPHSbSgDQK19AbO97ki2XQANwrYfL5FIxwlqjZlA4sSXM0ZBBSuK77Yj8DlkMuPupl7bljBFOfQ2af1LxjZJUG7nsfMKsRdxgqPtsHwRa8Zx9wzD2eQhgkSkd4SfCx8sTFRW2eOaD76O84xd-KqIKJOBzpNM8iLbBmbvMGtgwei4ZcMf')"></div>
+<div class="absolute inset-0 broadcast-mesh opacity-60"></div>
+<div class="kinetic-scanline"></div>
+</div>
+<!-- Content -->
+<div class="relative z-10 w-full max-w-7xl flex flex-col items-center text-center">
+<div class="flex items-center gap-sm mb-md px-md py-xs rounded-full bg-surface-container-highest border border-tertiary/30 animate-pulse">
+<span class="w-2 h-2 rounded-full bg-tertiary pulse-live"></span>
+<span class="font-label-mono text-label-mono text-tertiary tracking-widest uppercase">LIVE NOW</span>
+</div>
+<h2 class="font-display-lg text-headline-lg md:text-display-lg text-on-background mb-lg max-w-4xl">
+                    National Throwball Championship Final
+                </h2>
+<!-- Match Score Banner -->
+<div class="flex flex-col md:flex-row items-center gap-xl md:gap-32 mb-xl">
+<!-- Team Hawks -->
+<div class="flex flex-col items-center gap-md">
+<div class="w-24 h-24 md:w-32 md:h-32 rounded-full glass-panel flex items-center justify-center p-md border-2 border-secondary/50">
+<span class="material-symbols-outlined text-6xl text-secondary">flash_on</span>
+</div>
+<span class="font-headline-md text-on-background uppercase tracking-wider">Team Hawks</span>
+</div>
+<!-- Score -->
+<div class="flex flex-col items-center">
+<div class="flex items-center gap-lg">
+<span class="font-display-lg text-7xl md:text-9xl text-on-surface">15</span>
+<span class="font-display-lg text-4xl md:text-6xl text-outline-variant">:</span>
+<span class="font-display-lg text-7xl md:text-9xl text-on-surface">12</span>
+</div>
+<div class="font-label-mono text-label-mono text-on-surface-variant bg-surface-container py-xs px-md rounded-sm mt-md">SET 2 - ONGOING</div>
+</div>
+<!-- Team Falcons -->
+<div class="flex flex-col items-center gap-md">
+<div class="w-24 h-24 md:w-32 md:h-32 rounded-full glass-panel flex items-center justify-center p-md border-2 border-tertiary/50">
+<span class="material-symbols-outlined text-6xl text-tertiary">air</span>
+</div>
+<span class="font-headline-md text-on-background uppercase tracking-wider">Team Falcons</span>
+</div>
+</div>
+<button class="group flex items-center gap-md bg-tertiary text-on-tertiary font-headline-md text-headline-md px-xl py-md rounded-lg hover:shadow-[0_0_30px_rgba(145,219,42,0.4)] transition-all duration-500 active:scale-95">
+                    Enter Match Center
+                    <span class="material-symbols-outlined group-hover:translate-x-2 transition-transform">arrow_forward_ios</span>
+</button>
+</div>
+</section>
+<!-- Match Grid Section -->
+<section class="max-w-7xl mx-auto px-grid-margin py-xl">
+<div class="flex items-center justify-between mb-lg border-l-4 border-secondary pl-md">
+<h3 class="font-headline-lg text-headline-lg text-on-background">Today's Action</h3>
+<div class="flex gap-sm">
+<span class="bg-surface-container-high px-md py-sm rounded-full font-label-mono text-on-surface-variant cursor-pointer hover:bg-secondary hover:text-on-secondary transition-colors">All Sports</span>
+<span class="bg-surface-container-high px-md py-sm rounded-full font-label-mono text-on-surface-variant cursor-pointer">Live</span>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-lg">
+<!-- Card 1: Badminton (Upcoming) -->
+<div class="glass-panel rounded-xl overflow-hidden group hover:border-secondary/40 transition-all duration-300">
+<div class="p-md border-b border-white/5 flex justify-between items-center bg-white/5">
+<span class="font-label-mono text-label-mono text-secondary-fixed">BADMINTON</span>
+<span class="font-label-mono text-label-mono text-on-surface-variant flex items-center gap-xs">
+<span class="material-symbols-outlined text-sm">schedule</span> 14:00
+                        </span>
+</div>
+<div class="p-lg flex flex-col gap-lg">
+<div class="flex justify-between items-center">
+<div class="flex flex-col gap-sm">
+<div class="flex items-center gap-md">
+<div class="w-2 h-2 rounded-full bg-outline-variant"></div>
+<span class="font-headline-md text-on-surface">Lin Dan</span>
+</div>
+<div class="flex items-center gap-md">
+<div class="w-2 h-2 rounded-full bg-outline-variant"></div>
+<span class="font-headline-md text-on-surface">Lee Chong Wei</span>
+</div>
+</div>
+<div class="bg-surface-container-low p-md rounded-lg flex flex-col items-center">
+<span class="font-label-mono text-xs text-on-surface-variant">ODDS</span>
+<span class="font-score-display text-secondary">2.10</span>
+</div>
+</div>
+<button class="w-full py-md border border-white/10 rounded-lg font-headline-md text-on-surface-variant group-hover:bg-white/5 group-hover:text-on-surface transition-all">Set Reminder</button>
+</div>
+</div>
+<!-- Card 2: Throwball (Live) -->
+<div class="glass-panel rounded-xl overflow-hidden group border-tertiary/20 border-2 transition-all duration-300 relative">
+<div class="absolute top-0 right-0 p-xs bg-tertiary text-on-tertiary font-label-mono text-[10px] uppercase tracking-tighter">LIVE</div>
+<div class="p-md border-b border-white/5 flex justify-between items-center bg-tertiary/5">
+<span class="font-label-mono text-label-mono text-tertiary">THROWBALL</span>
+<span class="font-label-mono text-label-mono text-tertiary animate-pulse">3RD SET</span>
+</div>
+<div class="p-lg flex flex-col gap-lg">
+<div class="space-y-md">
+<div class="flex justify-between items-center">
+<span class="font-headline-md text-on-surface">City Lions</span>
+<span class="font-score-display text-on-surface">20</span>
+</div>
+<div class="flex justify-between items-center opacity-90">
+<span class="font-headline-md text-on-surface">Desert Storm</span>
+<span class="font-score-display text-on-surface">18</span>
+</div>
+</div>
+<div class="h-1 bg-surface-container-highest w-full rounded-full overflow-hidden">
+<div class="h-full bg-tertiary w-3/4 shadow-[0_0_10px_rgba(145,219,42,0.5)]"></div>
+</div>
+<button class="w-full py-md bg-tertiary text-on-tertiary rounded-lg font-headline-md active:scale-95 transition-all">Watch Stream</button>
+</div>
+</div>
+<!-- Card 3: Badminton (Final) -->
+<div class="glass-panel rounded-xl overflow-hidden group hover:border-white/20 transition-all duration-300">
+<div class="p-md border-b border-white/5 flex justify-between items-center bg-white/5">
+<span class="font-label-mono text-label-mono text-on-surface-variant">BADMINTON</span>
+<span class="font-label-mono text-label-mono text-on-error">FINAL SCORE</span>
+</div>
+<div class="p-lg flex flex-col gap-lg">
+<div class="space-y-md">
+<div class="flex justify-between items-center bg-surface-container-highest/30 p-sm rounded-lg border-l-4 border-tertiary">
+<span class="font-headline-md text-on-surface flex items-center gap-sm">
+                                    PV Sindhu
+                                    <span class="material-symbols-outlined text-tertiary text-sm">emoji_events</span>
+</span>
+<span class="font-score-display text-tertiary">2</span>
+</div>
+<div class="flex justify-between items-center p-sm">
+<span class="font-headline-md text-on-surface-variant">Akane Yamaguchi</span>
+<span class="font-score-display text-on-surface-variant">1</span>
+</div>
+</div>
+<div class="flex gap-sm">
+<div class="flex-1 text-center font-label-mono text-[10px] text-on-surface-variant py-xs bg-white/5 rounded">21-18</div>
+<div class="flex-1 text-center font-label-mono text-[10px] text-on-surface-variant py-xs bg-white/5 rounded">15-21</div>
+<div class="flex-1 text-center font-label-mono text-[10px] text-on-surface-variant py-xs bg-white/5 rounded">21-19</div>
+</div>
+<button class="w-full py-md border border-white/10 rounded-lg font-headline-md text-on-surface-variant hover:bg-white/5 transition-all">View Highlights</button>
+</div>
+</div>
+</div>
+</section>
+<!-- Stats Bento Section -->
+<section class="max-w-7xl mx-auto px-grid-margin py-xl mb-xl">
+<div class="grid grid-cols-1 md:grid-cols-4 grid-rows-2 gap-lg h-auto md:h-[600px]">
+<div class="md:col-span-2 md:row-span-2 glass-panel p-xl flex flex-col justify-between relative overflow-hidden rounded-xl">
+<div class="relative z-10">
+<h4 class="font-headline-lg text-headline-lg text-secondary mb-md">Hawk's Dominance</h4>
+<p class="font-body-lg text-body-lg text-on-surface-variant mb-xl max-w-sm">Current win streak of 8 games with an average point difference of +14.2 in the final sets.</p>
+<div class="space-y-lg">
+<div class="flex justify-between items-end border-b border-white/5 pb-sm">
+<span class="font-label-mono text-on-surface-variant">Win Probability</span>
+<span class="font-score-display text-headline-md text-on-surface">68%</span>
+</div>
+<div class="flex justify-between items-end border-b border-white/5 pb-sm">
+<span class="font-label-mono text-on-surface-variant">Service Accuracy</span>
+<span class="font-score-display text-headline-md text-on-surface">92%</span>
+</div>
+</div>
+</div>
+<div class="absolute bottom-0 right-0 w-64 h-64 opacity-20 transform translate-x-10 translate-y-10">
+<span class="material-symbols-outlined text-[300px] text-secondary">trending_up</span>
+</div>
+</div>
+<div class="md:col-span-2 glass-panel p-lg flex items-center justify-between rounded-xl">
+<div>
+<span class="font-label-mono text-tertiary block mb-sm">MVP CANDIDATE</span>
+<h4 class="font-headline-md text-on-surface">James "The Bolt" Miller</h4>
+<p class="text-on-surface-variant font-body-md">24 Assists | 12 Direct Goals</p>
+</div>
+<div class="w-24 h-24 rounded-full overflow-hidden border-2 border-tertiary">
+<img class="w-full h-full object-cover" data-alt="A professional headshot of a focused male athlete in a high-tech athletic uniform. Dramatic side lighting from a lime green source highlights his features. The background is a dark, abstract sports arena with cinematic depth of field." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBiDhRx-R2qoxsvBDStsIYq2ExBnD9_on0xWPyENdl3o31B2l5f6ttATaQaSSKym6qnxiT8-zCV-T_u2X9Brp5_NG5guiMvrTAiQD_2WZrf6rpy2sU00nm1NRCSr_qWIdM5-ntSI3jT_-54GSO0XWxlr1BL72GItiE-kMxqzdI2a-B94wAA1eJrcEUeanjZ5le3oVoQYEIFYfTLtiZeO9YfzyUUeexIwvsd8v3Dwel07UWJ4zVVDZKHy4vLSIqY_sTy-YLawVDe6oee"/>
+</div>
+</div>
+<div class="glass-panel p-lg rounded-xl flex flex-col justify-center items-center gap-md">
+<span class="material-symbols-outlined text-4xl text-secondary">groups</span>
+<div class="text-center">
+<span class="block font-score-display text-headline-md text-on-surface">42K</span>
+<span class="font-label-mono text-xs text-on-surface-variant">LIVE VIEWERS</span>
+</div>
+</div>
+<div class="glass-panel p-lg rounded-xl flex flex-col justify-center items-center gap-md">
+<span class="material-symbols-outlined text-4xl text-on-error">local_fire_department</span>
+<div class="text-center">
+<span class="block font-score-display text-headline-md text-on-surface">9.8</span>
+<span class="font-label-mono text-xs text-on-surface-variant">INTENSITY INDEX</span>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-surface-container-lowest py-xl border-t border-white/5">
+<div class="max-w-7xl mx-auto px-grid-margin flex flex-col md:flex-row justify-between items-center gap-md">
+<div class="flex flex-col gap-sm">
+<span class="font-display-lg text-headline-md text-secondary">ARENA LIVE</span>
+<span class="font-body-md text-body-md text-on-surface-variant">© 2024 ARENA LIVE BROADCAST. ALL RIGHTS RESERVED.</span>
+</div>
+<div class="flex flex-wrap justify-center gap-lg">
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-tertiary transition-colors" href="#">Privacy Policy</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-tertiary transition-colors" href="#">Terms of Service</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-tertiary transition-colors" href="#">Contact Support</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-tertiary transition-colors" href="#">Broadcast Rights</a>
+</div>
+<div class="flex gap-md">
+<button class="w-10 h-10 glass-panel rounded-full flex items-center justify-center hover:text-secondary transition-colors cursor-pointer">
+<span class="material-symbols-outlined text-md">public</span>
+</button>
+<button class="w-10 h-10 glass-panel rounded-full flex items-center justify-center hover:text-secondary transition-colors cursor-pointer">
+<span class="material-symbols-outlined text-md">share</span>
+</button>
+</div>
+</div>
+</footer>
+<script>
+        // Micro-interaction for hover effects on cards
+        document.querySelectorAll('.glass-panel').forEach(card => {
+            card.addEventListener('mousemove', e => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                card.style.setProperty('--mouse-x', `${x}px`);
+                card.style.setProperty('--mouse-y', `${y}px`);
+            });
+        });
+    </script>
+</body></html>

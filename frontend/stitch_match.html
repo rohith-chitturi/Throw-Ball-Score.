@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Throwball Live - Live Scoreboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800;900&amp;family=Public+Sans:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "error-container": "#9f0519",
+                    "on-tertiary-fixed": "#3e0047",
+                    "tertiary-fixed-dim": "#e28ce9",
+                    "secondary-container": "#213da1",
+                    "outline-variant": "#3d466c",
+                    "inverse-primary": "#005bc4",
+                    "background": "#020a2f",
+                    "surface": "#020a2f",
+                    "error": "#ff716c",
+                    "on-secondary-fixed": "#00278f",
+                    "surface-tint": "#85adff",
+                    "on-primary-fixed": "#000000",
+                    "on-error": "#490006",
+                    "tertiary-fixed": "#f199f7",
+                    "tertiary": "#fbabff",
+                    "primary-container": "#6e9fff",
+                    "tertiary-dim": "#e28ce9",
+                    "on-tertiary-container": "#5e106a",
+                    "surface-container-low": "#050f38",
+                    "secondary": "#8097ff",
+                    "primary-fixed-dim": "#5391ff",
+                    "secondary-dim": "#8097ff",
+                    "inverse-surface": "#fbf8ff",
+                    "on-secondary": "#00175f",
+                    "secondary-fixed": "#c7cfff",
+                    "on-surface": "#e1e4ff",
+                    "on-error-container": "#ffa8a3",
+                    "on-tertiary-fixed-variant": "#681c73",
+                    "outline": "#6b739d",
+                    "surface-bright": "#192760",
+                    "on-tertiary": "#691d74",
+                    "surface-container": "#091542",
+                    "surface-variant": "#142156",
+                    "on-surface-variant": "#a1a9d5",
+                    "error-dim": "#d7383b",
+                    "on-primary": "#002c66",
+                    "surface-dim": "#020a2f",
+                    "surface-container-high": "#0e1b4c",
+                    "primary-dim": "#006fed",
+                    "primary-fixed": "#6e9fff",
+                    "surface-container-highest": "#142156",
+                    "on-secondary-fixed-variant": "#2d48ac",
+                    "inverse-on-surface": "#4b537a",
+                    "primary": "#85adff",
+                    "on-secondary-container": "#c5ceff",
+                    "on-primary-fixed-variant": "#002a62",
+                    "secondary-fixed-dim": "#b4c1ff",
+                    "surface-container-lowest": "#000000",
+                    "on-primary-container": "#002150",
+                    "tertiary-container": "#f199f7",
+                    "on-background": "#e1e4ff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "fontFamily": {
+                    "headline": ["Inter"],
+                    "display": ["Inter"],
+                    "body": ["Inter"],
+                    "label": ["Public Sans"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .scoreboard-gradient {
+            background: radial-gradient(circle at center, #142156 0%, #020a2f 100%);
+        }
+        .glow-primary {
+            text-shadow: 0 0 20px rgba(133, 173, 255, 0.4);
+        }
+        .timeline-scroll::-webkit-scrollbar {
+            width: 4px;
+        }
+        .timeline-scroll::-webkit-scrollbar-thumb {
+            background: #3d466c;
+            border-radius: 10px;
+        }
+        @keyframes pulse-live {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.1); opacity: 0.7; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .animate-live {
+            animation: pulse-live 2s infinite ease-in-out;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body min-h-screen flex flex-col">
+<!-- TopNavBar -->
+<header class="fixed top-0 w-full z-50 flex justify-between items-center px-6 py-3 bg-surface/95 backdrop-blur-md border-b border-outline-variant shadow-md">
+<div class="flex items-center gap-8">
+<span class="text-xl font-black text-primary italic uppercase tracking-tighter">Throwball Live</span>
+<nav class="hidden md:flex gap-6 items-center">
+<a class="font-label text-label-lg text-primary border-b-2 border-primary pb-1 hover:text-primary transition-colors active:scale-95 duration-150" href="#">Live</a>
+<a class="font-label text-label-lg text-on-surface-variant hover:text-primary transition-colors active:scale-95 duration-150" href="#">Matches</a>
+<a class="font-label text-label-lg text-on-surface-variant hover:text-primary transition-colors active:scale-95 duration-150" href="#">Standings</a>
+<a class="font-label text-label-lg text-on-surface-variant hover:text-primary transition-colors active:scale-95 duration-150" href="#">News</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative hidden sm:block">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-sm">search</span>
+<input class="bg-surface-container border border-outline-variant rounded-full pl-10 pr-4 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 w-48 lg:w-64" placeholder="Search matches..." type="text"/>
+</div>
+<button class="text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">person</span>
+</button>
+</div>
+</header>
+<main class="flex-grow pt-24 pb-20 px-4 md:px-8 max-w-[1600px] mx-auto w-full">
+<!-- Main Grid Layout -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+<!-- Left Sidebar: Team Hawks Lineup -->
+<aside class="hidden lg:flex lg:col-span-3 flex-col gap-6">
+<div class="bg-surface-container-high rounded-xl p-5 border border-outline-variant/30">
+<div class="flex items-center gap-3 mb-6">
+<div class="w-10 h-10 rounded-lg bg-primary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-on-primary-container" style="font-variation-settings: 'FILL' 1;">cable</span>
+</div>
+<div>
+<h3 class="font-headline font-bold text-on-surface">Team Hawks</h3>
+<p class="text-xs text-on-surface-variant font-label">Starters: 7/7</p>
+</div>
+</div>
+<ul class="space-y-4">
+<li class="flex items-center justify-between p-3 rounded-lg bg-surface-variant/40 border border-outline-variant/20">
+<div class="flex items-center gap-3">
+<span class="font-bold text-primary w-6">09</span>
+<span class="font-medium text-sm">Marcus Chen</span>
+</div>
+<span class="text-[10px] bg-secondary-container text-on-secondary-container px-2 py-0.5 rounded uppercase font-bold">C</span>
+</li>
+<li class="flex items-center justify-between p-3">
+<div class="flex items-center gap-3">
+<span class="font-bold text-on-surface-variant w-6 text-sm">22</span>
+<span class="font-medium text-sm">Sarah Jenkins</span>
+</div>
+</li>
+<li class="flex items-center justify-between p-3">
+<div class="flex items-center gap-3">
+<span class="font-bold text-on-surface-variant w-6 text-sm">04</span>
+<span class="font-medium text-sm">David Rossi</span>
+</div>
+</li>
+<li class="flex items-center justify-between p-3">
+<div class="flex items-center gap-3">
+<span class="font-bold text-on-surface-variant w-6 text-sm">11</span>
+<span class="font-medium text-sm">Elena Petrova</span>
+</div>
+</li>
+<li class="flex items-center justify-between p-3">
+<div class="flex items-center gap-3">
+<span class="font-bold text-on-surface-variant w-6 text-sm">33</span>
+<span class="font-medium text-sm">Samir Khan</span>
+</div>
+</li>
+</ul>
+</div>
+<!-- Live Stats Mini-Card -->
+<div class="bg-surface-container rounded-xl p-5 border border-outline-variant/30">
+<h4 class="font-label text-xs uppercase font-bold text-on-surface-variant mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">analytics</span>
+                        Team Advantage
+                    </h4>
+<div class="space-y-3">
+<div class="flex justify-between text-xs mb-1">
+<span>Win Probability</span>
+<span class="text-primary font-bold">64%</span>
+</div>
+<div class="w-full bg-surface-container-highest h-1.5 rounded-full overflow-hidden">
+<div class="bg-primary h-full rounded-full" style="width: 64%"></div>
+</div>
+</div>
+</div>
+</aside>
+<!-- Center Content: Massive Scoreboard & Timeline -->
+<div class="lg:col-span-6 flex flex-col gap-8">
+<!-- Massive Central Scoreboard -->
+<section class="scoreboard-gradient rounded-3xl border border-primary/20 p-8 md:p-12 text-center relative overflow-hidden shadow-2xl">
+<div class="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none">
+<div class="w-full h-full bg-cover" data-alt="A subtle, high-tech geometric grid pattern with glowing blue neon lines and data visualization elements, set against a deep navy blue background to create a premium sports broadcasting atmosphere." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBgkl4jsCQTBc5z8yZuumd4RdJ3fdFCBgxuf5cpsNh5cG_5U3AnOa7XVlckIfvakQthcTBCjcriNKrfBoy33GEhCpGAVCdtjJD8bXhyYTr41QPuKIjcK_R7mUdtWnUMXzdMOppibLTCMhzpmLRic-3n84ehoLfybi4EIloSQt0XhqgMcRuFBFGbnp8f81xZ6fQ9WM-1eJ6GDTAEtzlJe_WNwc8DCCdWiDDKP84rM-PfxuvjuF0ktNMF1dTS66pK6AU57hiDKm7x5J5U')"></div>
+</div>
+<div class="relative z-10">
+<div class="flex items-center justify-center gap-2 mb-8">
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-error-container/20 text-error text-xs font-bold uppercase tracking-wider animate-live">
+<span class="w-2 h-2 rounded-full bg-error"></span>
+                                Live
+                            </span>
+<span class="text-on-surface-variant text-sm font-label">• Pro League Week 8</span>
+</div>
+<div class="flex flex-col md:flex-row items-center justify-between gap-8 md:gap-4 max-w-2xl mx-auto">
+<!-- Team A -->
+<div class="flex-1 flex flex-col items-center gap-4">
+<div class="w-20 h-20 md:w-28 md:h-28 rounded-2xl bg-primary-container/20 flex items-center justify-center border border-primary/30">
+<span class="material-symbols-outlined text-5xl md:text-7xl text-primary" style="font-variation-settings: 'FILL' 1;">cable</span>
+</div>
+<h2 class="font-headline font-black text-xl md:text-2xl tracking-tight uppercase">Team Hawks</h2>
+</div>
+<!-- Score Display -->
+<div class="flex flex-col items-center">
+<div class="flex items-center gap-6 md:gap-10">
+<span class="text-7xl md:text-9xl font-black glow-primary text-primary tracking-tighter">15</span>
+<span class="text-4xl md:text-6xl font-black text-on-surface-variant/40">—</span>
+<span class="text-7xl md:text-9xl font-black text-on-surface tracking-tighter">12</span>
+</div>
+</div>
+<!-- Team B -->
+<div class="flex-1 flex flex-col items-center gap-4">
+<div class="w-20 h-20 md:w-28 md:h-28 rounded-2xl bg-surface-variant/40 flex items-center justify-center border border-outline-variant">
+<span class="material-symbols-outlined text-5xl md:text-7xl text-on-surface-variant" style="font-variation-settings: 'FILL' 1;">rocket_launch</span>
+</div>
+<h2 class="font-headline font-black text-xl md:text-2xl tracking-tight uppercase">Team Falcons</h2>
+</div>
+</div>
+<div class="mt-10 inline-flex flex-col items-center gap-2">
+<span class="px-6 py-2 rounded-xl bg-surface-container-highest border border-outline-variant text-primary font-bold tracking-wide">
+                                Set 2 - Ongoing
+                            </span>
+<p class="text-on-surface-variant text-sm mt-2">Sets: Hawks 1 - 0 Falcons</p>
+</div>
+</div>
+</section>
+<!-- Match Timeline Section -->
+<section class="bg-surface-container rounded-2xl p-6 border border-outline-variant/30">
+<div class="flex items-center justify-between mb-6">
+<h3 class="font-headline font-bold text-lg flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">history</span>
+                            Match Timeline
+                        </h3>
+<button class="text-xs font-bold text-primary uppercase tracking-widest hover:underline transition-all">Filter Events</button>
+</div>
+<div class="space-y-4 max-h-[400px] overflow-y-auto timeline-scroll pr-2">
+<!-- Event 1 -->
+<div class="flex gap-4 items-start group">
+<div class="flex flex-col items-center pt-1">
+<div class="w-2 h-2 rounded-full bg-primary ring-4 ring-primary/10"></div>
+<div class="w-px h-16 bg-outline-variant mt-2 group-last:hidden"></div>
+</div>
+<div class="flex-grow bg-surface-container-high rounded-xl p-4 border border-outline-variant/20 group-hover:border-primary/40 transition-colors">
+<div class="flex justify-between items-center mb-1">
+<span class="text-[10px] font-bold text-primary-fixed uppercase">24:12</span>
+<span class="text-[10px] font-bold bg-primary text-on-primary px-2 py-0.5 rounded-full">+1 Hawks</span>
+</div>
+<p class="text-on-surface font-medium">Hawks score via smash</p>
+<p class="text-xs text-on-surface-variant mt-1">Marcus Chen executes a powerful downward throw past Falcons' front line.</p>
+</div>
+</div>
+<!-- Event 2 -->
+<div class="flex gap-4 items-start group">
+<div class="flex flex-col items-center pt-1">
+<div class="w-2 h-2 rounded-full bg-on-surface-variant ring-4 ring-on-surface-variant/10"></div>
+<div class="w-px h-16 bg-outline-variant mt-2 group-last:hidden"></div>
+</div>
+<div class="flex-grow bg-surface-container-high/60 rounded-xl p-4 border border-outline-variant/10">
+<div class="flex justify-between items-center mb-1">
+<span class="text-[10px] font-bold text-on-surface-variant uppercase">22:45</span>
+<span class="text-[10px] font-bold bg-surface-container-highest text-on-surface-variant px-2 py-0.5 rounded-full">+1 Falcons</span>
+</div>
+<p class="text-on-surface font-medium">Falcons score</p>
+<p class="text-xs text-on-surface-variant mt-1">Line fault by Hawks defense gives Falcons the advantage point.</p>
+</div>
+</div>
+<!-- Event 3 -->
+<div class="flex gap-4 items-start group">
+<div class="flex flex-col items-center pt-1">
+<div class="w-2 h-2 rounded-full bg-primary ring-4 ring-primary/10"></div>
+<div class="w-px h-16 bg-outline-variant mt-2 group-last:hidden"></div>
+</div>
+<div class="flex-grow bg-surface-container-high rounded-xl p-4 border border-outline-variant/20">
+<div class="flex justify-between items-center mb-1">
+<span class="text-[10px] font-bold text-primary-fixed uppercase">21:30</span>
+<span class="text-[10px] font-bold bg-primary text-on-primary px-2 py-0.5 rounded-full">+1 Hawks</span>
+</div>
+<p class="text-on-surface font-medium">Hawks service ace</p>
+<p class="text-xs text-on-surface-variant mt-1">Elena Petrova's serve touches the top of the net and drops unreturned.</p>
+</div>
+</div>
+</div>
+</section>
+</div>
+<!-- Right Sidebar: Team Falcons Lineup -->
+<aside class="lg:col-span-3 flex flex-col gap-6">
+<div class="bg-surface-container-high rounded-xl p-5 border border-outline-variant/30">
+<div class="flex items-center gap-3 mb-6">
+<div class="w-10 h-10 rounded-lg bg-surface-variant flex items-center justify-center">
+<span class="material-symbols-outlined text-on-surface-variant" style="font-variation-settings: 'FILL' 1;">rocket_launch</span>
+</div>
+<div>
+<h3 class="font-headline font-bold text-on-surface">Team Falcons</h3>
+<p class="text-xs text-on-surface-variant font-label">Starters: 7/7</p>
+</div>
+</div>
+<ul class="space-y-4">
+<li class="flex items-center justify-between p-3 rounded-lg bg-surface-variant/40 border border-outline-variant/20">
+<div class="flex items-center gap-3">
+<span class="font-bold text-on-surface w-6">01</span>
+<span class="font-medium text-sm">Liam O'Connor</span>
+</div>
+<span class="text-[10px] bg-outline-variant text-on-surface px-2 py-0.5 rounded uppercase font-bold">C</span>
+</li>
+<li class="flex items-center justify-between p-3">
+<div class="flex items-center gap-3">
+<span class="font-bold text-on-surface-variant w-6 text-sm">07</span>
+<span class="font-medium text-sm">Zoe Rodriguez</span>
+</div>
+</li>
+<li class="flex items-center justify-between p-3">
+<div class="flex items-center gap-3">
+<span class="font-bold text-on-surface-variant w-6 text-sm">18</span>
+<span class="font-medium text-sm">Kenji Tanaka</span>
+</div>
+</li>
+<li class="flex items-center justify-between p-3">
+<div class="flex items-center gap-3">
+<span class="font-bold text-on-surface-variant w-6 text-sm">25</span>
+<span class="font-medium text-sm">Maya Patel</span>
+</div>
+</li>
+<li class="flex items-center justify-between p-3">
+<div class="flex items-center gap-3">
+<span class="font-bold text-on-surface-variant w-6 text-sm">03</span>
+<span class="font-medium text-sm">Eric Dubois</span>
+</div>
+</li>
+</ul>
+</div>
+<!-- Match Venue Context -->
+<div class="bg-surface-container rounded-xl overflow-hidden border border-outline-variant/30">
+<div class="h-32 bg-cover bg-center" data-alt="A high-angle architectural shot of a modern indoor sports arena, focusing on a brightly lit throwball court with blue and orange floor markings. The stadium seating is filled with a blurred crowd, and professional lighting rigs are visible on the ceiling, creating a vibrant, high-energy match day environment." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCs1XNugoh0HFsKLKqFzOwIRzXS6oTfRksLCDgO2WI103GCmvXysNTJTyeU5rlcDdFzaEzRrmuMQLcnS4jxfc9BzVvlcSFszmRG-uhTHsXhiUfZr7K-TSlow_kgTcxFloVWJUsJsTTYL0aPzCzuEJ69iL3X8roVSZSdhq1-akEY59SoKLDytx32ZAzMGTAvflZ4szx0LWNkBN1LTOaYiDjzKJBRJ_ZRWCbZTqvb_ta5oksqWgII8xJWOVzHg8XSBNDWKXHiBrBBUBEv')"></div>
+<div class="p-4">
+<p class="text-xs font-bold text-primary uppercase mb-1">Venue</p>
+<h4 class="font-bold text-sm">Apex Sports Arena</h4>
+<p class="text-xs text-on-surface-variant">Metropolis City, NY</p>
+<div class="mt-4 flex items-center gap-2 text-xs text-on-surface-variant">
+<span class="material-symbols-outlined text-sm">group</span>
+<span>Attendance: 4,200 (Full House)</span>
+</div>
+</div>
+</div>
+</aside>
+</div>
+</main>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="lg:hidden fixed bottom-0 w-full z-50 flex justify-around items-center px-4 py-3 bg-surface-container-highest dark:bg-surface-container-highest rounded-t-xl border-t border-outline-variant shadow-2xl">
+<a class="flex flex-col items-center justify-center bg-primary text-on-primary rounded-full px-4 py-1" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">live_tv</span>
+<span class="font-label text-label-small">Live</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-variant active:scale-90 transition-transform" href="#">
+<span class="material-symbols-outlined">history</span>
+<span class="font-label text-label-small">Replays</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-variant active:scale-90 transition-transform" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<span class="font-label text-label-small">Stats</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-variant active:scale-90 transition-transform" href="#">
+<span class="material-symbols-outlined">account_circle</span>
+<span class="font-label text-label-small">Profile</span>
+</a>
+</nav>
+<!-- Footer -->
+<footer class="w-full py-8 px-6 flex flex-col md:flex-row justify-between items-center gap-4 mt-auto bg-surface-container-lowest dark:bg-surface-container-lowest border-t border-outline-variant">
+<div class="flex flex-col items-center md:items-start gap-2">
+<span class="text-on-surface font-bold">Throwball Pro League</span>
+<p class="font-body text-body-small text-on-surface-variant">© 2024 Throwball Pro League. All Rights Reserved.</p>
+</div>
+<div class="flex flex-wrap justify-center gap-6">
+<a class="font-body text-body-small text-on-surface-variant hover:text-primary underline transition-all opacity-100 hover:opacity-80" href="#">Terms of Service</a>
+<a class="font-body text-body-small text-on-surface-variant hover:text-primary underline transition-all opacity-100 hover:opacity-80" href="#">Privacy Policy</a>
+<a class="font-body text-body-small text-on-surface-variant hover:text-primary underline transition-all opacity-100 hover:opacity-80" href="#">Contact Support</a>
+<a class="font-body text-body-small text-on-surface-variant hover:text-primary underline transition-all opacity-100 hover:opacity-80" href="#">Sponsorships</a>
+</div>
+</footer>
+<script>
+        // Micro-interaction: Randomly update live score for demonstration
+        setInterval(() => {
+            const chance = Math.random();
+            if (chance > 0.95) {
+                const hawksScore = document.querySelector('.text-primary.glow-primary');
+                const falconsScore = document.querySelectorAll('.text-on-surface.tracking-tighter')[1]; // Adjusting for specific element
+                
+                if (Math.random() > 0.5) {
+                    let current = parseInt(hawksScore.innerText);
+                    hawksScore.innerText = current + 1;
+                    hawksScore.classList.add('scale-110');
+                    setTimeout(() => hawksScore.classList.remove('scale-110'), 300);
+                } else {
+                    let currentScoreElem = document.querySelector('.text-7xl.md\\:text-9xl.font-black.text-on-surface');
+                    let current = parseInt(currentScoreElem.innerText);
+                    currentScoreElem.innerText = current + 1;
+                    currentScoreElem.classList.add('scale-110');
+                    setTimeout(() => currentScoreElem.classList.remove('scale-110'), 300);
+                }
+            }
+        }, 10000);
+    </script>
+</body></html>

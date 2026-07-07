@@ -7,51 +7,80 @@ export default {
     theme: {
         extend: {
             colors: {
-                // Backgrounds
-                charcoal: '#0F1115',
-                'midnight-blue': '#0A0F1C',
-                dark: '#000000',
-                
-                // Accents
-                primary: '#10b981', // Emerald Green (Throwball / Success)
-                secondary: '#3b82f6', // Electric Blue (Information)
-                accent: '#f97316', // Vibrant Orange (Action / Live)
-                badminton: '#8b5cf6', // Violet (Badminton)
-                gold: '#fbbf24', // Gold (Achievements)
+                "on-primary-container": "#798098",
+                "primary-container": "#0f172a",
+                "on-error-container": "#ffdad6",
+                "on-error": "#690005",
+                "surface-container-lowest": "#010f1f",
+                "surface-container-highest": "#273647",
+                "secondary": "#adc6ff",
+                "on-background": "#d4e4fa",
+                "on-tertiary": "#1f3700",
+                "on-surface-variant": "#c6c6cd",
+                "surface-container": "#122131",
+                "secondary-fixed": "#d8e2ff",
+                "tertiary-container": "#0d1b00",
+                "on-secondary-fixed": "#001a42",
+                "inverse-on-surface": "#233143",
+                "surface-container-high": "#1c2b3c",
+                "surface-bright": "#2c3a4c",
+                "on-primary": "#283044",
+                "on-primary-fixed-variant": "#3f465c",
+                "primary-fixed": "#dae2fd",
+                "on-secondary-fixed-variant": "#004395",
+                "error-container": "#93000a",
+                "surface-variant": "#273647",
+                "surface-dim": "#051424",
+                "secondary-fixed-dim": "#adc6ff",
+                "inverse-surface": "#d4e4fa",
+                "on-primary-fixed": "#131b2e",
+                "surface-container-low": "#0d1c2d",
+                "error": "#ffb4ab",
+                "tertiary-fixed": "#acf847",
+                "on-tertiary-container": "#598f00",
+                "surface": "#051424",
+                "surface-tint": "#bec6e0",
+                "outline": "#909097",
+                "on-secondary": "#002e6a",
+                "tertiary-fixed-dim": "#91db2a",
+                "inverse-primary": "#565e74",
+                "primary": "#bec6e0",
+                "outline-variant": "#45464d",
+                "on-tertiary-fixed": "#102000",
+                "on-tertiary-fixed-variant": "#304f00",
+                "on-secondary-container": "#e6ecff",
+                "tertiary": "#91db2a",
+                "background": "#051424",
+                "secondary-container": "#0566d9",
+                "on-surface": "#d4e4fa",
+                "primary-fixed-dim": "#bec6e0",
+                "badminton": "#84cc16", // Lime green for badminton legacy
+            },
+            borderRadius: {
+                "DEFAULT": "0.125rem",
+                "lg": "0.25rem",
+                "xl": "0.5rem",
+                "full": "0.75rem"
+            },
+            spacing: {
+                "lg": "24px",
+                "grid-gutter": "16px",
+                "xs": "4px",
+                "base": "4px",
+                "xl": "48px",
+                "grid-margin": "24px",
+                "md": "16px",
+                "sm": "8px"
             },
             fontFamily: {
-                sans: ['Inter', 'system-ui', 'sans-serif'],
-                display: ['Outfit', 'system-ui', 'sans-serif'],
-            },
-            animation: {
-                'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-                'float': 'float 6s ease-in-out infinite',
-                'glow': 'glow 2s ease-in-out infinite alternate',
-                'slide-up': 'slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
-                'fade-in': 'fadeIn 0.5s ease-out',
-                'flip': 'flip 0.6s cubic-bezier(0.4, 0, 0.2, 1)',
-            },
-            keyframes: {
-                float: {
-                    '0%, 100%': { transform: 'translateY(0)' },
-                    '50%': { transform: 'translateY(-10px)' },
-                },
-                glow: {
-                    '0%': { boxShadow: '0 0 5px theme("colors.primary/0.2"), 0 0 20px theme("colors.primary/0.2")' },
-                    '100%': { boxShadow: '0 0 10px theme("colors.primary/0.5"), 0 0 40px theme("colors.primary/0.5")' },
-                },
-                slideUp: {
-                    '0%': { opacity: '0', transform: 'translateY(20px)' },
-                    '100%': { opacity: '1', transform: 'translateY(0)' },
-                },
-                fadeIn: {
-                    '0%': { opacity: '0' },
-                    '100%': { opacity: '1' },
-                },
-                flip: {
-                    '0%': { transform: 'rotateX(-90deg)' },
-                    '100%': { transform: 'rotateX(0)' },
-                }
+                "display-lg": ["Archivo Narrow"],
+                "body-lg": ["Inter"],
+                "headline-lg-mobile": ["Archivo Narrow"],
+                "headline-md": ["Archivo Narrow"],
+                "score-display": ["Archivo Narrow"],
+                "body-md": ["Inter"],
+                "label-mono": ["JetBrains Mono"],
+                "headline-lg": ["Archivo Narrow"]
             }
         },
     },
