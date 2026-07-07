@@ -137,6 +137,83 @@ const MatchDetail = () => {
 </div>
 </div>
 </section>
+
+{/* Previous Sets & Match Summary */}
+<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
+    {match.sets.map((set, idx) => (
+        <div key={set._id || idx} className="bg-surface-container rounded-2xl p-6 border border-outline-variant/30 flex flex-col items-center justify-center">
+            <h4 className="text-sm font-label uppercase text-on-surface-variant font-bold mb-4">Set {set.setNumber} {set.isCompleted ? '(Final)' : '(Live)'}</h4>
+            <div className="flex w-full justify-between items-center px-4">
+                <div className="flex flex-col items-center gap-2">
+                    <span className="font-bold text-lg text-on-surface">{match.teamA.shortName || match.teamA.name.substring(0,3).toUpperCase()}</span>
+                    <span className={`text-4xl font-black ${set.winner === match.teamA._id || set.winner?._id === match.teamA._id ? 'text-primary' : 'text-on-surface-variant'}`}>{set.teamAScore}</span>
+                </div>
+                <div className="text-on-surface-variant/40 font-black text-2xl">-</div>
+                <div className="flex flex-col items-center gap-2">
+                    <span className="font-bold text-lg text-on-surface">{match.teamB.shortName || match.teamB.name.substring(0,3).toUpperCase()}</span>
+                    <span className={`text-4xl font-black ${set.winner === match.teamB._id || set.winner?._id === match.teamB._id ? 'text-primary' : 'text-on-surface-variant'}`}>{set.teamBScore}</span>
+                </div>
+            </div>
+        </div>
+    ))}
+</div>
+
+{/* Squad Rosters */}
+<div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
+    {/* Team A Roster */}
+    <div className="bg-surface-container-high rounded-2xl p-6 border border-outline-variant/30">
+        <h3 className="font-headline font-bold text-xl text-primary uppercase mb-6 flex items-center gap-2">
+            <span className="material-symbols-outlined">shield</span> {match.teamA.name} Roster
+        </h3>
+        <div className="space-y-3">
+            {match.teamA.players && match.teamA.players.length > 0 ? match.teamA.players.map(player => (
+                <div key={player._id} className="flex justify-between items-center p-4 bg-surface-container rounded-xl border border-outline-variant/10">
+                    <div className="flex items-center gap-4">
+                        <span className="font-black text-on-surface-variant/50 text-xl w-8 text-center">{player.jerseyNumber}</span>
+                        <span className="font-bold text-on-surface text-lg">{player.name}</span>
+                    </div>
+                    {player.isCaptain && <span className="bg-primary/20 text-primary text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Captain</span>}
+                </div>
+            )) : <p className="text-center text-on-surface-variant p-4">No roster submitted.</p>}
+        </div>
+    </div>
+
+    {/* Team B Roster */}
+    <div className="bg-surface-container-high rounded-2xl p-6 border border-outline-variant/30">
+        <h3 className="font-headline font-bold text-xl text-on-surface uppercase mb-6 flex items-center gap-2">
+            <span className="material-symbols-outlined">shield</span> {match.teamB.name} Roster
+        </h3>
+        <div className="space-y-3">
+            {match.teamB.players && match.teamB.players.length > 0 ? match.teamB.players.map(player => (
+                <div key={player._id} className="flex justify-between items-center p-4 bg-surface-container rounded-xl border border-outline-variant/10">
+                    <div className="flex items-center gap-4">
+                        <span className="font-black text-on-surface-variant/50 text-xl w-8 text-center">{player.jerseyNumber}</span>
+                        <span className="font-bold text-on-surface text-lg">{player.name}</span>
+                    </div>
+                    {player.isCaptain && <span className="bg-on-surface-variant/20 text-on-surface-variant text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Captain</span>}
+                </div>
+            )) : <p className="text-center text-on-surface-variant p-4">No roster submitted.</p>}
+        </div>
+    </div>
+</div>
+
+{/* Toss Info */}
+{match.tossWinner && (
+    <div className="mt-8 flex justify-center">
+        <div className="bg-surface-container rounded-full pr-8 pl-2 py-2 flex items-center space-x-4 border border-outline-variant/30">
+            <div className="w-12 h-12 rounded-full flex items-center justify-center bg-primary/20 text-primary">
+                <span className="material-symbols-outlined">adjust</span>
+            </div>
+            <div>
+                <p className="text-[10px] font-black text-on-surface-variant tracking-[0.2em] uppercase leading-none mb-1">Pre-Match Decision</p>
+                <p className="text-sm font-bold text-on-surface">
+                    <span className="text-primary">{match.teamA._id === match.tossWinner || match.tossWinner?._id === match.teamA._id ? match.teamA.name : match.teamB.name}</span> elected to {match.tossDecision}.
+                </p>
+            </div>
+        </div>
+    </div>
+)}
+
 </div>
 </div>
 </main>
