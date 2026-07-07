@@ -37,6 +37,9 @@ export default defineConfig({
   ],
   build: {
     outDir: 'dist',
+  },
+  server: {
+    port: 5175,
+    strictPort: true,
   }
 })
-
