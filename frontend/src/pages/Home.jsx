@@ -1,14 +1,14 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import axios from '../api/axios';
-import { Calendar, MapPin, Trophy, ArrowRight } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { Calendar, MapPin, Trophy, Activity, ArrowRight, Zap, Target } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { io } from 'socket.io-client';
 
 const Home = () => {
     const [matches, setMatches] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [selectedSport, setSelectedSport] = useState('throwball'); // Master Sport Toggle
+    const [selectedSport, setSelectedSport] = useState('throwball'); 
 
     useEffect(() => {
         const fetchMatches = async () => {
@@ -37,15 +37,13 @@ const Home = () => {
         socket.on('scoreUpdate', updateMatchList);
         socket.on('statusUpdate', updateMatchList);
 
-        return () => {
-            socket.disconnect();
-        };
+        return () => socket.disconnect();
     }, []);
 
     if (loading) return (
-        <div className="flex flex-col items-center justify-center min-h-[60vh] space-y-4">
-            <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
-            <p className="text-slate-500 font-bold uppercase tracking-widest animate-pulse">Loading Live Scores</p>
+        <div className="flex flex-col items-center justify-center min-h-[60vh] space-y-6">
+            <div className="w-16 h-16 border-4 border-white/10 border-t-primary rounded-full animate-spin"></div>
+            <p className="text-slate-400 font-display font-bold uppercase tracking-[0.3em] animate-pulse">Initializing Broadcast</p>
         </div>
     );
 
@@ -55,191 +53,285 @@ const Home = () => {
     const completedMatches = filteredMatches.filter(m => m.status === 'completed');
 
     return (
-        <div className="space-y-16 pb-20">
-            {/* Professional Hero Section & Master Toggle */}
-            <section className="relative min-h-[400px] md:h-[500px] rounded-[3rem] overflow-hidden flex flex-col items-center justify-center px-6 shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-white/5">
-                <img
-                    src={selectedSport === 'badminton' 
-                        ? "https://images.unsplash.com/photo-1626224583764-f87db24ac4ea?q=80&w=2000&auto=format&fit=crop" 
-                        : "https://images.unsplash.com/photo-1612872087720-bb876e2e67d1?q=80&w=2000&auto=format&fit=crop"}
-                    className="absolute inset-0 w-full h-full object-cover object-center scale-105"
-                    alt="Sport Background"
-                />
-                <div className="absolute inset-0 bg-black/70 backdrop-blur-[2px] z-10" />
+        <div className="space-y-24 pb-32">
+            {/* CINEMATIC HERO SECTION */}
+            <section className="relative min-h-[85vh] rounded-[3rem] md:rounded-[4rem] overflow-hidden flex flex-col items-center justify-center px-6 md:px-12 mt-4 border border-white/5 shadow-2xl">
+                {/* Dynamic Background */}
+                <motion.div 
+                    key={selectedSport}
+                    initial={{ opacity: 0, scale: 1.1 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 1.5, ease: 'easeOut' }}
+                    className="absolute inset-0"
+                >
+                    <img
+                        src={selectedSport === 'badminton' 
+                            ? "https://images.unsplash.com/photo-1626224583764-f87db24ac4ea?q=80&w=2000&auto=format&fit=crop" 
+                            : "https://images.unsplash.com/photo-1612872087720-bb876e2e67d1?q=80&w=2000&auto=format&fit=crop"}
+                        className="w-full h-full object-cover object-center"
+                        alt="Sport Arena"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-charcoal via-charcoal/80 to-transparent z-10" />
+                    <div className="absolute inset-0 bg-gradient-to-r from-midnight-blue/90 via-transparent to-midnight-blue/90 z-10" />
+                </motion.div>
 
-                <div className="relative z-20 flex flex-col items-center space-y-10 w-full max-w-4xl mt-8">
-                    {/* Sport Toggle Switch */}
-                    <div className="bg-black/50 backdrop-blur-md p-2 rounded-full flex items-center border border-white/10 shadow-2xl">
+                {/* Floating Elements */}
+                <div className="absolute inset-0 overflow-hidden z-20 pointer-events-none">
+                    <motion.div animate={{ y: [0, -20, 0], opacity: [0.3, 0.6, 0.3] }} transition={{ duration: 5, repeat: Infinity }} className={`absolute top-1/4 left-1/4 w-64 h-64 rounded-full blur-[100px] ${selectedSport === 'badminton' ? 'bg-badminton/30' : 'bg-primary/30'}`} />
+                    <motion.div animate={{ y: [0, 20, 0], opacity: [0.2, 0.5, 0.2] }} transition={{ duration: 7, repeat: Infinity }} className="absolute bottom-1/4 right-1/4 w-96 h-96 rounded-full blur-[120px] bg-accent/20" />
+                </div>
+
+                <div className="relative z-30 flex flex-col items-center space-y-12 w-full max-w-6xl mt-16">
+                    {/* Live Tournament Status Badge */}
+                    <motion.div 
+                        initial={{ y: 20, opacity: 0 }}
+                        animate={{ y: 0, opacity: 1 }}
+                        className="premium-glass px-6 py-2 rounded-full flex items-center space-x-3 border border-white/20 shadow-2xl"
+                    >
+                        <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse shadow-[0_0_10px_rgba(239,68,68,0.8)]" />
+                        <span className="text-xs font-bold uppercase tracking-[0.2em] text-white">Live Broadcast Network</span>
+                    </motion.div>
+
+                    <div className="text-center space-y-6">
+                        <motion.h1
+                            key={`h1-${selectedSport}`}
+                            initial={{ opacity: 0, y: 30 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.8, ease: 'easeOut' }}
+                            className="text-7xl md:text-9xl font-display font-black uppercase leading-[0.9] tracking-tighter text-white drop-shadow-2xl"
+                        >
+                            {selectedSport === 'badminton' ? 'Elite ' : 'Ultimate '}<br/>
+                            <span className={`text-transparent bg-clip-text bg-gradient-to-r ${selectedSport === 'badminton' ? 'from-badminton to-fuchsia-400' : 'from-primary to-green-300'}`}>
+                                {selectedSport}
+                            </span>
+                        </motion.h1>
+                        <motion.p 
+                            initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4 }}
+                            className="text-slate-300 text-lg md:text-2xl font-light tracking-[0.2em] uppercase max-w-2xl mx-auto"
+                        >
+                            Professional Tournament Management & Real-Time Scoring Platform
+                        </motion.p>
+                    </div>
+
+                    {/* Master Sport Toggle (Apple TV Style) */}
+                    <motion.div 
+                        initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }}
+                        className="premium-glass p-1.5 rounded-full flex items-center border border-white/10 shadow-2xl relative"
+                    >
                         <button
                             onClick={() => setSelectedSport('throwball')}
-                            className={`px-8 py-3 rounded-full font-black uppercase tracking-widest text-xs md:text-sm transition-all duration-300 ${selectedSport === 'throwball' ? 'bg-primary text-black shadow-[0_0_20px_rgba(16,185,129,0.5)]' : 'text-slate-400 hover:text-white'}`}
+                            className={`relative px-10 py-4 rounded-full font-bold uppercase tracking-widest text-sm transition-all duration-500 z-10 ${selectedSport === 'throwball' ? 'text-black' : 'text-slate-400 hover:text-white'}`}
                         >
+                            {selectedSport === 'throwball' && (
+                                <motion.div layoutId="activeSport" className="absolute inset-0 bg-primary rounded-full shadow-[0_0_30px_rgba(16,185,129,0.5)] -z-10" />
+                            )}
                             Throwball
                         </button>
                         <button
                             onClick={() => setSelectedSport('badminton')}
-                            className={`px-8 py-3 rounded-full font-black uppercase tracking-widest text-xs md:text-sm transition-all duration-300 ${selectedSport === 'badminton' ? 'bg-purple-600 text-white shadow-[0_0_20px_rgba(147,51,234,0.5)]' : 'text-slate-400 hover:text-white'}`}
+                            className={`relative px-10 py-4 rounded-full font-bold uppercase tracking-widest text-sm transition-all duration-500 z-10 ${selectedSport === 'badminton' ? 'text-white' : 'text-slate-400 hover:text-white'}`}
                         >
+                            {selectedSport === 'badminton' && (
+                                <motion.div layoutId="activeSport" className="absolute inset-0 bg-badminton rounded-full shadow-[0_0_30px_rgba(139,92,246,0.5)] -z-10" />
+                            )}
                             Badminton
                         </button>
-                    </div>
+                    </motion.div>
+                </div>
 
-                    <div className="text-center space-y-4">
-                        <motion.h1
-                            key={selectedSport}
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            className="text-5xl md:text-7xl lg:text-8xl font-black italic uppercase leading-none tracking-tighter text-white drop-shadow-2xl"
-                        >
-                            {selectedSport === 'badminton' ? 'Elite ' : 'Ultimate '}<span className={selectedSport === 'badminton' ? 'text-purple-400' : 'text-primary'}>{selectedSport}</span>
-                        </motion.h1>
-                        <p className="text-slate-300 text-sm md:text-xl font-bold tracking-widest uppercase mt-4">Professional Live Scoring Hub</p>
+                {/* Bottom Stats Banner */}
+                <div className="absolute bottom-0 left-0 right-0 p-6 md:p-12 z-30 flex flex-col md:flex-row justify-between items-center gap-6 border-t border-white/5 bg-gradient-to-t from-charcoal to-transparent">
+                    <div className="flex space-x-12">
+                        <div className="space-y-1">
+                            <div className="text-4xl font-black font-display">{matches.length}</div>
+                            <div className="text-[10px] text-slate-400 uppercase tracking-widest font-bold">Total Matches</div>
+                        </div>
+                        <div className="space-y-1">
+                            <div className="text-4xl font-black font-display text-accent">{liveMatches.length}</div>
+                            <div className="text-[10px] text-accent uppercase tracking-widest font-bold">Live Now</div>
+                        </div>
                     </div>
                 </div>
             </section>
 
-            {/* Live Matches */}
-            <section>
-                <div className="flex items-center justify-between mb-8 px-4">
-                    <div className="flex items-center space-x-3 text-red-500">
-                        <div className="relative">
-                            <div className="w-3 h-3 bg-red-500 rounded-full animate-ping absolute inset-0" />
-                            <div className="w-3 h-3 bg-red-500 rounded-full relative" />
-                        </div>
-                        <h2 className="text-2xl md:text-3xl font-black italic uppercase tracking-tighter">Live Arena</h2>
-                    </div>
+            {/* LIVE BROADCAST SECTION */}
+            <section className="relative z-10">
+                <div className="flex items-center space-x-4 mb-12">
+                    <div className="w-1.5 h-8 bg-accent rounded-full" />
+                    <h2 className="text-4xl md:text-5xl font-display font-black uppercase tracking-tighter">Live Broadcast</h2>
+                    <div className="flex-1 h-px bg-gradient-to-r from-white/10 to-transparent ml-6" />
                 </div>
 
                 {liveMatches.length > 0 ? (
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-                        {liveMatches.map(match => (
-                            <MatchCard key={match._id} match={match} />
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                        {liveMatches.map((match, idx) => (
+                            <LiveMatchCard key={match._id} match={match} idx={idx} />
                         ))}
                     </div>
                 ) : (
-                    <div className="bg-[#0a0a0a] p-12 rounded-[2rem] text-center border border-white/5 shadow-inner">
-                        <p className="text-slate-500 font-bold uppercase tracking-widest text-sm">No active matches at this moment.</p>
-                        <p className="text-slate-700 text-xs mt-2 font-bold uppercase">Check back during tournament hours.</p>
+                    <div className="premium-glass-panel p-16 rounded-[3rem] flex flex-col items-center justify-center text-center">
+                        <Activity size={48} className="text-slate-600 mb-6 opacity-50" />
+                        <h3 className="text-2xl font-display font-bold text-slate-300 mb-2">No Live Coverage</h3>
+                        <p className="text-slate-500 uppercase tracking-widest text-sm font-bold">Coverage resumes when the next match begins.</p>
                     </div>
                 )}
             </section>
 
-            {/* Upcoming & Results */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 md:gap-16">
-                <section>
-                    <div className="flex items-center justify-between mb-8 px-4">
-                        <h2 className="text-2xl md:text-3xl font-black italic uppercase tracking-tighter text-slate-300">Upcoming</h2>
-                        <div className="h-px bg-white/10 flex-1 ml-6" />
-                    </div>
-                    <div className="space-y-4 md:space-y-6">
-                        {upcomingMatches.length > 0 ? upcomingMatches.map(match => (
-                            <SmallMatchCard key={match._id} match={match} />
-                        )) : <p className="text-slate-600 font-bold uppercase text-xs tracking-widest text-center py-8">No upcoming matches.</p>}
-                    </div>
-                </section>
+            {/* FIXTURES TIMELINE */}
+            <section className="relative z-10">
+                <div className="flex items-center space-x-4 mb-12">
+                    <div className="w-1.5 h-8 bg-blue-500 rounded-full" />
+                    <h2 className="text-4xl md:text-5xl font-display font-black uppercase tracking-tighter">Event Timeline</h2>
+                    <div className="flex-1 h-px bg-gradient-to-r from-white/10 to-transparent ml-6" />
+                </div>
 
-                <section>
-                    <div className="flex items-center justify-between mb-8 px-4">
-                        <h2 className="text-2xl md:text-3xl font-black italic uppercase tracking-tighter text-slate-300">Results</h2>
-                        <div className="h-px bg-white/10 flex-1 ml-6" />
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
+                    {/* Upcoming */}
+                    <div>
+                        <h3 className="text-xl font-bold uppercase tracking-widest text-slate-400 mb-8 flex items-center">
+                            <Calendar size={18} className="mr-3" /> Upcoming Fixtures
+                        </h3>
+                        <div className="space-y-6 relative before:absolute before:inset-y-0 before:left-8 before:w-px before:bg-white/10">
+                            {upcomingMatches.length > 0 ? upcomingMatches.map(match => (
+                                <TimelineCard key={match._id} match={match} type="upcoming" />
+                            )) : <p className="text-slate-600 font-bold uppercase tracking-widest text-sm pl-16">No upcoming fixtures.</p>}
+                        </div>
                     </div>
-                    <div className="space-y-4 md:space-y-6">
-                        {completedMatches.length > 0 ? completedMatches.map(match => (
-                            <SmallMatchCard key={match._id} match={match} />
-                        )) : <p className="text-slate-600 font-bold uppercase text-xs tracking-widest text-center py-8">No results found.</p>}
+
+                    {/* Results */}
+                    <div>
+                        <h3 className="text-xl font-bold uppercase tracking-widest text-slate-400 mb-8 flex items-center">
+                            <Trophy size={18} className="mr-3" /> Recent Results
+                        </h3>
+                        <div className="space-y-6 relative before:absolute before:inset-y-0 before:left-8 before:w-px before:bg-white/10">
+                            {completedMatches.length > 0 ? completedMatches.map(match => (
+                                <TimelineCard key={match._id} match={match} type="completed" />
+                            )) : <p className="text-slate-600 font-bold uppercase tracking-widest text-sm pl-16">No results recorded.</p>}
+                        </div>
                     </div>
-                </section>
-            </div>
+                </div>
+            </section>
         </div>
     );
 };
 
-const MatchCard = ({ match }) => {
+// ESPN/Apple TV Style Live Card
+const LiveMatchCard = ({ match, idx }) => {
     const currentSet = match.sets[match.currentSet - 1] || match.sets[0];
     const isBadminton = match.sport === 'badminton';
-    const accentColor = isBadminton ? 'text-purple-400' : 'text-primary';
+    const accentTheme = isBadminton ? 'badminton' : 'primary';
 
     return (
-        <motion.div whileHover={{ y: -5 }} className="bg-[#0a0a0a] rounded-[2rem] relative overflow-hidden group border border-white/5 shadow-[0_8px_30px_rgb(0,0,0,0.8)]">
-            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-red-500 to-transparent opacity-70" />
-            
-            <Link to={`/match/${match._id}`} className="block p-6 md:p-8">
-                <div className="flex justify-between items-start mb-8">
-                    <div>
-                        <span className={`text-[10px] font-black ${accentColor} uppercase tracking-[0.3em] bg-white/5 px-3 py-1.5 rounded-full border border-white/5`}>
-                            {match.tournament?.name || 'Tournament'}
-                        </span>
-                        <div className="flex items-center text-slate-500 text-[10px] md:text-xs mt-4 font-bold tracking-wider uppercase">
-                            <MapPin size={12} className="mr-2 text-slate-400" /> {match.venue}
+        <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: idx * 0.1 }}
+            className="hover-lift"
+        >
+            <Link to={`/match/${match._id}`} className="block relative bg-charcoal rounded-[2rem] overflow-hidden border border-white/10 group shadow-2xl">
+                {/* Glowing Top Border */}
+                <div className={`absolute top-0 left-0 right-0 h-1 ${isBadminton ? 'bg-badminton shadow-[0_0_20px_#8b5cf6]' : 'bg-primary shadow-[0_0_20px_#10b981]'} z-20`} />
+                
+                {/* Background Texture/Gradient */}
+                <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent z-0" />
+                <div className={`absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-0 ${isBadminton ? 'bg-badminton/5' : 'bg-primary/5'}`} />
+
+                <div className="relative z-10 p-8">
+                    {/* Header */}
+                    <div className="flex justify-between items-start mb-10">
+                        <div>
+                            <div className="flex items-center space-x-3 mb-2">
+                                <div className={`px-3 py-1 border rounded-full text-[10px] font-black uppercase tracking-[0.2em] ${isBadminton ? 'bg-badminton/20 text-badminton border-badminton/30' : 'bg-primary/20 text-primary border-primary/30'}`}>
+                                    {match.tournament?.name || 'Tournament'}
+                                </div>
+                                <div className="text-slate-400 text-xs font-bold uppercase tracking-wider flex items-center">
+                                    <MapPin size={12} className="mr-1" /> {match.venue}
+                                </div>
+                            </div>
+                        </div>
+                        <div className="bg-red-500 text-white text-[10px] font-black uppercase px-4 py-1.5 rounded-full flex items-center tracking-widest shadow-[0_0_20px_rgba(239,68,68,0.4)]">
+                            <div className="w-1.5 h-1.5 bg-white rounded-full mr-2 animate-pulse" />
+                            LIVE
                         </div>
                     </div>
-                    <div className="bg-red-500/10 text-red-500 border border-red-500/20 text-[9px] font-black uppercase px-3 py-1.5 rounded-full flex items-center tracking-widest shadow-[0_0_15px_rgba(239,68,68,0.2)]">
-                        <div className="w-1.5 h-1.5 bg-red-500 rounded-full mr-2 animate-pulse" /> LIVE
+
+                    {/* Main Score Area */}
+                    <div className="flex justify-between items-center px-4">
+                        {/* Team A */}
+                        <div className="flex-1 flex flex-col items-center text-center space-y-4">
+                            <div className="text-6xl md:text-7xl font-display font-black text-white drop-shadow-xl tabular-nums tracking-tighter">
+                                {currentSet?.teamAScore || 0}
+                            </div>
+                            <h3 className="text-sm md:text-base font-bold uppercase tracking-wider text-slate-200 line-clamp-1">{match.teamA?.name}</h3>
+                        </div>
+
+                        {/* Center Info */}
+                        <div className="flex flex-col items-center px-6 space-y-4">
+                            <div className="text-sm font-bold text-slate-500 uppercase tracking-widest">Set {match.currentSet}</div>
+                            <div className="flex space-x-2">
+                                {match.sets.map((s, i) => (
+                                    <div
+                                        key={i}
+                                        className={`w-3 h-3 rounded-full border border-white/20 ${s.isCompleted ? ((s.winner === match.teamA._id || s.winner?._id === match.teamA._id) ? (isBadminton ? 'bg-badminton shadow-[0_0_10px_#8b5cf6]' : 'bg-primary shadow-[0_0_10px_#10b981]') : 'bg-slate-400') : 'bg-transparent'}`}
+                                    />
+                                ))}
+                            </div>
+                        </div>
+
+                        {/* Team B */}
+                        <div className="flex-1 flex flex-col items-center text-center space-y-4">
+                            <div className="text-6xl md:text-7xl font-display font-black text-white drop-shadow-xl tabular-nums tracking-tighter">
+                                {currentSet?.teamBScore || 0}
+                            </div>
+                            <h3 className="text-sm md:text-base font-bold uppercase tracking-wider text-slate-200 line-clamp-1">{match.teamB?.name}</h3>
+                        </div>
                     </div>
                 </div>
 
-                <div className="flex justify-between items-center text-center gap-2">
-                    <div className="flex-1 space-y-4">
-                        <div className="w-14 h-14 md:w-16 md:h-16 bg-slate-900 rounded-2xl mx-auto flex items-center justify-center font-black text-xl md:text-2xl border border-white/10 shadow-inner">
-                            {match.teamA?.shortName?.[0] || 'A'}
-                        </div>
-                        <p className="font-black text-[10px] md:text-xs uppercase tracking-tight text-white line-clamp-1">{match.teamA?.name || 'Team A'}</p>
-                        <div className="text-4xl md:text-5xl font-black italic text-white drop-shadow-lg">{currentSet?.teamAScore || 0}</div>
-                    </div>
-
-                    <div className="flex flex-col items-center px-2">
-                        <div className={`text-lg md:text-xl font-black ${accentColor} italic mb-4 opacity-50`}>VS</div>
-                        <div className="flex space-x-1.5">
-                            {match.sets.map((s, i) => (
-                                <div
-                                    key={i}
-                                    className={`w-2 h-2 rounded-full ${s.isCompleted ? ((s.winner === match.teamA._id || s.winner?._id === match.teamA._id) ? (isBadminton ? 'bg-purple-400' : 'bg-primary') : 'bg-slate-400') : 'bg-white/10'}`}
-                                />
-                            ))}
-                        </div>
-                        <div className="text-[9px] font-black text-slate-600 mt-3 uppercase tracking-[0.2em]">Set {match.currentSet}</div>
-                    </div>
-
-                    <div className="flex-1 space-y-4">
-                        <div className="w-14 h-14 md:w-16 md:h-16 bg-slate-900 rounded-2xl mx-auto flex items-center justify-center font-black text-xl md:text-2xl border border-white/10 shadow-inner">
-                            {match.teamB?.shortName?.[0] || 'B'}
-                        </div>
-                        <p className="font-black text-[10px] md:text-xs uppercase tracking-tight text-white line-clamp-1">{match.teamB?.name || 'Team B'}</p>
-                        <div className="text-4xl md:text-5xl font-black italic text-white drop-shadow-lg">{currentSet?.teamBScore || 0}</div>
-                    </div>
+                {/* Broadcast Footer */}
+                <div className="relative z-10 bg-black/40 border-t border-white/10 px-8 py-4 flex justify-between items-center group-hover:bg-black/60 transition-colors">
+                    <span className="text-xs font-bold text-slate-400 uppercase tracking-widest flex items-center">
+                        <Zap size={14} className="mr-2 text-accent" /> Premium Broadcast
+                    </span>
+                    <ArrowRight className={`opacity-0 group-hover:opacity-100 group-hover:translate-x-2 transition-all ${isBadminton ? 'text-badminton' : 'text-primary'}`} size={20} />
                 </div>
             </Link>
         </motion.div>
     );
 };
 
-const SmallMatchCard = ({ match }) => {
+// Timeline Style Fixture Card
+const TimelineCard = ({ match, type }) => {
     const isBadminton = match.sport === 'badminton';
-    const accentColor = isBadminton ? 'text-purple-400' : 'text-primary';
-    const accentBg = isBadminton ? 'bg-purple-500/10' : 'bg-primary/10';
-    const accentBorder = isBadminton ? 'border-purple-500/20' : 'border-primary/20';
-
+    const accentTheme = isBadminton ? 'badminton' : 'primary';
+    const date = new Date(match.date);
+    
     return (
-        <motion.div whileHover={{ x: 5 }}>
-            <Link to={`/match/${match._id}`} className="block bg-[#0a0a0a] p-4 md:p-6 rounded-3xl hover:bg-white/5 transition-all border border-white/5 shadow-lg">
-                <div className="flex justify-between items-center">
-                    <div className="flex items-center space-x-4 md:space-x-6">
-                        <div className="flex -space-x-3">
-                            <div className="w-10 h-10 bg-slate-900 border border-white/10 rounded-xl flex items-center justify-center font-black text-xs shadow-inner">{match.teamA?.shortName?.[0] || 'A'}</div>
-                            <div className="w-10 h-10 bg-slate-800 border border-white/10 rounded-xl flex items-center justify-center font-black text-xs shadow-inner">{match.teamB?.shortName?.[0] || 'B'}</div>
-                        </div>
-                        <div>
-                            <div className="font-black text-sm md:text-base uppercase tracking-tight leading-none group-hover:text-white transition-colors text-slate-200">
-                                {match.teamA?.name || 'Deleted'} <span className={`${accentColor} italic mx-2 opacity-50`}>VS</span> {match.teamB?.name || 'Deleted'}
-                            </div>
-                            <div className="text-slate-500 text-[10px] flex items-center mt-2 font-bold uppercase tracking-wider">
-                                <Calendar size={12} className="mr-2 text-slate-600" />
-                                {new Date(match.date).toLocaleDateString()} • {match.venue}
-                            </div>
-                        </div>
+        <motion.div whileHover={{ x: 8 }} className="relative pl-16 group">
+            {/* Timeline Dot */}
+            <div className={`absolute left-6 top-1/2 -translate-y-1/2 w-4 h-4 rounded-full border-4 border-charcoal z-10 shadow-lg ${type === 'completed' ? 'bg-slate-600' : (isBadminton ? 'bg-badminton' : 'bg-primary')}`} />
+            
+            <Link to={`/match/${match._id}`} className="block">
+                <div className="premium-glass-panel rounded-3xl p-6 flex items-center transition-colors group-hover:bg-white/5">
+                    {/* Date Block */}
+                    <div className="pr-6 border-r border-white/10 mr-6 text-center">
+                        <div className="text-xs font-bold text-slate-500 uppercase tracking-widest">{date.toLocaleDateString('en-US', { month: 'short' })}</div>
+                        <div className="text-2xl font-display font-black text-white">{date.getDate()}</div>
                     </div>
-                    <div className={`text-[9px] font-black uppercase tracking-[0.2em] px-3 py-1.5 rounded-full ${match.status === 'completed' ? 'bg-slate-800 text-slate-400 border border-white/10' : `${accentBg} ${accentColor} border ${accentBorder}`}`}>
-                        {match.status}
+
+                    {/* Match Info */}
+                    <div className="flex-1">
+                        <div className="flex justify-between items-center mb-2">
+                            <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400">{match.tournament?.name}</span>
+                            <span className={`text-[9px] font-black uppercase tracking-[0.2em] px-2 py-1 rounded bg-white/5 ${type === 'completed' ? 'text-slate-500' : (isBadminton ? 'text-badminton' : 'text-primary')}`}>
+                                {match.status}
+                            </span>
+                        </div>
+                        <div className="flex items-center justify-between">
+                            <div className="text-lg font-bold text-white tracking-tight">
+                                {match.teamA?.name} <span className="text-slate-600 font-light mx-2">vs</span> {match.teamB?.name}
+                            </div>
+                        </div>
                     </div>
                 </div>
             </Link>
