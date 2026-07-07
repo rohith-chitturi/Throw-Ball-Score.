@@ -200,7 +200,7 @@ const MatchDetail = () => {
 <span className="px-6 py-2 rounded-xl bg-surface-container-highest border border-outline-variant text-primary font-bold tracking-wide">
                                 Set {match.currentSet} - {match.status === 'live' ? 'Ongoing' : 'Finished'}
                             </span>
-<p className="text-on-surface-variant text-sm mt-2">Sets: Hawks 1 - 0 Falcons</p>
+<p className="text-on-surface-variant text-sm mt-2">Sets: {match.teamA.name} {teamASets} - {teamBSets} {match.teamB.name}</p>
 </div>
 </div>
 </section>

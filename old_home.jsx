@@ -1,54 +1,9 @@
-import { useState, useEffect } from 'react';
+import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import axios from '../api/axios';
-import { io } from 'socket.io-client';
 
 const Home = () => {
     const navigate = useNavigate();
-    const [matches, setMatches] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [selectedSport, setSelectedSport] = useState('throwball');
-
-    useEffect(() => {
-        const fetchMatches = async () => {
-            try {
-                const res = await axios.get('/matches');
-                setMatches(res.data.data);
-            } catch (err) {
-                console.error(err);
-            } finally {
-                setLoading(false);
-            }
-        };
-        fetchMatches();
-
-        const socketUrl = import.meta.env.VITE_SOCKET_URL || 'http://localhost:5000';
-        const socket = io(socketUrl, {
-            transports: ['websocket'],
-            upgrade: false
-        });
-        socket.emit('joinMatch', 'matches');
-
-        const updateMatchList = (updatedMatch) => {
-            setMatches(prev => prev.map(m => m._id === updatedMatch._id ? updatedMatch : m));
-        };
-
-        socket.on('scoreUpdate', updateMatchList);
-        socket.on('statusUpdate', updateMatchList);
-
-        return () => socket.disconnect();
-    }, []);
-
-    const filteredMatches = matches.filter(m => m.sport === selectedSport || (!m.sport && selectedSport === 'throwball'));
-    const liveMatches = filteredMatches.filter(m => m.status === 'live');
-    const recentMatches = filteredMatches.filter(m => m.status === 'completed' || m.status === 'scheduled');
-    if (loading) return (
-        <div className="flex flex-col items-center justify-center min-h-[60vh] space-y-6">
-            <div className="w-16 h-16 border-4 border-white/10 border-t-primary rounded-full animate-spin"></div>
-            <p className="text-slate-400 font-display font-bold uppercase tracking-[0.3em] animate-pulse">Initializing Broadcast</p>
-        </div>
-    );
-
+    
     return (
         <div className="bg-background text-on-background font-body-md overflow-x-hidden min-h-screen">
             
@@ -83,7 +38,7 @@ const Home = () => {
 <span className="font-label-mono text-label-mono text-tertiary tracking-widest uppercase">LIVE NOW</span>
 </div>
 <h2 className="font-display-lg text-headline-lg md:text-display-lg text-on-background mb-lg max-w-4xl">
-                    {liveMatches[0] ? liveMatches[0].tournament?.name || 'Live Match' : 'National Throwball Championship Final'}
+                    National Throwball Championship Final
                 </h2>
 {/* Match Score Banner */}
 <div className="flex flex-col md:flex-row items-center gap-xl md:gap-32 mb-xl">
@@ -92,28 +47,28 @@ const Home = () => {
 <div className="w-24 h-24 md:w-32 md:h-32 rounded-full glass-panel flex items-center justify-center p-md border-2 border-secondary/50">
 <span className="material-symbols-outlined text-6xl text-secondary">flash_on</span>
 </div>
-<span className="font-headline-md text-on-background uppercase tracking-wider">{liveMatches[0] ? liveMatches[0].teamA.name : 'Team Hawks'}</span>
+<span className="font-headline-md text-on-background uppercase tracking-wider">Team Hawks</span>
 </div>
 {/* Score */}
 <div className="flex flex-col items-center">
 <div className="flex items-center gap-lg">
-<span className="font-display-lg text-7xl md:text-9xl text-on-surface">{liveMatches[0] ? (liveMatches[0].sets[liveMatches[0].currentSet - 1]?.teamAScore || 0) : '0'}</span>
+<span className="font-display-lg text-7xl md:text-9xl text-on-surface">15</span>
 <span className="font-display-lg text-4xl md:text-6xl text-outline-variant">:</span>
-<span className="font-display-lg text-7xl md:text-9xl text-on-surface">{liveMatches[0] ? (liveMatches[0].sets[liveMatches[0].currentSet - 1]?.teamBScore || 0) : '0'}</span>
+<span className="font-display-lg text-7xl md:text-9xl text-on-surface">12</span>
 </div>
-<div className="font-label-mono text-label-mono text-on-surface-variant bg-surface-container py-xs px-md rounded-sm mt-md">{liveMatches[0] ? 'SET ' + liveMatches[0].currentSet + ' - ONGOING' : 'NO LIVE MATCHES'}</div>
+<div className="font-label-mono text-label-mono text-on-surface-variant bg-surface-container py-xs px-md rounded-sm mt-md">SET 2 - ONGOING</div>
 </div>
 {/* Team Falcons */}
 <div className="flex flex-col items-center gap-md">
 <div className="w-24 h-24 md:w-32 md:h-32 rounded-full glass-panel flex items-center justify-center p-md border-2 border-tertiary/50">
 <span className="material-symbols-outlined text-6xl text-tertiary">air</span>
 </div>
-<span className="font-headline-md text-on-background uppercase tracking-wider">{liveMatches[0] ? liveMatches[0].teamB.name : 'Team Falcons'}</span>
+<span className="font-headline-md text-on-background uppercase tracking-wider">Team Falcons</span>
 </div>
 </div>
-<button onClick={() => liveMatches[0] && navigate('/match/' + liveMatches[0]._id)} className="group flex items-center gap-md bg-tertiary text-on-tertiary font-headline-md text-headline-md px-xl py-md rounded-lg hover:shadow-[0_0_30px_rgba(145,219,42,0.4)] transition-all duration-500 active:scale-95">
-    Enter Match Center
-    <span className="material-symbols-outlined group-hover:translate-x-2 transition-transform">arrow_forward_ios</span>
+<button className="group flex items-center gap-md bg-tertiary text-on-tertiary font-headline-md text-headline-md px-xl py-md rounded-lg hover:shadow-[0_0_30px_rgba(145,219,42,0.4)] transition-all duration-500 active:scale-95">
+                    Enter Match Center
+                    <span className="material-symbols-outlined group-hover:translate-x-2 transition-transform">arrow_forward_ios</span>
 </button>
 </div>
 </section>
@@ -122,65 +77,92 @@ const Home = () => {
 <div className="flex items-center justify-between mb-lg border-l-4 border-secondary pl-md">
 <h3 className="font-headline-lg text-headline-lg text-on-background">Today's Action</h3>
 <div className="flex gap-sm">
-<span onClick={() => setSelectedSport('throwball')} className={`px-md py-sm rounded-full font-label-mono cursor-pointer transition-colors ${selectedSport === 'throwball' ? 'bg-secondary text-on-secondary' : 'bg-surface-container-high text-on-surface-variant hover:bg-secondary/50'}`}>Throwball</span>
-<span onClick={() => setSelectedSport('badminton')} className={`px-md py-sm rounded-full font-label-mono cursor-pointer transition-colors ${selectedSport === 'badminton' ? 'bg-secondary text-on-secondary' : 'bg-surface-container-high text-on-surface-variant hover:bg-secondary/50'}`}>Badminton</span>
+<span className="bg-surface-container-high px-md py-sm rounded-full font-label-mono text-on-surface-variant cursor-pointer hover:bg-secondary hover:text-on-secondary transition-colors">All Sports</span>
+<span className="bg-surface-container-high px-md py-sm rounded-full font-label-mono text-on-surface-variant cursor-pointer">Live</span>
 </div>
 </div>
 <div className="grid grid-cols-1 md:grid-cols-3 gap-lg">
-                    {liveMatches.map(m => (
-                        <div key={m._id} onClick={() => navigate('/match/' + m._id)} className="glass-panel rounded-xl overflow-hidden group border-tertiary/20 border-2 transition-all duration-300 relative cursor-pointer">
-                            <div className="absolute top-0 right-0 p-xs bg-tertiary text-on-tertiary font-label-mono text-[10px] uppercase tracking-tighter">LIVE</div>
-                            <div className="p-md border-b border-white/5 flex justify-between items-center bg-tertiary/5">
-                                <span className="font-label-mono text-label-mono text-tertiary">{m.sport.toUpperCase()}</span>
-                                <span className="font-label-mono text-label-mono text-tertiary animate-pulse">SET {m.currentSet}</span>
-                            </div>
-                            <div className="p-lg flex flex-col gap-lg">
-                                <div className="space-y-md">
-                                    <div className="flex justify-between items-center">
-                                        <span className="font-headline-md text-on-surface">{m.teamA.name}</span>
-                                        <span className="font-score-display text-on-surface">{m.sets[m.currentSet - 1]?.teamAScore || 0}</span>
-                                    </div>
-                                    <div className="flex justify-between items-center opacity-90">
-                                        <span className="font-headline-md text-on-surface">{m.teamB.name}</span>
-                                        <span className="font-score-display text-on-surface">{m.sets[m.currentSet - 1]?.teamBScore || 0}</span>
-                                    </div>
-                                </div>
-                                <button className="w-full py-md bg-tertiary text-on-tertiary rounded-lg font-headline-md active:scale-95 transition-all">Watch Stream</button>
-                            </div>
-                        </div>
-                    ))}
-                    
-                    {recentMatches.map(m => (
-                        <div key={m._id} onClick={() => navigate('/match/' + m._id)} className="glass-panel rounded-xl overflow-hidden group hover:border-white/20 transition-all duration-300 cursor-pointer">
-                            <div className="p-md border-b border-white/5 flex justify-between items-center bg-white/5">
-                                <span className="font-label-mono text-label-mono text-on-surface-variant">{m.sport.toUpperCase()}</span>
-                                <span className="font-label-mono text-label-mono text-on-surface-variant flex items-center gap-xs">
-                                    <span className="material-symbols-outlined text-sm">schedule</span> {new Date(m.startTime).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
-                                </span>
-                            </div>
-                            <div className="p-lg flex flex-col gap-lg">
-                                <div className="flex justify-between items-center">
-                                    <div className="flex flex-col gap-sm">
-                                        <div className="flex items-center gap-md">
-                                            <div className="w-2 h-2 rounded-full bg-outline-variant"></div>
-                                            <span className="font-headline-md text-on-surface">{m.teamA.name}</span>
-                                        </div>
-                                        <div className="flex items-center gap-md">
-                                            <div className="w-2 h-2 rounded-full bg-outline-variant"></div>
-                                            <span className="font-headline-md text-on-surface">{m.teamB.name}</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <button className="w-full py-md border border-white/10 rounded-lg font-headline-md text-on-surface-variant group-hover:bg-white/5 group-hover:text-on-surface transition-all">View Details</button>
-                            </div>
-                        </div>
-                    ))}
-                    {filteredMatches.length === 0 && (
-                        <div className="col-span-1 md:col-span-3 text-center py-20 text-on-surface-variant">
-                            No matches found for {selectedSport}.
-                        </div>
-                    )}
-                </div>
+{/* Card 1: Badminton (Upcoming) */}
+<div className="glass-panel rounded-xl overflow-hidden group hover:border-secondary/40 transition-all duration-300">
+<div className="p-md border-b border-white/5 flex justify-between items-center bg-white/5">
+<span className="font-label-mono text-label-mono text-secondary-fixed">BADMINTON</span>
+<span className="font-label-mono text-label-mono text-on-surface-variant flex items-center gap-xs">
+<span className="material-symbols-outlined text-sm">schedule</span> 14:00
+                        </span>
+</div>
+<div className="p-lg flex flex-col gap-lg">
+<div className="flex justify-between items-center">
+<div className="flex flex-col gap-sm">
+<div className="flex items-center gap-md">
+<div className="w-2 h-2 rounded-full bg-outline-variant"></div>
+<span className="font-headline-md text-on-surface">Lin Dan</span>
+</div>
+<div className="flex items-center gap-md">
+<div className="w-2 h-2 rounded-full bg-outline-variant"></div>
+<span className="font-headline-md text-on-surface">Lee Chong Wei</span>
+</div>
+</div>
+<div className="bg-surface-container-low p-md rounded-lg flex flex-col items-center">
+<span className="font-label-mono text-xs text-on-surface-variant">ODDS</span>
+<span className="font-score-display text-secondary">2.10</span>
+</div>
+</div>
+<button className="w-full py-md border border-white/10 rounded-lg font-headline-md text-on-surface-variant group-hover:bg-white/5 group-hover:text-on-surface transition-all">Set Reminder</button>
+</div>
+</div>
+{/* Card 2: Throwball (Live) */}
+<div className="glass-panel rounded-xl overflow-hidden group border-tertiary/20 border-2 transition-all duration-300 relative">
+<div className="absolute top-0 right-0 p-xs bg-tertiary text-on-tertiary font-label-mono text-[10px] uppercase tracking-tighter">LIVE</div>
+<div className="p-md border-b border-white/5 flex justify-between items-center bg-tertiary/5">
+<span className="font-label-mono text-label-mono text-tertiary">THROWBALL</span>
+<span className="font-label-mono text-label-mono text-tertiary animate-pulse">3RD SET</span>
+</div>
+<div className="p-lg flex flex-col gap-lg">
+<div className="space-y-md">
+<div className="flex justify-between items-center">
+<span className="font-headline-md text-on-surface">City Lions</span>
+<span className="font-score-display text-on-surface">20</span>
+</div>
+<div className="flex justify-between items-center opacity-90">
+<span className="font-headline-md text-on-surface">Desert Storm</span>
+<span className="font-score-display text-on-surface">18</span>
+</div>
+</div>
+<div className="h-1 bg-surface-container-highest w-full rounded-full overflow-hidden">
+<div className="h-full bg-tertiary w-3/4 shadow-[0_0_10px_rgba(145,219,42,0.5)]"></div>
+</div>
+<button className="w-full py-md bg-tertiary text-on-tertiary rounded-lg font-headline-md active:scale-95 transition-all">Watch Stream</button>
+</div>
+</div>
+{/* Card 3: Badminton (Final) */}
+<div className="glass-panel rounded-xl overflow-hidden group hover:border-white/20 transition-all duration-300">
+<div className="p-md border-b border-white/5 flex justify-between items-center bg-white/5">
+<span className="font-label-mono text-label-mono text-on-surface-variant">BADMINTON</span>
+<span className="font-label-mono text-label-mono text-on-error">FINAL SCORE</span>
+</div>
+<div className="p-lg flex flex-col gap-lg">
+<div className="space-y-md">
+<div className="flex justify-between items-center bg-surface-container-highest/30 p-sm rounded-lg border-l-4 border-tertiary">
+<span className="font-headline-md text-on-surface flex items-center gap-sm">
+                                    PV Sindhu
+                                    <span className="material-symbols-outlined text-tertiary text-sm">emoji_events</span>
+</span>
+<span className="font-score-display text-tertiary">2</span>
+</div>
+<div className="flex justify-between items-center p-sm">
+<span className="font-headline-md text-on-surface-variant">Akane Yamaguchi</span>
+<span className="font-score-display text-on-surface-variant">1</span>
+</div>
+</div>
+<div className="flex gap-sm">
+<div className="flex-1 text-center font-label-mono text-[10px] text-on-surface-variant py-xs bg-white/5 rounded">21-18</div>
+<div className="flex-1 text-center font-label-mono text-[10px] text-on-surface-variant py-xs bg-white/5 rounded">15-21</div>
+<div className="flex-1 text-center font-label-mono text-[10px] text-on-surface-variant py-xs bg-white/5 rounded">21-19</div>
+</div>
+<button className="w-full py-md border border-white/10 rounded-lg font-headline-md text-on-surface-variant hover:bg-white/5 transition-all">View Highlights</button>
+</div>
+</div>
+</div>
 </section>
 {/* Stats Bento Section */}
 <section className="max-w-7xl mx-auto px-grid-margin py-xl mb-xl">
