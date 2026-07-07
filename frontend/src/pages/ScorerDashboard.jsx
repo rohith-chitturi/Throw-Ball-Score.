@@ -410,7 +410,7 @@ const ScorerDashboard = ({ isAdminView = false }) => {
                                             </button>
                                         </div>
                                     </div>
-                                ) : (
+                                )) : (
                                     <div className="text-center py-24 text-slate-500 premium-glass-panel rounded-[3rem] font-bold uppercase tracking-widest text-sm flex flex-col items-center justify-center">
                                         <Flag size={48} className="mb-4 opacity-20" />
                                         No matches scheduled yet.
