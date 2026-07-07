@@ -131,7 +131,7 @@ const Home = () => {
                         <div key={m._id} onClick={() => navigate('/match/' + m._id)} className="glass-panel rounded-xl overflow-hidden group border-tertiary/20 border-2 transition-all duration-300 relative cursor-pointer">
                             <div className="absolute top-0 right-0 p-xs bg-tertiary text-on-tertiary font-label-mono text-[10px] uppercase tracking-tighter">LIVE</div>
                             <div className="p-md border-b border-white/5 flex justify-between items-center bg-tertiary/5">
-                                <span className="font-label-mono text-label-mono text-tertiary">{m.sport.toUpperCase()}</span>
+                                <span className="font-label-mono text-label-mono text-tertiary">{(m.sport || 'throwball').toUpperCase()}</span>
                                 <span className="font-label-mono text-label-mono text-tertiary animate-pulse">SET {m.currentSet}</span>
                             </div>
                             <div className="p-lg flex flex-col gap-lg">
@@ -153,7 +153,7 @@ const Home = () => {
                     {recentMatches.map(m => (
                         <div key={m._id} onClick={() => navigate('/match/' + m._id)} className="glass-panel rounded-xl overflow-hidden group hover:border-white/20 transition-all duration-300 cursor-pointer">
                             <div className="p-md border-b border-white/5 flex justify-between items-center bg-white/5">
-                                <span className="font-label-mono text-label-mono text-on-surface-variant">{m.sport.toUpperCase()}</span>
+                                <span className="font-label-mono text-label-mono text-on-surface-variant">{(m.sport || 'throwball').toUpperCase()}</span>
                                 <span className="font-label-mono text-label-mono text-on-surface-variant flex items-center gap-xs">
                                     <span className="material-symbols-outlined text-sm">schedule</span> {new Date(m.startTime).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
                                 </span>
