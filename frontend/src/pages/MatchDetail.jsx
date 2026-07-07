@@ -1,17 +1,12 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import axios from '../api/axios';
 import { io } from 'socket.io-client';
-import { Trophy, Shield, Clock, MapPin, ChevronLeft, Wifi, Share2, Activity, Medal, Target } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
-import Confetti from 'react-confetti';
-import { useWindowSize } from 'react-use';
 
 const MatchDetail = () => {
     const { id } = useParams();
     const [match, setMatch] = useState(null);
     const [loading, setLoading] = useState(true);
-    const { width, height } = useWindowSize();
 
     useEffect(() => {
         const fetchMatch = async () => {
@@ -61,7 +56,7 @@ const MatchDetail = () => {
     const teamASets = match.sets.filter(s => s.winner === match.teamA._id || (s.winner && s.winner._id === match.teamA._id)).length;
     const teamBSets = match.sets.filter(s => s.winner === match.teamB._id || (s.winner && s.winner._id === match.teamB._id)).length;
     
-    const isBadminton = match.sport === 'badminton';
+
 
     
     return (
