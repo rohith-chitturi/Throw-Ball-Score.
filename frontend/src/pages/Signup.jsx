@@ -48,7 +48,7 @@ const Signup = () => {
             <motion.div
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
-                className="glass-morphism p-10 rounded-[2.5rem] w-full max-w-md shadow-2xl relative overflow-hidden"
+                className="premium-glass-panel p-10 rounded-[2.5rem] w-full max-w-md shadow-2xl relative overflow-hidden"
             >
                 <div className="absolute top-0 right-0 p-8 opacity-10">
                     <UserPlus size={120} />

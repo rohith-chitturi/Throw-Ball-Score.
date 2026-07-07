@@ -48,7 +48,7 @@ const Login = () => {
             <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="glass-morphism p-10 rounded-[2.5rem] w-full max-w-md shadow-2xl"
+                className="premium-glass-panel p-10 rounded-[2.5rem] w-full max-w-md shadow-2xl"
             >
                 <div className="text-center mb-10">
                     <div className="w-20 h-20 bg-primary/20 rounded-[2rem] flex items-center justify-center mx-auto mb-6">

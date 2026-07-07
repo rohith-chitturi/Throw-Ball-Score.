@@ -83,7 +83,7 @@ const UserManagement = () => {
                 <motion.div
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}
-                    className="glass-morphism p-8 rounded-3xl border border-primary/20"
+                    className="premium-glass-panel p-8 rounded-3xl border border-primary/20"
                 >
                     <form onSubmit={handleCreateOfficial} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
                         <div className="space-y-2">
@@ -144,7 +144,7 @@ const UserManagement = () => {
                         key={`user-row-${user._id || idx}`}
                         initial={{ opacity: 0, x: -10 }}
                         animate={{ opacity: 1, x: 0 }}
-                        className="glass-morphism p-5 rounded-2xl flex flex-col md:flex-row justify-between items-center group border border-white/5"
+                        className="premium-glass-panel p-5 rounded-2xl flex flex-col md:flex-row justify-between items-center group border border-white/5"
                     >
                         <div className="flex items-center space-x-6 mb-4 md:mb-0">
                             <div className={`p-4 rounded-2xl ${user.role === 'admin' ? 'bg-primary/10 text-primary' : 'bg-slate-800 text-slate-500'}`}>

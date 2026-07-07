@@ -82,7 +82,7 @@ const Profile = () => {
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="glass-morphism p-8 rounded-3xl border border-white/5"
+                    className="premium-glass-panel p-8 rounded-3xl border border-white/5"
                 >
                     <h2 className="text-xl font-bold mb-6 flex items-center gap-2">
                         <Shield className="text-primary" size={20} />
@@ -127,7 +127,7 @@ const Profile = () => {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.1 }}
-                    className="glass-morphism p-8 rounded-3xl border border-white/5"
+                    className="premium-glass-panel p-8 rounded-3xl border border-white/5"
                 >
                     <h2 className="text-xl font-bold mb-6 flex items-center gap-2">
                         <Lock className="text-primary" size={20} />

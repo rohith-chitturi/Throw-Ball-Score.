@@ -142,7 +142,7 @@ const ScorerDashboard = ({ isAdminView = false }) => {
             )}
 
             {/* Navigation Tabs - Visible to everyone since Scorers handle Teams/Events too */}
-            <div className="flex flex-wrap p-1 bg-slate-800/50 rounded-2xl w-full md:w-fit border border-white/5 shadow-2xl">
+            <div className="flex flex-wrap p-1 premium-glass rounded-2xl w-full md:w-fit mb-8">
                 {[
                     { id: 'matches', label: 'Match Schedule', icon: Trophy },
                     ...(!isAdminView ? [
@@ -153,8 +153,8 @@ const ScorerDashboard = ({ isAdminView = false }) => {
                     <button
                         key={tab.id}
                         onClick={() => setActiveTab(tab.id)}
-                        className={`flex-1 md:flex-none flex items-center justify-center space-x-2 px-4 md:px-6 py-3 rounded-xl font-bold transition-all text-sm ${activeTab === tab.id
-                            ? 'bg-primary text-white shadow-lg shadow-primary/20'
+                        className={`flex-1 md:flex-none flex items-center justify-center space-x-2 px-4 md:px-6 py-3 rounded-xl font-bold uppercase tracking-widest transition-all text-xs ${activeTab === tab.id
+                            ? 'bg-primary text-black shadow-[0_0_20px_theme(colors.primary/0.4)]'
                             : 'text-slate-400 hover:text-white hover:bg-white/5'
                             }`}
                     >
@@ -205,10 +205,12 @@ const ScorerDashboard = ({ isAdminView = false }) => {
                                     animate={{ opacity: 1, height: 'auto' }}
                                     className="overflow-hidden"
                                 >
-                                    <div className="glass-morphism p-8 rounded-3xl border border-primary/20">
-                                        <h2 className="text-xl font-bold mb-6 flex items-center space-x-2">
-                                            <Trophy className="text-primary" />
-                                            <span>Setup New Match</span>
+                                    <div className="premium-glass-panel p-8 md:p-12 rounded-[3rem] border border-primary/20">
+                                        <h2 className="text-xl md:text-2xl font-display font-black uppercase tracking-tighter mb-8 flex items-center space-x-3 text-white">
+                                            <div className="p-2 bg-primary/20 text-primary rounded-xl border border-primary/30">
+                                                <Trophy size={20} />
+                                            </div>
+                                            <span>Setup Broadcast Match</span>
                                         </h2>
                                         <form onSubmit={handleCreateMatch} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                                             <div className="space-y-2">
@@ -341,7 +343,7 @@ const ScorerDashboard = ({ isAdminView = false }) => {
 
                             <div className="grid grid-cols-1 gap-4">
                                 {matches.length > 0 ? matches.map(match => (
-                                    <div key={`match-scorer-${match._id}`} className="glass-morphism p-6 rounded-2xl flex flex-col md:flex-row justify-between items-center group transition-all hover:bg-white/5 border border-white/5">
+                                    <div key={`match-scorer-${match._id}`} className="premium-glass p-6 md:p-8 rounded-[2.5rem] flex flex-col md:flex-row justify-between items-center group transition-all hover-lift">
                                         <div className="flex items-center space-x-6 mb-4 md:mb-0">
                                             <div className={`w-3 h-3 rounded-full ${match.status === 'live' ? 'bg-red-500 animate-pulse' : (match.status === 'upcoming' ? 'bg-blue-500' : 'bg-slate-700')}`} />
                                             <div>
@@ -408,9 +410,10 @@ const ScorerDashboard = ({ isAdminView = false }) => {
                                             </button>
                                         </div>
                                     </div>
-                                )) : (
-                                    <div className="text-center py-20 text-slate-500 glass-morphism rounded-3xl">
-                                        No matches assigned or scheduled yet.
+                                ) : (
+                                    <div className="text-center py-24 text-slate-500 premium-glass-panel rounded-[3rem] font-bold uppercase tracking-widest text-sm flex flex-col items-center justify-center">
+                                        <Flag size={48} className="mb-4 opacity-20" />
+                                        No matches scheduled yet.
                                     </div>
                                 )}
                             </div>

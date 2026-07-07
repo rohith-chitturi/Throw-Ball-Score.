@@ -106,7 +106,7 @@ const TeamManagement = ({ onUpdate }) => {
                 <motion.div
                     initial={{ opacity: 0, y: -20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="glass-morphism p-8 rounded-3xl border border-white/5"
+                    className="premium-glass-panel p-8 rounded-3xl border border-white/5"
                 >
                     <form onSubmit={handleCreateTeam} className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div className="space-y-2">
@@ -144,7 +144,7 @@ const TeamManagement = ({ onUpdate }) => {
                     <motion.div
                         whileHover={{ y: -5 }}
                         key={`team-manage-${team._id || idx}`}
-                        className="glass-morphism p-6 rounded-[2rem] border border-white/5 flex flex-col justify-between group"
+                        className="premium-glass-panel p-6 rounded-[2rem] border border-white/5 flex flex-col justify-between group"
                     >
                         <div>
                             <div className="flex justify-between items-start mb-4">
@@ -189,7 +189,7 @@ const TeamManagement = ({ onUpdate }) => {
                             initial={{ opacity: 0, scale: 0.9, y: 20 }}
                             animate={{ opacity: 1, scale: 1, y: 0 }}
                             exit={{ opacity: 0, scale: 0.9, y: 20 }}
-                            className="relative w-full max-w-2xl glass-morphism rounded-[3rem] border border-white/10 shadow-2xl overflow-hidden"
+                            className="relative w-full max-w-2xl premium-glass-panel rounded-[3rem] border border-white/10 shadow-2xl overflow-hidden"
                         >
                             <div className="bg-white/5 p-8 border-b border-white/5 flex justify-between items-center">
                                 <div>

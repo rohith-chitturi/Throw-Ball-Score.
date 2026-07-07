@@ -66,7 +66,7 @@ const TournamentManagement = ({ onUpdate }) => {
             </div>
 
             {showCreate && (
-                <div className="glass-morphism p-6 rounded-2xl">
+                <div className="premium-glass-panel p-6 rounded-2xl">
                     <form onSubmit={handleCreate} className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div className="md:col-span-2 space-y-1">
                             <label className="text-xs font-bold text-slate-500 uppercase">Tournament Name</label>
@@ -119,7 +119,7 @@ const TournamentManagement = ({ onUpdate }) => {
 
             <div className="grid grid-cols-1 gap-4">
                 {tournaments.map((tourney, tIdx) => (
-                    <div key={tourney._id || tIdx} className="glass-morphism p-6 rounded-2xl flex justify-between items-center group">
+                    <div key={tourney._id || tIdx} className="premium-glass-panel p-6 rounded-2xl flex justify-between items-center group">
                         <div className="flex items-center space-x-6">
                             <div className="bg-primary/10 p-4 rounded-2xl">
                                 <Calendar className="text-primary" />
