@@ -1,62 +1,52 @@
 @import "tailwindcss";
 @config "../tailwind.config.js";
 
-:root {
-  font-family: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #000000;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+@layer base {
+  body {
+    @apply bg-charcoal text-white antialiased overflow-x-hidden;
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Outfit', system-ui, sans-serif;
+  }
 }
 
-body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
-  justify-content: center;
-}
+@layer components {
+  .premium-glass {
+    @apply bg-midnight-blue/40 backdrop-blur-xl border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.5)];
+  }
+  
+  .premium-glass-panel {
+    @apply bg-charcoal/60 backdrop-blur-2xl border border-white/5 shadow-2xl;
+  }
 
-#root {
-  width: 100%;
-}
+  .glass-morphism {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+  }
 
-.glass-morphism {
-  background: rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+  .hover-lift {
+    @apply transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_20px_40px_rgba(0,0,0,0.4)];
+  }
+
+  .neon-border-primary {
+    @apply relative before:absolute before:inset-0 before:rounded-[inherit] before:border before:border-transparent before:bg-gradient-to-r before:from-primary/50 before:to-transparent before:opacity-0 hover:before:opacity-100 before:transition-opacity before:duration-500;
+  }
+  
+  .neon-text-glow {
+    text-shadow: 0 0 20px rgba(16, 185, 129, 0.5);
+  }
 }
 
 /* Global Cursor Fix */
-button,
-a,
-[role="button"],
-input[type="submit"],
-input[type="button"],
-input[type="reset"],
-select,
-.cursor-pointer,
-[onClick] {
+button, a, [role="button"], input[type="submit"], input[type="button"], input[type="reset"], select, .cursor-pointer, [onClick] {
   cursor: pointer !important;
 }
 
-button:disabled,
-input:disabled,
-.cursor-not-allowed {
+button:disabled, input:disabled, .cursor-not-allowed {
   cursor: not-allowed !important;
-}
-
-/* Ensure framer-motion interactive elements show pointer */
-.motion-safe\:hover:hover {
-  cursor: pointer;
 }
