@@ -168,54 +168,7 @@ const Home = () => {
                     )}
                 </div>
 </section>
-{/* Stats Bento Section */}
-<section className="max-w-7xl mx-auto px-grid-margin py-xl mb-xl">
-<div className="grid grid-cols-1 md:grid-cols-4 grid-rows-2 gap-lg h-auto md:h-[600px]">
-<div className="md:col-span-2 md:row-span-2 glass-panel p-xl flex flex-col justify-between relative overflow-hidden rounded-xl">
-<div className="relative z-10">
-<h4 className="font-headline-lg text-headline-lg text-secondary mb-md">Hawk's Dominance</h4>
-<p className="font-body-lg text-body-lg text-on-surface-variant mb-xl max-w-sm">Current win streak of 8 games with an average point difference of +14.2 in the final sets.</p>
-<div className="space-y-lg">
-<div className="flex justify-between items-end border-b border-white/5 pb-sm">
-<span className="font-label-mono text-on-surface-variant">Win Probability</span>
-<span className="font-score-display text-headline-md text-on-surface">68%</span>
-</div>
-<div className="flex justify-between items-end border-b border-white/5 pb-sm">
-<span className="font-label-mono text-on-surface-variant">Service Accuracy</span>
-<span className="font-score-display text-headline-md text-on-surface">92%</span>
-</div>
-</div>
-</div>
-<div className="absolute bottom-0 right-0 w-64 h-64 opacity-20 transform translate-x-10 translate-y-10">
-<span className="material-symbols-outlined text-[300px] text-secondary">trending_up</span>
-</div>
-</div>
-<div className="md:col-span-2 glass-panel p-lg flex items-center justify-between rounded-xl">
-<div>
-<span className="font-label-mono text-tertiary block mb-sm">MVP CANDIDATE</span>
-<h4 className="font-headline-md text-on-surface">James "The Bolt" Miller</h4>
-<p className="text-on-surface-variant font-body-md">24 Assists | 12 Direct Goals</p>
-</div>
-<div className="w-24 h-24 rounded-full overflow-hidden border-2 border-tertiary">
-<img className="w-full h-full object-cover" data-alt="A professional headshot of a focused male athlete in a high-tech athletic uniform. Dramatic side lighting from a lime green source highlights his features. The background is a dark, abstract sports arena with cinematic depth of field." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBiDhRx-R2qoxsvBDStsIYq2ExBnD9_on0xWPyENdl3o31B2l5f6ttATaQaSSKym6qnxiT8-zCV-T_u2X9Brp5_NG5guiMvrTAiQD_2WZrf6rpy2sU00nm1NRCSr_qWIdM5-ntSI3jT_-54GSO0XWxlr1BL72GItiE-kMxqzdI2a-B94wAA1eJrcEUeanjZ5le3oVoQYEIFYfTLtiZeO9YfzyUUeexIwvsd8v3Dwel07UWJ4zVVDZKHy4vLSIqY_sTy-YLawVDe6oee"/>
-</div>
-</div>
-<div className="glass-panel p-lg rounded-xl flex flex-col justify-center items-center gap-md">
-<span className="material-symbols-outlined text-4xl text-secondary">groups</span>
-<div className="text-center">
-<span className="block font-score-display text-headline-md text-on-surface">42K</span>
-<span className="font-label-mono text-xs text-on-surface-variant">LIVE VIEWERS</span>
-</div>
-</div>
-<div className="glass-panel p-lg rounded-xl flex flex-col justify-center items-center gap-md">
-<span className="material-symbols-outlined text-4xl text-on-error">local_fire_department</span>
-<div className="text-center">
-<span className="block font-score-display text-headline-md text-on-surface">9.8</span>
-<span className="font-label-mono text-xs text-on-surface-variant">INTENSITY INDEX</span>
-</div>
-</div>
-</div>
-</section>
+
 </main>
 {/* Footer */}
 <footer className="bg-surface-container-lowest py-xl border-t border-white/5">
