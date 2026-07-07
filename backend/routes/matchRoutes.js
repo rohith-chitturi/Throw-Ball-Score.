@@ -110,7 +110,7 @@ router.post('/:id/score', protect, authorize('scorer'), async (req, res) => {
 
         if (match.status !== 'live') return res.status(400).json({ success: false, message: 'Match is not live' });
 
-        const winPoints = match.pointsPerSet || (match.sport === 'badminton' ? 21 : 27);
+        const winPoints = match.pointsPerSet || (match.sport === 'badminton' ? 21 : 25);
         const currentSetIndex = match.currentSet - 1;
         const currentSet = match.sets[currentSetIndex];
 
@@ -135,7 +135,7 @@ router.post('/:id/score', protect, authorize('scorer'), async (req, res) => {
         let isSetWon = false;
         let setWinner = null;
 
-        const maxPoints = match.sport === 'badminton' ? 30 : (winPoints + 2); // Cap for golden point
+        const maxPoints = match.sport === 'badminton' ? 30 : 29; // Cap for golden point
 
         if (scoreA >= winPoints || scoreB >= winPoints) {
             const diff = Math.abs(scoreA - scoreB);

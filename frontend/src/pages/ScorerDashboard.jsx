@@ -10,7 +10,7 @@ import TournamentManagement from '../components/TournamentManagement';
 import { useAuth } from '../context/AuthContext';
 
 const ScorerDashboard = ({ isAdminView = false }) => {
-    const { user } = useAuth();
+    const { user, selectedSport } = useAuth();
     const [activeTab, setActiveTab] = useState('matches');
     const [matches, setMatches] = useState([]);
     const [teams, setTeams] = useState([]);
@@ -23,9 +23,9 @@ const ScorerDashboard = ({ isAdminView = false }) => {
         tournament: '',
         venue: '',
         date: new Date().toISOString().split('T')[0],
-        pointsPerSet: 27,
+        pointsPerSet: selectedSport === 'badminton' ? 21 : 25,
         scorer: '',
-        sport: 'throwball'
+        sport: selectedSport
     });
 
     useEffect(() => {
@@ -71,8 +71,9 @@ const ScorerDashboard = ({ isAdminView = false }) => {
             // Process results
             if (results[0].status === 'fulfilled') {
                 const fetchedMatches = results[0].value.data.data;
-                console.log(`[Dashboard] Matches Fetched: ${fetchedMatches.length}`);
-                setMatches(fetchedMatches);
+                const filteredMatches = fetchedMatches.filter(m => (m.sport || 'throwball') === selectedSport);
+                console.log(`[Dashboard] Matches Fetched: ${filteredMatches.length}`);
+                setMatches(filteredMatches);
             }
 
             if (results[1].status === 'fulfilled') setTeams(results[1].value.data.data);

@@ -9,6 +9,7 @@ import { toast } from 'react-hot-toast';
 const Login = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [loginSport, setLoginSport] = useState('throwball');
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
     const { user, login } = useAuth();
@@ -27,7 +28,7 @@ const Login = () => {
         setLoading(true);
         try {
             const res = await axios.post('/auth/login', { username, password });
-            login(res.data.user, res.data.token);
+            login(res.data.user, res.data.token, loginSport);
             toast.success(`Welcome back, ${res.data.user.username}!`);
             if (res.data.user.role === 'admin') {
                 navigate('/admin');
@@ -89,6 +90,33 @@ const Login = () => {
                                 placeholder="••••••••"
                                 required
                             />
+                        </div>
+                    </div>
+
+                    {/* Sport Context Selection */}
+                    <div className="space-y-3 pt-2">
+                        <label className="text-xs font-black text-slate-500 ml-1 uppercase tracking-widest text-center block w-full">Select Operational Context</label>
+                        <div className="flex p-1 premium-glass rounded-2xl w-full border border-white/5">
+                            <button
+                                type="button"
+                                onClick={() => setLoginSport('throwball')}
+                                className={`flex-1 py-3 rounded-xl font-bold uppercase tracking-widest text-xs transition-all ${loginSport === 'throwball'
+                                    ? 'bg-primary text-black shadow-[0_0_20px_theme(colors.primary/0.4)]'
+                                    : 'text-slate-400 hover:text-white hover:bg-white/5'
+                                    }`}
+                            >
+                                Throwball
+                            </button>
+                            <button
+                                type="button"
+                                onClick={() => setLoginSport('badminton')}
+                                className={`flex-1 py-3 rounded-xl font-bold uppercase tracking-widest text-xs transition-all ${loginSport === 'badminton'
+                                    ? 'bg-badminton text-white shadow-[0_0_20px_theme(colors.badminton/0.4)]'
+                                    : 'text-slate-400 hover:text-white hover:bg-white/5'
+                                    }`}
+                            >
+                                Badminton
+                            </button>
                         </div>
                     </div>
 

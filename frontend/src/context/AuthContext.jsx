@@ -6,11 +6,18 @@ const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [selectedSport, setSelectedSport] = useState('throwball');
 
     useEffect(() => {
         try {
             const storedUser = localStorage.getItem('user');
             const token = localStorage.getItem('token');
+            const storedSport = localStorage.getItem('selectedSport');
+            
+            if (storedSport) {
+                setSelectedSport(storedSport);
+            }
+
             if (storedUser && token) {
                 const parsedUser = JSON.parse(storedUser);
                 if (parsedUser && parsedUser.role) {
@@ -34,7 +41,7 @@ export const AuthProvider = ({ children }) => {
         setLoading(false);
     }, []);
 
-    const login = (userData, token) => {
+    const login = (userData, token, sportContext) => {
         // Normalize ID so we always have both id and _id (fixes frontend comparison issues)
         const normalizedUser = {
             ...userData,
@@ -43,12 +50,17 @@ export const AuthProvider = ({ children }) => {
         };
         localStorage.setItem('user', JSON.stringify(normalizedUser));
         localStorage.setItem('token', token);
+        if (sportContext) {
+            localStorage.setItem('selectedSport', sportContext);
+            setSelectedSport(sportContext);
+        }
         setUser(normalizedUser);
     };
 
     const logout = () => {
         localStorage.removeItem('user');
         localStorage.removeItem('token');
+        localStorage.removeItem('selectedSport');
         setUser(null);
     };
 
@@ -71,8 +83,13 @@ export const AuthProvider = ({ children }) => {
         user,
         login,
         logout,
-        loading
-    }), [user, loading]);
+        loading,
+        selectedSport,
+        setSelectedSport: (sport) => {
+            localStorage.setItem('selectedSport', sport);
+            setSelectedSport(sport);
+        }
+    }), [user, loading, selectedSport]);
 
     return (
         <AuthContext.Provider value={authValue}>
