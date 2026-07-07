@@ -52,21 +52,7 @@ const Home = () => {
     return (
         <div className="bg-background text-on-background font-body-md overflow-x-hidden min-h-screen">
             
-{/* Top Navigation Bar */}
-<header className="fixed top-0 w-full bg-surface/80 backdrop-blur-xl z-50 border-b border-white/10 shadow-xl flex justify-between items-center px-grid-margin h-20">
-<div className="flex items-center gap-md">
-<img alt="ARENA LIVE Logo" className="h-10 w-auto" src="https://lh3.googleusercontent.com/aida/AP1WRLst0x-SB4csEk5JAf5eD432xAQfY7iMQ7LUwaz8QL5qvsK-gEN-S1LAIDINbxayHdgtLCGxxrDCuTePYMEWns9PQLaBid0oCv9k836pLKdI09x96V3nMPOfewcTdjL7H4vJTdjxCMmdgsOniAD2Gpp29CMB2wlrYDBjFWO98Xu9weVo6zfQ6v-WO_AKNKP0FcHMF6CVIHAYwtzDq2cov3079mXOhse1VJ3WbV9eKv-xbAu68mssYvpSXLQ"/>
-<span className="font-display-lg text-headline-md tracking-tighter text-secondary">ARENA LIVE</span>
-</div>
-<nav className="hidden md:flex items-center gap-lg">
-<Link to="/" className="font-headline-md text-headline-md text-secondary border-b-2 border-secondary pb-1 transition-all duration-300">Home</Link>
-<Link to="/dashboard" className="font-headline-md text-headline-md text-on-surface-variant hover:text-on-surface transition-all duration-300">Dashboard</Link>
-</nav>
-<div className="flex items-center gap-md">
-<button className="material-symbols-outlined text-on-surface-variant hover:text-secondary cursor-pointer">search</button>
-<button onClick={() => navigate('/login')} className="bg-secondary text-on-secondary px-lg py-sm font-headline-md rounded-lg active:scale-95 transition-all duration-300">Login</button>
-</div>
-</header>
+
 <main className="pt-20">
 {/* Hero Section */}
 <section className="relative min-h-[70vh] flex items-center justify-center overflow-hidden px-grid-margin py-xl">
